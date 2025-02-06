@@ -8,7 +8,7 @@ const Hero = () => {
         <span className="font-bold text-4xl">
           Design for you loan <h1 className="text-center">with the Experts</h1>
         </span>
-        <p>
+        <p className="px-4 text-center">
           Credora we are here for you likke we should to manage your finance and
           loan through our AI
         </p>
@@ -16,7 +16,7 @@ const Hero = () => {
           Get started
         </button>
       </div>
-      <div className="absolute bottom-[200px] right-12 bg-white bg-opacity-60 h-[150px] w-[430px] text-white p-4">
+      <div className="absolute bottom-8 right-3 md:bottom-[200px] md:right-12 bg-white bg-opacity-60 h-[150px] w-[430px] text-white p-4">
         <h1 className="font-bold text-white">5% Interest</h1>
         <p>
           Discover our dependable loan solutions designed to empower you
