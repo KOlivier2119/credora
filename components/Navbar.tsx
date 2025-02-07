@@ -1,12 +1,12 @@
 import React from 'react'
 import Image from 'next/image'
-import logo from '../public/logo.png'
+import logo from '/logo.png'
 
 const Navbar = () => {
   return (
     <div className='w-full bg-white flex justify-between p-6 font-semibold m-auto'>
       <div className='flex flex-row'>
-        <Image src={logo} alt='' className='h-8 w-8'/>
+        <Image src="/logo.png" alt='' className='h-8 w-8' width={10} height={10}/>
         <h1 className='text-[#4B4F5E]'>Credora</h1>
       </div>
       <div className='flex flex-col md:flex-row gap-6 text-[#4B4F5E]'>

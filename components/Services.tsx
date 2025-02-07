@@ -2,64 +2,78 @@ import React from "react";
 
 const Services = () => {
   return (
-    <div className="w-full p-8">
+    <div className="w-full p-8 bg-gray-50">
+      {/* Header Section */}
       <div className="flex justify-center w-full">
-        <button className="text-[#4B415F] border border-[#4B415F] rounded-full py-2 px-5 mb-5">
+        <button className="text-[#4B415F] border border-[#4B415F] rounded-full py-2 px-5 mb-8 hover:bg-[#4B415F] hover:text-white transition">
           OUR SERVICES
         </button>
       </div>
-      <div>
-        <h1 className="text-[#061525] font-bold text-4xl text-center">
-          Comprehensive financial solutions tailored to your needs
-        </h1>
-        <table>
-          <tr>
-            <td>
-              <div>
-                <h1>Personal Loans</h1>
-                <p>
-                  Our Personal Loans offer flexible terms and competitive rates,
-                  tailored to meet your individual needs.
-                </p>
-              </div>
-            </td>
-            <td>
-              <div>
-                <h1></h1>
-                <p></p>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div>
-                <h1>Business Loans</h1>
-                <p>
-                  EMpower your business with our flexible financing options.
-                  Tailored to meet the unique needs of your enterprise.
-                </p>
-              </div>
-            </td>
-            <td>
-              <h1></h1>
-              <p></p>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <h1>Mortage Loans</h1>
-              <p>
-                Secure your dream home with our competitive mortgage loans.
-                ENjoy flexible terms, low interest rates
-              </p>
-            </td>
-            <td>
-              <div>
-                <h1></h1>
-                <p></p>
-              </div>
-            </td>
-          </tr>
+
+      {/* Title */}
+      <h1 className="text-[#061525] font-bold text-4xl text-center mb-12">
+        Comprehensive financial solutions tailored to your needs
+      </h1>
+
+      {/* Table Section */}
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse border-spacing-4">
+          <tbody>
+            {/* Row 1 */}
+            <tr className="flex flex-wrap md:table-row">
+              <td className="md:w-1/2 p-4 border border-gray-300">
+                <div>
+                  <h2 className="text-lg font-bold text-[#061525]">Personal Loans</h2>
+                  <p className="text-gray-600">
+                    Our Personal Loans offer flexible terms and competitive rates, tailored to meet your individual needs.
+                  </p>
+                </div>
+              </td>
+              <td className="md:w-1/2 p-4 border border-gray-300">
+                <div>
+                  <h2 className="text-lg font-bold text-[#061525]">Emergency Loans</h2>
+                  <p className="text-gray-600">Quick and reliable emergency loans, providing fast access to funds when you need them most. Apply now for instant relief.</p>
+                </div>
+              </td>
+            </tr>
+
+            {/* Row 2 */}
+            <tr className="flex flex-wrap md:table-row">
+              <td className="md:w-1/2 p-4 border border-gray-300">
+                <div>
+                  <h2 className="text-lg font-bold text-[#061525]">Business Loans</h2>
+                  <p className="text-gray-600">
+                    Empower your business with our flexible financing options. Tailored to meet the unique needs of your enterprise.
+                  </p>
+                </div>
+              </td>
+              <td className="md:w-1/2 p-4 border border-gray-300">
+                <div>
+                  <h2 className="text-lg font-bold text-[#061525]">Student Loans</h2>
+                  <p className="text-gray-600">Student loans open doors to education but can also become a heavy financial burden if not managed wisely. Plan carefully.</p>
+                </div>
+              </td>
+            </tr>
+
+            {/* Row 3 */}
+            <tr className="flex flex-wrap md:table-row">
+              <td className="md:w-1/2 p-4 border border-gray-300">
+                <div>
+                  <h2 className="text-lg font-bold text-[#061525]">Mortgage Loans</h2>
+                  <p className="text-gray-600">
+                    Secure your dream home with our competitive mortgage loans. Enjoy flexible terms and low interest rates.
+                  </p>
+                </div>
+              </td>
+              <td className="md:w-1/2 p-4 border border-gray-300">
+                <div>
+                  <h2 className="text-lg font-bold text-[#061525]">Small business Loans</h2>
+                  <p className="text-gray-600">This content highlights the key benefits of your small business loan offerings, appealing to entrepreneurs seeking financial support.
+                  </p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>

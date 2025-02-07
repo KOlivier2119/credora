@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import man from "../public/man.png";
-import discuss from "../public/discuss.png";
+import man from "/man.png";
+import discuss from "/discuss.png";
 
 const About = () => {
   return (
@@ -44,8 +44,10 @@ const About = () => {
           {/* First Image: Covers full width (2 columns) */}
           <div className="row-span-1 md:row-span-2">
             <Image
-              src={man}
+              src="/man.jpeg"
               alt="Man Image"
+              width={10}
+              height={10}
               // Reduced height
               className="rounded-lg object-contain w-full"
             />
@@ -53,8 +55,10 @@ const About = () => {
           {/* Second Row: Split into two parts */}
           <div>
             <Image
-              src={discuss}
+              src="/discuss.png"
               alt="Discussion Image"
+              height={10}
+              width={10}
               // Reduced height
               className="rounded-lg object-contain w-full md:w-auto h-full"
             />
