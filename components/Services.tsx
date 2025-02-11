@@ -5,7 +5,7 @@ const Services = () => {
     <div className="w-full p-8 bg-gray-50">
       {/* Header Section */}
       <div className="flex justify-center w-full">
-        <button className="text-[#4B415F] border border-[#4B415F] rounded-full py-2 px-5 mb-8 hover:bg-[#4B415F] hover:text-white transition">
+        <button className="text-[#4B415F] border border-[#4B415F] rounded-full py-2 px-5 mb-8">
           OUR SERVICES
         </button>
       </div>
@@ -75,6 +75,11 @@ const Services = () => {
             </tr>
           </tbody>
         </table>
+      </div>
+      <div className="flex justify-center py-4">
+        <button className="bg-[#061525] py-2 px-5 text-white rounded-full">
+          View More
+        </button>
       </div>
     </div>
   );
