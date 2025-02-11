@@ -1,14 +1,19 @@
 import React from "react";
 import Image from "next/image";
-import man from "/man.png";
-import discuss from "/discuss.png";
 
 const About = () => {
+  const imageUrl =
+    "https://s3-alpha-sig.figma.com/img/c397/a4ab/260634dc82dc45f18a63edc265527e0f?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Yd2apNIOcCr5I4RBRxoC3Q5O4bYaHSTbho9E0L~3Wa3rL0dKeNjh0ZYcnrF-F~on9PMotDiTCJmyS9STaaDV-GyL-f7n~bdYMOYlWSVwb~k0e8mUpNTYVUrIWfTJf74XMphNcwmjwgrkAC15KKHiATI4Fnwbu8VAjaCwdNBnlw84~owDFOdmZ~e8uCNaG4F67~JY4l4iWN5GZk6EF0On2aVWGfaBsCw5cuMUi7OAI-g0efCU2haKeWyPofsED9v2k~qHcUwo1DtJAQJR8PAvB-SjZyUPhouSSRBvbNzhT~idPe4v5Ifc469LhSXS4HhVSOOyCpTcD63yebje9ewwxQ__";
+
+  const anotherUrl =
+    "https://s3-alpha-sig.figma.com/img/f40b/bd2f/6aa4ae7f033f0b13f92219134abc518c?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=dsGhqjMLF8-ryrRYoycUU33e5r2rWKTi7IRrt9PVJrISgiP~Oq2rxgFdD30SRXXgyCmCgDkqSi0miSCdCo~d4ae5lYhR5Mo1LD~NeBw~MmXof7aOVHSdWrdPWeGq3W1mynGCMte~UVhwbSjgV~OCFIQ8ZqDM609OdfuKCjXVZVlQsOz7e50t1L5-TxbCfoQCn2BgxdE63yZHsUTMERBNi-PtKbV5xNbWPYY3IZBqH1jte6iVrU8KAgD-lybXJQec4t7AX6mtKsJrzOmobP8EwGwoIyMd~QNkBs6DIHlUXPrDLKvPkw5F~pvHw74cORJjN7FzzEEQxReUh0Y5t9-yAw__";
+
   return (
     <div className="p-8 md:p-16 text-[#4B4F5E] text-lg md:text-xl">
       <button className="text-[#4B415F] border border-[#4B415F] rounded-full py-2 px-5 mb-5">
         ABOUT US
       </button>
+
       <div className="flex flex-col md:flex-row gap-5 items-center md:items-start">
         <div className="w-full md:w-[50%] text-center md:text-left">
           <h1 className="text-2xl md:text-3xl font-bold">
@@ -41,34 +46,31 @@ const About = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full md:w-[50%]">
-          {/* First Image: Covers full width (2 columns) */}
           <div className="row-span-1 md:row-span-2">
             <Image
-              src="/man.png"
+              src={anotherUrl}
               alt="Man Image"
-              width={10}
-              height={10}
-              // Reduced height
-              className="rounded-lg object-contain w-full"
+              width={500}
+              height={400}
+              className="rounded-lg object-cover w-full"
             />
           </div>
-          {/* Second Row: Split into two parts */}
           <div>
             <Image
-              src="/discuss.png"
+              src={imageUrl}
               alt="Discussion Image"
-              height={10}
-              width={10}
-              // Reduced height
+              width={500}
+              height={400}
               className="rounded-md object-cover w-full"
             />
           </div>
-          <div className="bg-[#061525] flex flex-col justify-center items-center p-14 rounded-lg text-center">
+          <div className="bg-[#061525] flex flex-col justify-center items-center p-24 rounded-lg text-center">
             <h1 className="font-bold text-white text-3xl">25+</h1>
             <p className="text-white text-sm">Years of Experience</p>
           </div>
         </div>
       </div>
+
       <div className="flex flex-col md:flex-row gap-8 w-full mx-auto py-4">
         <div className="bg-[#EDEEEF] p-3">
           <h1 className="text-[#4B4F5E] font-bold">Company Mission</h1>
@@ -78,7 +80,7 @@ const About = () => {
           </p>
         </div>
         <div className="bg-[#EDEEEF] p-3">
-          <h1 className="text-[#4B4F5E] font-bold">Target, Vision % Goal</h1>
+          <h1 className="text-[#4B4F5E] font-bold">Target, Vision & Goal</h1>
           <p>
             Our vision is to provide reliable and innovative financial solutions
             tailored to your needs.

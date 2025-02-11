@@ -16,7 +16,7 @@ const Hero = () => {
           Get started
         </button>
       </div>
-      <div className="absolute bottom-[-195px] right-3 md:bottom-[-30px] md:right-12 bg-white bg-opacity-60 h-[150px] w-[430px] text-white p-4">
+      <div className="invisible md:visible absolute bottom-[-195px] right-3 md:bottom-[-30px] md:right-12 bg-white bg-opacity-60 h-[150px] w-[430px] text-white p-4">
         <h1 className="font-bold text-white">5% Interest</h1>
         <p>
           Discover our dependable loan solutions designed to empower you

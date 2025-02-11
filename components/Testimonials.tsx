@@ -4,7 +4,7 @@ import testimonial from "@/public/testimonial.png";
 
 const Testimonials = () => {
   return (
-    <div className='mx-auto w-[90%]'>
+    <div className='mx-auto w-[95%]'>
       <div className="flex justify-center w-full">
         <button className="text-[#4B415F] border border-[#4B415F] rounded-full py-2 px-5 mb-8">
           TESTIMONIALS
