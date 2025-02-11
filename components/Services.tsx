@@ -77,7 +77,7 @@ const Services = () => {
         </table>
       </div>
       <div className="flex justify-center py-4">
-        <button className="bg-[#061525] py-2 px-5 text-white rounded-full">
+        <button className="bg-[#061525] hover:bg-[#172c42] transition-all duration-500  py-2 px-5 text-white rounded-full">
           View More
         </button>
       </div>
