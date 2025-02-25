@@ -2,28 +2,37 @@ import React from "react";
 
 const Hero = () => {
   return (
-    <div>
-    <div className='bg-[url("https://s3-alpha-sig.figma.com/img/2347/b4d9/a701aa174891ae660d7c601823cad922?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=L5e1VLmfvOmGhH4ovklyL3CCTz~821CeykFbJnmlrRynUQj0IPr1Kn58taQPSp-Tb3-lsauW2Nj~McSDXhc3d4FtUPJp42WDYs8xA74v1kNaV74fyhqs~2SHnBH5us4sD9kOr7~qF3BdQ8lj64l8jPdtaKNVhoa7mGCERrWJTbVrqo4G30vPXRBXqFyKG-Tg3SD2gp84D1DIY3dh~Z-7AZv-y0AZIRiFUTRYeeLzqBG519psVl9dFviH3LixOhNrqWu~blAPOJTK-VruMOYjnhd~PEm5heVuau8zRunGO4KQxuAE8s~9zCQQbv6fBSkbXXvmDoeNr3qpnlZhK~B6Hg__")] bg-cover bg-center h-[652px] w-full flex justify-center items-center'>
-      <div className="flex flex-col justify-center items-center">
-        <span className="font-bold text-4xl">
-          Design for you loan <h1 className="text-center">with the Experts</h1>
-        </span>
-        <p className="px-4 text-center">
-          Credora we are here for you likke we should to manage your finance and
-          loan through our AI
-        </p>
-        <button className="bg-white text-[#4B415F] px-12 py-4 rounded-full">
-          Get started
-        </button>
+    <div className="relative w-full">
+      {/* Hero Section */}
+      <div 
+        className="relative h-[70vh] min-h-[500px] w-full flex items-center justify-center bg-[url('/business.svg')] bg-cover bg-center"
+      >
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/60"></div>
+
+        {/* Content */}
+        <div className="relative z-10 text-white text-center px-4 sm:px-6 max-w-3xl mx-auto">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-4">
+            Design Your Loan with the Experts
+          </h1>
+          <p className="text-base sm:text-lg md:text-xl mb-6 text-gray-200">
+            At Credora, we leverage AI technology to manage your finances and loans effectively, supporting you every step of the way.
+          </p>
+          <button className="px-6 py-3 bg-white text-[#061525] rounded-full font-semibold text-sm sm:text-base hover:bg-opacity-90 transition-all duration-300 shadow-lg">
+            Get Started
+          </button>
+        </div>
       </div>
-      <div className="invisible md:visible absolute bottom-[-195px] right-3 md:bottom-[-30px] md:right-12 bg-white bg-opacity-60 h-[150px] w-[430px] text-white p-4">
-        <h1 className="font-bold text-white">5% Interest</h1>
-        <p>
-          Discover our dependable loan solutions designed to empower you
-          financial journey
-        </p>
+
+      {/* Info Card */}
+      <div className="relative mx-4 sm:mx-6 md:mx-auto md:absolute md:bottom-[-80px] md:right-12 max-w-md w-full">
+        <div className="bg-white p-6 rounded-xl shadow-2xl border border-gray-100 transform transition-all duration-300 hover:-translate-y-2">
+          <h2 className="text-xl md:text-2xl font-bold text-[#061525] mb-3">5% Interest Rate</h2>
+          <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+            Discover our dependable loan solutions designed to empower your financial journey with competitive rates and expert support.
+          </p>
+        </div>
       </div>
-    </div>
     </div>
   );
 };

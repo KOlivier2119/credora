@@ -1,5 +1,7 @@
 import React from "react";
 import Image from "next/image";
+import man from "@/public/man_2.svg"
+import discuss from "@/public/discuss.svg";
 
 const About = () => {
   const imageUrl =
@@ -48,7 +50,7 @@ const About = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full md:w-[50%]">
           <div className="row-span-1 md:row-span-2">
             <Image
-              src={anotherUrl}
+              src={man}
               alt="Man Image"
               width={500}
               height={400}
@@ -57,7 +59,7 @@ const About = () => {
           </div>
           <div>
             <Image
-              src={imageUrl}
+              src={discuss}
               alt="Discussion Image"
               width={500}
               height={400}

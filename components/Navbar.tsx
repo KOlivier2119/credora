@@ -1,28 +1,118 @@
-import React from 'react'
-import Image from 'next/image'
-import logo from '/logo.png'
+"use client";
+import React, { useState } from 'react';
+import Image from 'next/image';
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const navItems = [
+    { name: 'Home', href: '#' },
+    { name: 'About', href: '#' },
+    { name: 'Services', href: '#' },
+    { name: 'Contact', href: '#' },
+    { name: 'Faq', href: '#' },
+  ];
+
   return (
-    <nav className='w-full bg-white flex justify-between md:p-6 font-semibold m-auto'>
-      <div className='flex flex-row justify-center items-center md:justify-start md:items-start px-6'>
-        <Image src="/logo.png" alt='' className='h-8 w-8' width={10} height={10}/>
-        <h1 className='text-[#4B4F5E]'>Credora</h1>
-      </div>
-      <div className='flex invisible md:visible md:flex-row gap-6 text-[#4B4F5E]'>
-        <h1 className='cursor-pointer'>Home</h1>
-        <h1 className='cursor-pointer'>About</h1>
-        <h1 className='cursor-pointer'>Services</h1>
-        <h1 className='cursor-pointer'>Contact</h1>
-        <h1 className='cursor-pointer'>Faq</h1>
-      </div>
-      <div className='flex flex-col invisible md:visible md:flex-row gap-3'>
-        <button className='bg-[#061525] text-white px-10 py-2 rounded-md'>Login</button>
-        <button className='text-[#4B4F5E] bg-white px-10 py-2 rounded-md border-[#4B4F5E] border hover:bg-[#4B4f5e] hover:text-white transition-all duration-500'>Register</button>
+    <nav className="w-full bg-white shadow-md fixed top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo Section */}
+          <div className="flex-shrink-0 flex items-center">
+            <Image 
+              src="/logo.png" 
+              alt="Credora Logo" 
+              width={32} 
+              height={32}
+              className="h-8 w-8"
+            />
+            <h1 className="ml-2 text-xl font-bold text-[#4B4F5E]">Credora</h1>
+          </div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center">
+            <div className="flex space-x-6">
+              {navItems.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className="text-[#4B4F5E] hover:text-[#061525] transition-colors duration-300 text-sm font-medium"
+                >
+                  {item.name}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Buttons Section */}
+          <div className="hidden md:flex items-center space-x-4">
+            <button className="bg-[#061525] text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-opacity-90 transition-all duration-300">
+              Login
+            </button>
+            <button className="text-[#4B4F5E] bg-white px-5 py-2 rounded-md border border-[#4B4F5E] text-sm font-medium hover:bg-[#4B4F5E] hover:text-white transition-all duration-300">
+              Register
+            </button>
+          </div>
+
+          {/* Hamburger Button */}
+          <div className="md:hidden">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-[#4B4F5E] hover:text-[#061525] focus:outline-none"
+            >
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                {isOpen ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                )}
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {isOpen && (
+          <div className="md:hidden">
+            <div className="pt-2 pb-3 space-y-1">
+              {navItems.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className="block px-3 py-2 text-[#4B4F5E] hover:text-[#061525] hover:bg-gray-100 transition-colors duration-300 text-base font-medium"
+                >
+                  {item.name}
+                </a>
+              ))}
+            </div>
+            <div className="pt-3 pb-4 px-3 space-y-3">
+              <button className="w-full bg-[#061525] text-white px-5 py-2 rounded-md text-base font-medium hover:bg-opacity-90 transition-all duration-300">
+                Login
+              </button>
+              <button className="w-full text-[#4B4F5E] bg-white px-5 py-2 rounded-md border border-[#4B4F5E] text-base font-medium hover:bg-[#061525] hover:text-white transition-all duration-300">
+                Register
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </nav>
+  );
+};
 
-  )
-}
-
-export default Navbar
+export default Navbar;
