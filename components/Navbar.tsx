@@ -22,21 +22,21 @@ const Navbar = () => {
             <Image 
               src="/logo.png" 
               alt="Credora Logo" 
-              width={32} 
-              height={32}
-              className="h-8 w-8"
+              width={40} 
+              height={40}
+              className="h-10 w-10"
             />
-            <h1 className="ml-2 text-xl font-bold text-[#4B4F5E]">Credora</h1>
+            <h1 className="ml-3 text-2xl font-bold text-[#4B4F5E]">Credora</h1>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center">
-            <div className="flex space-x-6">
+            <div className="flex space-x-8">
               {navItems.map((item) => (
                 <a
                   key={item.name}
                   href={item.href}
-                  className="text-[#4B4F5E] hover:text-[#061525] transition-colors duration-300 text-sm font-medium"
+                  className="text-[#4B4F5E] hover:text-[#061525] transition-colors duration-300 text-base font-medium"
                 >
                   {item.name}
                 </a>
@@ -45,11 +45,11 @@ const Navbar = () => {
           </div>
 
           {/* Buttons Section */}
-          <div className="hidden md:flex items-center space-x-4">
-            <button className="bg-[#061525] text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-opacity-90 transition-all duration-300">
+          <div className="hidden md:flex items-center space-x-5">
+            <button className="bg-[#061525] text-white px-6 py-2.5 rounded-md text-base font-medium hover:bg-opacity-90 transition-all duration-300">
               Login
             </button>
-            <button className="text-[#4B4F5E] bg-white px-5 py-2 rounded-md border border-[#4B4F5E] text-sm font-medium hover:bg-[#4B4F5E] hover:text-white transition-all duration-300">
+            <button className="text-[#4B4F5E] bg-white px-6 py-2.5 rounded-md border border-[#4B4F5E] text-base font-medium hover:bg-[#4B4F5E] hover:text-white transition-all duration-300">
               Register
             </button>
           </div>
@@ -61,7 +61,7 @@ const Navbar = () => {
               className="text-[#4B4F5E] hover:text-[#061525] focus:outline-none"
             >
               <svg
-                className="h-6 w-6"
+                className="h-8 w-8"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -94,17 +94,17 @@ const Navbar = () => {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="block px-3 py-2 text-[#4B4F5E] hover:text-[#061525] hover:bg-gray-100 transition-colors duration-300 text-base font-medium"
+                  className="block px-3 py-2.5 text-[#4B4F5E] hover:text-[#061525] hover:bg-gray-100 transition-colors duration-300 text-lg font-medium"
                 >
                   {item.name}
                 </a>
               ))}
             </div>
             <div className="pt-3 pb-4 px-3 space-y-3">
-              <button className="w-full bg-[#061525] text-white px-5 py-2 rounded-md text-base font-medium hover:bg-opacity-90 transition-all duration-300">
+              <button className="w-full bg-[#061525] text-white px-6 py-3 rounded-md text-lg font-medium hover:bg-opacity-90 transition-all duration-300">
                 Login
               </button>
-              <button className="w-full text-[#4B4F5E] bg-white px-5 py-2 rounded-md border border-[#4B4F5E] text-base font-medium hover:bg-[#061525] hover:text-white transition-all duration-300">
+              <button className="w-full text-[#4B4F5E] bg-white px-6 py-3 rounded-md border border-[#4B4F5E] text-lg font-medium hover:bg-[#061525] hover:text-white transition-all duration-300">
                 Register
               </button>
             </div>

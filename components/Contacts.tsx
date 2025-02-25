@@ -1,28 +1,87 @@
-import React from 'react'
+import React from 'react';
+import { FaCalendar, FaClock, FaEnvelope, FaPhone } from 'react-icons/fa';
 
 const Contacts = () => {
     return (
-        <div className='bg-[url("https://s3-alpha-sig.figma.com/img/07bc/ab81/7b2a5752c2cbcf5ff8ff1c970418a916?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=TaKYgdbl2oNcwRbsatLRUfp~n5vrD4OvfUZyIwjhVt8GoThqMiXefn8xOgf6rBbOj-trSvfhdH7RvbsQ~ccut6bP1bg3-A9Cwre3NN~lWCmNTX1Yj6cBznMSJOsEnLdqUiDYGKO4DYwOSTZ7Ha-N6fSk1fsdXZLKaySYSbSe7wIFOjb7UfLLKDFAujMwisqqgyORNuA3~xr~sDu0Xgl7qjI9plJYdJDKY~8~js8pPrlEq~wdkUB6yFTWeyE9bX9nAzxHPVZo7XGJjCCW1Jhj91ImofVefCpD1ZYbF-cSVYcw9cC6ojRBpdrvqMXOKuHDKcn8rfzz8GHUrumtiPy9Dg__")] w-full object-cover object-center'>
-            <div>
-                <div>
-                    <button className="text-[#4B415F] border border-[#4B415F] rounded-full py-2 px-5 mb-5">
+        <div className="w-full p-12 bg-[#061525F2] text-white my-5">
+            <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-12">
+                {/* Left Section */}
+                <div className="flex-1">
+                    <button className="text-white border border-white rounded-full py-2 px-6 mb-6 hover:bg-white hover:text-[#061525] transition-colors duration-300">
                         CONTACT US
                     </button>
-                    <h1>Empower your financial journey with personalized solutions</h1>
-                    <p>With Credora Financial, you have the power to take control of your financial future. Our expert solutions Empower your financial journey with personalized</p>
-                    <div>
-                        <p>credora@gmail.com</p>
-                        <p>+250 787 289 178</p>
-                        <p>24/7 All Loan services Available</p>
-                    </div>
-                    <p>Mon to Fri: 9 am to 4 pm</p>
-                </div>
-                <form action="">
+                    <h1 className="text-4xl font-bold mb-4 leading-tight">
+                        Empower your financial journey with personalized solutions
+                    </h1>
+                    <p className="text-gray-300 mb-6">
+                        With Credora Financial, you have the power to take control of your financial future. 
+                        Our expert solutions are tailored to your unique needs.
+                    </p>
                     
-                </form>
+                    <div className="space-y-4">
+                        <div className="flex items-center gap-3">
+                            <FaEnvelope className="text-xl" />
+                            <p>credora@gmail.com</p>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <FaPhone className="text-xl" />
+                            <p>+250 787 289 178</p>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <FaClock className="text-xl" />
+                            <p>24/7 All Loan Services Available</p>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <FaCalendar className="text-xl" />
+                            <p>Mon to Fri: 9 AM - 4 PM</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Right Section - Form */}
+                <div className="flex-1">
+                    <form className="space-y-6">
+                        <div className="flex flex-col">
+                            <label htmlFor="firstName" className="mb-2">First Name</label>
+                            <input 
+                                type="text" 
+                                name="firstName" 
+                                id="firstName" 
+                                className="bg-[#EDEEEF80] p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-white text-white"
+                                required
+                            />
+                        </div>
+                        <div className="flex flex-col">
+                            <label htmlFor="email" className="mb-2">Email</label>
+                            <input 
+                                type="email" 
+                                name="email" 
+                                id="email" 
+                                className="bg-[#EDEEEF80] p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-white text-white"
+                                required
+                            />
+                        </div>
+                        <div className="flex flex-col">
+                            <label htmlFor="message" className="mb-2">Message</label>
+                            <textarea 
+                                name="message" 
+                                id="message" 
+                                rows={5}
+                                className="bg-[#EDEEEF80] p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-white text-white resize-y"
+                                required
+                            />
+                        </div>
+                        <button 
+                            type="submit"
+                            className="bg-white py-2 px-6 rounded-md text-[#061525] font-semibold hover:bg-gray-200 transition-colors duration-300"
+                        >
+                            Submit
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Contacts
+export default Contacts;
