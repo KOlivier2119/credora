@@ -40,11 +40,13 @@ const FAQ = () => {
   ];
 
   return (
-    <section className="w-full py-16 bg-gray-100">
-      <button className="text-[#4B415F] border border-[#4B415F] rounded-full py-2 px-5 mb-8">
-          FAQs
-        </button>
+    <section className="w-full py-16">
       <div className="max-w-4xl mx-auto px-4">
+      <div className='flex justify-center'>
+        <button className="text-[#4B415F] border border-[#4B415F] rounded-full py-2 px-5 mb-8">
+            FAQs
+          </button>
+      </div>
         <h2 className="text-3xl md:text-4xl font-bold text-center text-[#061525] mb-10">
           Document guideline FAQ regarding Credora 
         </h2>

@@ -5,7 +5,7 @@ import About from "@/components/About";
 import Services from "@/components/Services";
 import Testimonials from "@/components/Testimonials"
 import Footer from "@/components/Footer";
-//import FAQ from "@/components/FAQ"
+import FAQ from "@/components/FAQ"
 
 export default function Home() {
   return (
@@ -15,7 +15,7 @@ export default function Home() {
       <About />
       <Services />
       <Testimonials />
-      {/* <FAQ /> */}
+      <FAQ />
       <Footer />
     </div>
   );

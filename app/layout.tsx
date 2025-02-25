@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Inconsolata } from "next/font/google";
 import "./globals.css";
 
-const poppins = Poppins({
+const inconsolata = Inconsolata({
   subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-  variable: "--font-poppins",
+  weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-inconsolata",
 });
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${poppins.variable} antialiased bg-gray-50`}>
+      <body className={`${inconsolata.variable} antialiased bg-gray-50`}>
         {children}
       </body>
     </html>
