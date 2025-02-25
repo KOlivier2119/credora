@@ -18,7 +18,9 @@ const Hero = () => {
           <p className="text-base sm:text-lg md:text-xl mb-6 text-gray-200">
             At Credora, we leverage AI technology to manage your finances and loans effectively, supporting you every step of the way.
           </p>
-          <button className="px-6 py-3 bg-white text-[#061525] rounded-full font-semibold text-sm sm:text-base hover:bg-opacity-90 transition-all duration-300 shadow-lg">
+          <button 
+            className="px-6 py-3 bg-white text-[#061525] rounded-full font-semibold text-sm sm:text-base hover:bg-opacity-90 hover:bg-gray-50 hover:scale-110 hover:shadow-xl transition-all duration-300 shadow-lg"
+          >
             Get Started
           </button>
         </div>

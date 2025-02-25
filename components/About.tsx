@@ -52,8 +52,8 @@ const About = () => {
             <Image
               src={man}
               alt="Man Image"
-              width={500}
-              height={400}
+              width={300}
+              height={100}
               className="rounded-lg object-cover w-full"
             />
           </div>
@@ -61,12 +61,12 @@ const About = () => {
             <Image
               src={discuss}
               alt="Discussion Image"
-              width={500}
-              height={400}
+              width={50}
+              height={20}
               className="rounded-md object-cover w-full"
             />
           </div>
-          <div className="bg-[#061525] flex flex-col justify-center items-center p-24 rounded-lg text-center">
+          <div className="bg-[#061525] flex flex-col justify-center items-center p-6 lg:p-20 rounded-lg text-center">
             <h1 className="font-bold text-white text-3xl">25+</h1>
             <p className="text-white text-sm">Years of Experience</p>
           </div>

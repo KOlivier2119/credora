@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaPlus, FaMinus } from "react-icons/fa";
 import Image from "next/image";
 import image from "@/public/image.svg";
 
@@ -42,44 +42,48 @@ const FAQ = () => {
   ];
 
   return (
-    <section className="w-full py-20 bg-gray-50">
-      <div className="max-w-5xl mx-auto px-6">
+    <section className="w-full py-12 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* FAQ Header */}
-        <div className="text-center mb-12">
-          <button className="text-[#4B415F] border-2 border-[#4B415F] rounded-full py-2 px-6 text-sm font-medium tracking-wide transition-all duration-300">
+        <div className="text-center mb-10">
+          <button className="text-[#4B415F] border-2 border-[#4B415F] rounded-full py-1.5 px-5 text-sm font-medium uppercase tracking-wider bg-white">
             FAQs
           </button>
-          <h2 className="text-4xl md:text-5xl font-bold text-[#061525] mt-6 leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl text-[#061525] mt-4 leading-tight tracking-tight">
             Document Guideline FAQ Regarding Credora
           </h2>
         </div>
 
         {/* Accordion Section */}
-        <div className="space-y-5">
+        <div className="space-y-3 w-[85%] mx-auto">
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden transform transition-all duration-300 hover:shadow-xl"
+              className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm"
             >
               <button
                 onClick={() => toggleAccordion(index)}
-                className="w-full flex justify-between items-center p-6 text-left text-[#061525] font-semibold text-lg md:text-xl focus:outline-none hover:bg-gray-50 transition-colors duration-200"
+                className="w-full flex justify-between items-center px-6 py-4 text-left text-[#061525] font-medium text-lg sm:text-xl lg:text-2xl focus:outline-none bg-gray-100"
               >
-                <span>{faq.question}</span>
-                {activeIndex === index ? (
-                  <FaChevronUp className="text-[#061525] w-5 h-5" />
-                ) : (
-                  <FaChevronDown className="text-[#061525] w-5 h-5" />
-                )}
+                <span className="pr-6">{faq.question}</span>
+                <span className="flex-shrink-0 bg-[#4B415F] text-white rounded-full p-2">
+                  {activeIndex === index ? (
+                    <FaMinus className="w-4 h-4" />
+                  ) : (
+                    <FaPlus className="w-4 h-4" />
+                  )}
+                </span>
               </button>
               <div
-                className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                  activeIndex === index ? "max-h-96 p-6" : "max-h-0 p-0"
+                className={`transition-all duration-500 ease-in-out ${
+                  activeIndex === index ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
                 }`}
               >
-                <p className="text-gray-700 text-base md:text-lg leading-relaxed">
-                  {faq.answer}
-                </p>
+                <div className="px-6 py-4 bg-white">
+                  <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
+                    {faq.answer}
+                  </p>
+                </div>
               </div>
             </div>
           ))}
@@ -87,22 +91,22 @@ const FAQ = () => {
       </div>
 
       {/* Trust Section */}
-      <div className="max-w-6xl mx-auto px-6 mt-16 flex flex-col md:flex-row items-center justify-between gap-10">
-        <div className="text-center md:text-left">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#061525] mb-6 leading-snug">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 flex flex-col lg:flex-row items-center justify-between gap-8">
+        <div className="text-center lg:text-left lg:w-1/2">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl text-[#061525] mb-4 leading-snug tracking-tight">
             We build trust with all customers by combining creativity with
             tailored business solutions
           </h2>
-          <button className="bg-[#061525] text-white font-medium py-3 px-8 rounded-full hover:bg-[#172c42] transition-all duration-300 shadow-md">
+          <button className="bg-[#061525] text-white font-medium py-2 px-6 rounded-full transition-colors duration-300">
             Contact Us
           </button>
         </div>
-        <div className="flex-shrink-0">
+        <div className="flex-shrink-0 lg:w-1/2 flex justify-center">
           <Image
             src={image}
             alt="Illustration"
-            width={300}
-            height={300}
+            width={250}
+            height={250}
             className="object-contain"
           />
         </div>
