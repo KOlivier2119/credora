@@ -6,18 +6,18 @@ import { FaStarHalfStroke } from "react-icons/fa6";
 
 function WeAre() {
   return (
-    <div className="w-full min-h-screen flex flex-col md:flex-row items-stretch">
+    <div className="w-full min-h-screen flex flex-col md:flex-row items-stretch p-6">
       {/* Image Section */}
-      <div className="flex-1 flex items-center justify-center p-4 bg-white">
+      <div className="flex-1">
         <Image
           src={paper}
-          className="object-contain w-3/4 max-h-full" // Reduced size of the image to 75% of its container width
+          className="object-cover w-full h-4/6" // Reduced size of the image to 75% of its container width
           alt="Paper illustration"
         />
       </div>
 
       {/* Content Section */}
-      <div className="flex-1 text-[#4B4F5E] p-4 bg-white overflow-y-auto">
+      <div className="flex-1 text-[#4B4F5E] p-4 overflow-y-auto h-full">
         <button className="text-[#4B415F] border border-[#4B415F] rounded-full py-2 px-6 font-medium hover:bg-[#4B415F] hover:text-white transition-colors duration-300">
           WHO WE ARE
         </button>
@@ -65,7 +65,7 @@ function WeAre() {
       </div>
 
       {/* Loan Calculator Section */}
-      <div className="flex-1 h-full p-4 bg-white">
+      <div className="flex-1 p-4 bg-white">
         <LoanCalculator />
       </div>
     </div>

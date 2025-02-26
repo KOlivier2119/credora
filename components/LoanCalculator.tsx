@@ -12,7 +12,7 @@ const LoanCalculator = () => {
   const monthlyInterestRate = interestRate / 100 / 12;
 
   // Calculate monthly payment using the formula for fixed monthly payment (PMT)
-  const calculateMonthlyPayment = (principal, months, rate) => {
+  const calculateMonthlyPayment = (principal: number, months: number, rate: number) => {
     if (rate === 0) return principal / months;
     return (
       principal * rate * Math.pow(1 + rate, months) / (Math.pow(1 + rate, months) - 1)
@@ -24,7 +24,7 @@ const LoanCalculator = () => {
   const totalPayback = monthlyPayment * loanDuration;
 
   return (
-    <div className="max-w-5xl mx-auto p-6 bg-[#EDEEEF] rounded-lg shadow-md text-[#4B4F5E]">
+    <div className="max-w-5xl h-4/6 mx-auto p-6 bg-[#EDEEEF] rounded-lg shadow-md text-[#4B4F5E]">
       {/* Loan Amount Slider */}
       <div className="mb-6">
         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -36,7 +36,7 @@ const LoanCalculator = () => {
           max="100000"
           value={loanAmount}
           onChange={(e) => setLoanAmount(Number(e.target.value))}
-          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+          className="w-full h-2 bg-[#a2a5ad] rounded-lg appearance-none cursor-pointer"
         />
         <div className="flex justify-between text-xs text-gray-500 mt-1">
           <span>$1,000</span>
@@ -55,7 +55,7 @@ const LoanCalculator = () => {
           max="12"
           value={loanDuration}
           onChange={(e) => setLoanDuration(Number(e.target.value))}
-          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+          className="w-full h-2 bg-[#a2a5ad] rounded-lg appearance-none cursor-pointer"
         />
         <div className="flex justify-between text-xs text-gray-500 mt-1">
           <span>1 Month</span>
