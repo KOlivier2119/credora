@@ -36,10 +36,10 @@ const Navbar = () => {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="relative text-[#4B4F5E] hover:text-[#061525] transition-colors duration-300 text-base font-medium"
+                  className="relative text-[#4B4F5E] hover:text-[#061525] transition-colors duration-300 text-base font-bold group"
                 >
                   {item.name}
-                  <span className="absolute bottom-[-4px] left-1/2 w-1/4 h-0.5 bg-[#061525] transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                  <span className="absolute bottom-[-2px] left-1/2 w-0 h-0.5 bg-[#061525] transform -translate-x-1/2 transition-all duration-300 group-hover:w-2/5"></span>
                 </a>
               ))}
             </div>

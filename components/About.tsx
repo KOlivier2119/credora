@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import man from "@/public/man_2.svg"
+import man from "@/public/man_2.svg";
 import discuss from "@/public/discuss.svg";
 
 const About = () => {
@@ -17,36 +17,43 @@ const About = () => {
       </button>
 
       <div className="flex flex-col md:flex-row gap-5 items-center md:items-start">
-        <div className="w-full md:w-[50%] text-center md:text-left">
+        <div className="w-full md:w-[50%] text-center md:text-left mt-24">
           <h1 className="text-2xl md:text-3xl font-bold">
             25 years of expert loan and finance services.
           </h1>
-          <p className="mt-4 text-start">
-            With over 25 years of expertise in the finance industry, we bring
-            unparalleled experience and knowledge to every client we serve. Our
-            highly skilled team is dedicated to providing comprehensive finance
-            solutions tailored to your needs, ensuring you receive the best
-            coverage and service. We are committed to building long-term
-            relationships, offering strategic advice that supports your
-            financial growth and security. Trust us to navigate the complexities
-            of finance with precision and care.
-          </p>
-          <div className="flex flex-col md:flex-row justify-between my-10 mr-8">
-  <div className="flex flex-col items-center md:items-start">
-    <h1 className="text-5xl font-bold outlined-text">25+</h1>
-    <span>Years of trusted expertise</span>
-  </div>
-  <div className="flex flex-col items-center md:items-start">
-    <h1 className="text-5xl font-bold outlined-text">50K</h1>
-    <span>Loan approved</span>
-  </div>
-  <div className="flex flex-col items-center md:items-start">
-    <h1 className="text-5xl font-bold outlined-text">10K</h1>
-    <span>Satisfied clients</span>
-  </div>
-</div>
-
-
+          <div>
+            <p className="mt-4 text-start">
+              With over 25 years of expertise in the finance industry, we bring
+              unparalleled experience and
+            </p>
+            <p className="mt-4 text-start">
+              knowledge to every client we serve. Our highly skilled team is
+              dedicated to providing comprehensive finance solutions tailored to
+              your needs, ensuring you receive the best coverage
+            </p>
+            <p className="mt-4 text-start">
+              and service. We are committed to building long-term relationships,
+              offering strategic advice
+            </p>
+            <p className="mt-4 text-start">
+              that supports your financial growth and security. Trust us to
+              navigate the complexities of finance with precision and care.
+            </p>
+          </div>
+          <div className="flex flex-col md:flex-row justify-between my-10 mr-8 mt-20">
+            <div className="flex flex-col items-center py-6 md:py-0 md:items-start">
+              <h1 className="text-5xl font-bold outlined-text">25+</h1>
+              <span>Years of trusted expertise</span>
+            </div>
+            <div className="flex flex-col items-center py-6 md:py-0 md:items-start">
+              <h1 className="text-5xl font-bold outlined-text">50K</h1>
+              <span>Loan approved</span>
+            </div>
+            <div className="flex flex-col items-center py-6 md:py-0 md:items-start">
+              <h1 className="text-5xl font-bold outlined-text">10K</h1>
+              <span>Satisfied clients</span>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full md:w-[50%]">
