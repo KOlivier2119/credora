@@ -91,7 +91,7 @@ const FAQ = () => {
       </div>
 
       {/* Trust Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 flex flex-col lg:flex-row items-center justify-between gap-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 flex flex-col lg:flex-row items-center justify-between gap-8">
         <div className="text-center lg:text-left lg:w-1/2">
           <h2 className="text-2xl sm:text-3xl lg:text-4xl text-[#061525] mb-4 leading-snug tracking-tight">
             We build trust with all customers by combining creativity with

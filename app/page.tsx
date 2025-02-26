@@ -7,6 +7,7 @@ import Testimonials from "@/components/Testimonials"
 import Footer from "@/components/Footer";
 import FAQ from "@/components/FAQ"
 import Contacts from "@/components/Contacts";
+import WeAre from "@/components/WeAre";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
       <Hero />
       <About />
       <Services />
+      <WeAre />
       <Testimonials />
       <Contacts />
       <FAQ />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaCalendar, FaClock, FaEnvelope, FaPhone } from 'react-icons/fa';
+import { FaCalendar, FaClock, FaEnvelope, FaPhone, FaArrowRight } from 'react-icons/fa';
 
 const Contacts = () => {
     return (
@@ -76,6 +76,7 @@ const Contacts = () => {
                             className="bg-white py-2 px-6 rounded-md text-[#061525] font-semibold hover:bg-gray-200 transition-colors duration-300"
                         >
                             Submit
+                        <FaArrowRight className="ml-2 text-xl inline-block" />
                         </button>
                     </form>
                 </div>
