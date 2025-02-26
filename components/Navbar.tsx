@@ -1,28 +1,28 @@
 "use client";
-import React, { useState } from 'react';
-import Image from 'next/image';
+import React, { useState } from "react";
+import Image from "next/image";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { name: 'Home', href: '#' },
-    { name: 'About', href: '#' },
-    { name: 'Services', href: '#' },
-    { name: 'Contact', href: '#' },
-    { name: 'Faq', href: '#' },
+    { name: "Home", href: "#" },
+    { name: "About", href: "#" },
+    { name: "Services", href: "#" },
+    { name: "Contact", href: "#" },
+    { name: "Faq", href: "#" },
   ];
 
   return (
-    <nav className="w-full bg-white shadow-md fixed top-0 z-50">
+    <nav className="w-full bg-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo Section */}
           <div className="flex-shrink-0 flex items-center">
-            <Image 
-              src="/logo.png" 
-              alt="Credora Logo" 
-              width={40} 
+            <Image
+              src="/logo.png"
+              alt="Credora Logo"
+              width={40}
               height={40}
               className="h-10 w-10"
             />
@@ -36,9 +36,10 @@ const Navbar = () => {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="text-[#4B4F5E] hover:text-[#061525] transition-colors duration-300 text-base font-medium"
+                  className="relative text-[#4B4F5E] hover:text-[#061525] transition-colors duration-300 text-base font-medium"
                 >
                   {item.name}
+                  <span className="absolute bottom-[-4px] left-1/2 w-1/4 h-0.5 bg-[#061525] transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                 </a>
               ))}
             </div>
@@ -94,9 +95,10 @@ const Navbar = () => {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="block px-3 py-2.5 text-[#4B4F5E] hover:text-[#061525] hover:bg-gray-100 transition-colors duration-300 text-lg font-medium"
+                  className="relative block px-3 py-2.5 text-[#4B4F5E] hover:text-[#061525] hover:bg-gray-100 transition-colors duration-300 text-lg font-medium"
                 >
                   {item.name}
+                  <span className="absolute bottom-[-4px] left-1/2 w-1/4 h-0.5 bg-[#061525] transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                 </a>
               ))}
             </div>

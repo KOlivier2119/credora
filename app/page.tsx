@@ -97,7 +97,7 @@ export default function Home() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
-        variants={animations.rotateIn}
+        variants={animations.fadeInLeft}
       >
         <Testimonials />
       </motion.div>
