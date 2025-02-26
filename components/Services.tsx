@@ -17,11 +17,11 @@ const Services = () => {
 
       {/* Table Section */}
       <div className="overflow-x-auto">
-        <table className="w-full border-collapse border-spacing-4">
+        <table className="max-w-screen-2xl mx-auto border-collapse border-spacing-4">
           <tbody>
             {/* Row 1 */}
             <tr className="flex flex-wrap md:table-row">
-              <td className="md:w-1/2 p-4 border border-gray-300">
+              <td className="md:w-1/2 p-8 border border-gray-300">
                 <div>
                   <h2 className="text-lg font-bold text-[#061525]">Personal Loans</h2>
                   <p className="text-gray-600">
@@ -29,7 +29,7 @@ const Services = () => {
                   </p>
                 </div>
               </td>
-              <td className="md:w-1/2 p-4 border border-gray-300">
+              <td className="md:w-1/2 p-8 border border-gray-300">
                 <div>
                   <h2 className="text-lg font-bold text-[#061525]">Emergency Loans</h2>
                   <p className="text-gray-600">Quick and reliable emergency loans, providing fast access to funds when you need them most. Apply now for instant relief.</p>
@@ -39,7 +39,7 @@ const Services = () => {
 
             {/* Row 2 */}
             <tr className="flex flex-wrap md:table-row">
-              <td className="md:w-1/2 p-4 border border-gray-300">
+              <td className="md:w-1/2 p-8 border border-gray-300">
                 <div>
                   <h2 className="text-lg font-bold text-[#061525]">Business Loans</h2>
                   <p className="text-gray-600">
@@ -47,7 +47,7 @@ const Services = () => {
                   </p>
                 </div>
               </td>
-              <td className="md:w-1/2 p-4 border border-gray-300">
+              <td className="md:w-1/2 p-8 border border-gray-300">
                 <div>
                   <h2 className="text-lg font-bold text-[#061525]">Student Loans</h2>
                   <p className="text-gray-600">Student loans open doors to education but can also become a heavy financial burden if not managed wisely. Plan carefully.</p>
@@ -57,7 +57,7 @@ const Services = () => {
 
             {/* Row 3 */}
             <tr className="flex flex-wrap md:table-row">
-              <td className="md:w-1/2 p-4 border border-gray-300">
+              <td className="md:w-1/2 p-8 border border-gray-300">
                 <div>
                   <h2 className="text-lg font-bold text-[#061525]">Mortgage Loans</h2>
                   <p className="text-gray-600">
@@ -65,7 +65,7 @@ const Services = () => {
                   </p>
                 </div>
               </td>
-              <td className="md:w-1/2 p-4 border border-gray-300">
+              <td className="md:w-1/2 p-8 border border-gray-300">
                 <div>
                   <h2 className="text-lg font-bold text-[#061525]">Small business Loans</h2>
                   <p className="text-gray-600">This content highlights the key benefits of your small business loan offerings, appealing to entrepreneurs seeking financial support.

@@ -32,19 +32,21 @@ const About = () => {
             of finance with precision and care.
           </p>
           <div className="flex flex-col md:flex-row justify-between my-10 mr-8">
-            <div className="flex flex-col">
-              <h1 className="text-5xl">25+</h1>
-              <span>Years of trusted expertise</span>
-            </div>
-            <div className="flex flex-col">
-              <h1 className="text-5xl">50K</h1>
-              <span>Loan approved</span>
-            </div>
-            <div className="flex flex-col">
-              <h1 className="text-5xl">10K</h1>
-              <span>Satisfied clients</span>
-            </div>
-          </div>
+  <div className="flex flex-col items-center md:items-start">
+    <h1 className="text-5xl font-bold outlined-text">25+</h1>
+    <span>Years of trusted expertise</span>
+  </div>
+  <div className="flex flex-col items-center md:items-start">
+    <h1 className="text-5xl font-bold outlined-text">50K</h1>
+    <span>Loan approved</span>
+  </div>
+  <div className="flex flex-col items-center md:items-start">
+    <h1 className="text-5xl font-bold outlined-text">10K</h1>
+    <span>Satisfied clients</span>
+  </div>
+</div>
+
+
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full md:w-[50%]">
@@ -74,21 +76,21 @@ const About = () => {
       </div>
 
       <div className="flex flex-col md:flex-row gap-8 w-full mx-auto py-4">
-        <div className="bg-[#EDEEEF] p-3">
+        <div className="bg-[#EDEEEF] p-8 h-64 flex flex-col justify-center rounded-md">
           <h1 className="text-[#4B4F5E] font-bold">Company Mission</h1>
           <p>
             Our mission is to provide innovative and reliable financial
             solutions tailored to your unique needs.
           </p>
         </div>
-        <div className="bg-[#EDEEEF] p-3">
+        <div className="bg-[#EDEEEF] p-8 h-64 flex flex-col justify-center rounded-md">
           <h1 className="text-[#4B4F5E] font-bold">Target, Vision & Goal</h1>
           <p>
             Our vision is to provide reliable and innovative financial solutions
             tailored to your needs.
           </p>
         </div>
-        <div className="bg-[#EDEEEF] p-3">
+        <div className="bg-[#EDEEEF] p-8 h-64 flex flex-col justify-center rounded-md">
           <h1 className="text-[#4B4F5E] font-bold">Dedicated Teams</h1>
           <p>
             Our dedicated teams are committed to providing personalized

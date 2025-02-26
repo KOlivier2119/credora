@@ -16,7 +16,7 @@ function WeAre() {
         <div className="flex-1 order-1 lg:order-1 mb-6 lg:mb-0">
           <Image
             src={paper}
-            className="object-cover w-full h-64 sm:h-72 md:h-80 lg:h-full" // Responsive height
+            className="object-cover w-full h-64 sm:h-72 md:h-80 lg:h-[670px]" // Responsive height
             alt="Paper illustration"
           />
         </div>

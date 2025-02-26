@@ -24,7 +24,7 @@ const LoanCalculator = () => {
   const totalPayback = monthlyPayment * loanDuration;
 
   return (
-    <div className="max-w-5xl h-4/6 mx-auto p-6 bg-[#EDEEEF] rounded-lg shadow-md text-[#4B4F5E]">
+    <div className="max-w-5xl flex flex-col justify-between py-20 px-10 h-[670px] mx-auto bg-[#EDEEEF] rounded-lg shadow-md text-[#4B4F5E]">
       {/* Loan Amount Slider */}
       <div className="mb-6">
         <label className="block text-sm font-medium text-gray-700 mb-2">

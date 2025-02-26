@@ -49,11 +49,11 @@ const CustomPrevArrow = (props) => {
 const Hero = () => {
   // Background images for the carousel (ensure correct paths in public folder)
   const backgroundImages = [
-    { src: "/business.svg", alt: "Business illustration" }, // Current image
-    { src: "/smile.svg", alt: "Smile illustration" }, // Placeholder
-    { src: "/family.svg", alt: "Family illustration" }, // Placeholder
-    { src: "/boy.svg", alt: "Boy illustration" }, // Placeholder
-    { src: "/real.svg", alt: "Real estate illustration" }, // Placeholder
+    { index:1, src: "/business.svg", alt: "Business illustration" }, // Current image
+    { index:2, src: "/smile.svg", alt: "Smile illustration" }, // Placeholder
+    { index:3, src: "/family.svg", alt: "Family illustration" }, // Placeholder
+    { index:4, src: "/boy.svg", alt: "Boy illustration" }, // Placeholder
+    { index:5, src: "/real.svg", alt: "Real estate illustration" }, // Placeholder
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -72,7 +72,7 @@ const Hero = () => {
     nextArrow: <CustomNextArrow />,
     prevArrow: <CustomPrevArrow />,
     cssEase: "linear",
-    afterChange: (index) => setCurrentSlide(index), // Update current slide index
+    afterChange: (index:number) => setCurrentSlide(index), // Update current slide index
   };
 
   return (
@@ -80,29 +80,31 @@ const Hero = () => {
       {/* Hero Carousel */}
       <Slider {...settings} ref={sliderRef}>
         {backgroundImages.map((image, index) => (
-          <div
-            key={index}
-            className="relative h-[80vh] w-full flex items-center justify-center bg-cover bg-center"
-            style={{ backgroundImage: `url(${image.src})` }}
-          >
-            {/* Dark Overlay */}
-            <div className="absolute inset-0 bg-black/50"></div>
+          <div key={index} className="relative h-[80vh] w-full flex items-center justify-center">
+  <img
+    src={image.src}
+    alt={image.alt}
+    className="absolute inset-0 w-full h-full object-cover"
+  />
+  {/* Dark Overlay */}
+  <div className="absolute inset-0 bg-black/50"></div>
 
-            {/* Content */}
-            <div className="relative z-10 text-white text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 drop-shadow-md">
-                Design Your Loan with the Experts
-              </h1>
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 text-gray-200 drop-shadow-md">
-                At Credora, we leverage AI technology to manage your finances and loans effectively, supporting you every step of the way.
-              </p>
-              <button
-                className="px-6 py-3 bg-white text-[#061525] rounded-full font-semibold text-sm sm:text-base md:text-lg hover:bg-opacity-90 hover:bg-gray-50 hover:scale-105 hover:shadow-2xl transition-all duration-300 shadow-md"
-              >
-                Get Started
-              </button>
-            </div>
-          </div>
+  {/* Content */}
+  <div className="mt-40 md:mt-64 relative z-10 text-white text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 drop-shadow-md">
+      Design Your Loan with the Experts
+    </h1>
+    <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 text-gray-200 drop-shadow-md">
+      At Credora, we leverage AI technology to manage your finances and loans effectively, supporting you every step of the way.
+    </p>
+    <button
+      className="px-6 py-3 bg-white text-[#061525] rounded-full font-semibold text-sm sm:text-base md:text-lg hover:bg-opacity-90 hover:bg-gray-50 hover:scale-105 hover:shadow-2xl transition-all duration-300 shadow-md"
+    >
+      Get Started
+    </button>
+  </div>
+</div>
+
         ))}
       </Slider>
 
