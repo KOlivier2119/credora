@@ -27,7 +27,7 @@ const LoanCalculator = () => {
     <div className="max-w-5xl flex flex-col justify-between py-20 px-10 h-[670px] mx-auto bg-[#EDEEEF] rounded-lg shadow-md text-[#4B4F5E]">
       {/* Loan Amount Slider */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-xl font-medium text-gray-700 mb-2">
           Loan Amount: ${loanAmount.toLocaleString()}
         </label>
         <input
@@ -38,7 +38,7 @@ const LoanCalculator = () => {
           onChange={(e) => setLoanAmount(Number(e.target.value))}
           className="w-full h-2 bg-[#a2a5ad] rounded-lg appearance-none cursor-pointer"
         />
-        <div className="flex justify-between text-xs text-gray-500 mt-1">
+        <div className="flex justify-between text-md text-gray-500 mt-1">
           <span>$1,000</span>
           <span>$100,000</span>
         </div>
@@ -46,7 +46,7 @@ const LoanCalculator = () => {
 
       {/* Loan Duration Slider */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-xl font-medium text-gray-700 mb-2">
           Duration: {loanDuration} Months
         </label>
         <input
@@ -57,21 +57,21 @@ const LoanCalculator = () => {
           onChange={(e) => setLoanDuration(Number(e.target.value))}
           className="w-full h-2 bg-[#a2a5ad] rounded-lg appearance-none cursor-pointer"
         />
-        <div className="flex justify-between text-xs text-gray-500 mt-1">
+        <div className="flex justify-between text-md text-gray-500 mt-1">
           <span>1 Month</span>
           <span>12 Months</span>
         </div>
       </div>
 
       {/* Payment Details */}
-      <div className="space-y-2 text-sm">
+      <div className="space-y-2 text-xl">
         <p className="text-gray-700">Pay Month: ${monthlyPayment.toFixed(2)}</p>
         <p className="text-gray-700">Total Pay Back: ${totalPayback.toFixed(2)}</p>
       </div>
 
       {/* Apply Button */}
       <button
-        className="mt-6 w-full bg-white text-gray-700 border border-[#4B4F5E] rounded-full py-2 px-4 hover:bg-gray-100 transition-colors"
+        className="mt-6 w-full bg-white text-gray-700 border border-[#4B4F5E] rounded-full py-2 px-4 hover:bg-gray-100 transition-colors text-xl"
       >
         Apply For Loan
       </button>

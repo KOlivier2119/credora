@@ -85,7 +85,7 @@ const Footer = () => {
               width="100%"
               height="250"
               style={{ border: 0, borderRadius: '8px' }}
-              allowFullScreen=""
+              allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               className="max-w-full"

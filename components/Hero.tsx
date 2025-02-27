@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 // Custom arrow components
-const CustomNextArrow = (props) => {
+const CustomNextArrow = (props: { className?: string; style?: React.CSSProperties; onClick?: () => void }) => {
   const { className, style, onClick } = props;
   return (
     <div
@@ -26,7 +26,7 @@ const CustomNextArrow = (props) => {
   );
 };
 
-const CustomPrevArrow = (props) => {
+const CustomPrevArrow = (props: { className?: string; style?: React.CSSProperties; onClick?: () => void }) => {
   const { className, style, onClick } = props;
   return (
     <div
@@ -57,7 +57,7 @@ const Hero = () => {
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
-  const sliderRef = useRef(null);
+  const sliderRef = useRef<Slider>(null);
 
   // Slider settings
   const settings = {
