@@ -1,7 +1,7 @@
 // app/components/Footer.jsx
 'use client';
 
-import { FaApple, FaAppStore, FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import { FaApple, FaAppStore, FaFacebook, FaGooglePlay, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import Link from 'next/link';
 
 const Footer = () => {
@@ -22,14 +22,14 @@ const Footer = () => {
                 target="_blank"
                 className="flex items-center justify-center gap-2 border border-gray-500 hover:border-white py-2 px-4 rounded-md transition-colors duration-300"
               >
-                <FaApple size={20} /> App Store
+                <FaAppStore size={20} /> App Store
               </Link>
               <Link 
                 href="https://play.google.com/store" 
                 target="_blank"
                 className="flex items-center justify-center gap-2 border border-gray-500 hover:border-white py-2 px-4 rounded-md transition-colors duration-300"
               >
-                <FaAppStore size={20} /> Google Play
+                <FaGooglePlay size={20} /> Google Play
               </Link>
             </div>
           </div>
