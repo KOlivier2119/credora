@@ -89,28 +89,6 @@ const FAQ = () => {
           ))}
         </div>
       </div>
-
-      {/* Trust Section */}
-      <div className="w-full px-4 sm:px-6 lg:px-12 mt-12 flex flex-col lg:flex-row lg:items-center lg:justify-between lg:mx-auto">
-        <div className="text-center lg:text-left lg:w-1/2">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl text-[#061525] mb-4 leading-snug tracking-tight">
-            We build trust with all customers by combining creativity with
-            tailored business solutions
-          </h2>
-          <button className="bg-[#061525] text-white font-medium py-2 px-6 rounded-full transition-colors duration-300">
-            Contact Us
-          </button>
-        </div>
-        <div className="flex-1 flex justify-center">
-          <Image
-            src={image}
-            alt="Illustration"
-            width={250}
-            height={250}
-            className="object-contain"
-          />
-        </div>
-      </div>
     </section>
   );
 };
