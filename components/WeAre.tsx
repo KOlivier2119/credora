@@ -78,9 +78,9 @@ function WeAre() {
                 </p>
               </div>
             </div>
-            <div className="mt-4 sm:mt-6 md:mt-8">
+            <div className="mt-4 flex justify-center md:justify-start sm:mt-6 md:mt-8">
               <button
-                className="px-4 sm:px-6 py-2 sm:py-3 bg-[#061525] text-white rounded-full font-semibold text-sm sm:text-base hover:bg-opacity-90 hover:scale-110 hover:shadow-xl transition-all duration-300 shadow-lg"
+                className="px-4 sm:px-6 py-3 sm:py-3 bg-[#061525] text-white rounded-full font-semibold text-sm sm:text-base hover:bg-opacity-90 hover:scale-110 hover:shadow-xl transition-all duration-300 shadow-lg"
               >
                 Get Started
                 <FaArrowRight className="inline-block ml-2 text-white text-sm sm:text-base" />
