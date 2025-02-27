@@ -16,7 +16,7 @@ const FAQ = () => {
     {
       question: "What documents are required to apply for a loan?",
       answer:
-        "To apply for a loan with FinancePro, you’ll need to provide the following documents: a valid government-issued ID (e.g., passport or national ID), proof of income (e.g., pay stubs or bank statements from the last 3 months), proof of residence (e.g., utility bill), and your bank account details for disbursement. Additional documents may be required depending on the loan type.",
+        "To apply for a loan with Credora, you’ll need to provide the following documents: a valid government-issued ID (e.g., passport or national ID), proof of income (e.g., pay stubs or bank statements from the last 3 months), proof of residence (e.g., utility bill), and your bank account details for disbursement. Additional documents may be required depending on the loan type.",
     },
     {
       question:
@@ -37,7 +37,7 @@ const FAQ = () => {
     {
       question: "Can I repay my loan early without penalties?",
       answer:
-        "Yes, FinancePro allows early repayment on all our loans with no prepayment penalties. Paying off your loan early can even save you on interest costs. Simply log into your account or visit our office to arrange early repayment.",
+        "Yes, Credora allows early repayment on all our loans with no prepayment penalties. Paying off your loan early can even save you on interest costs. Simply log into your account or visit our office to arrange early repayment.",
     },
   ];
 
