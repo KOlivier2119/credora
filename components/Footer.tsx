@@ -56,7 +56,7 @@ const Footer = () => {
 
         {/* Pages Section */}
         <div>
-          <h3 className="text-lg font-semibold mb-3">Pages</h3>
+          <h3 className="text-lg font-semibold mb-4">Pages</h3>
           <ul className="space-y-2">
             <li><Link href="/how-it-works" className="hover:text-white transition-colors duration-300">How it works</Link></li>
             <li><Link href="/pricing" className="hover:text-white transition-colors duration-300">Pricing</Link></li>
@@ -67,7 +67,7 @@ const Footer = () => {
 
         {/* Services Section */}
         <div>
-          <h3 className="text-lg font-semibold mb-3">Services</h3>
+          <h3 className="text-lg font-semibold mb-4">Services</h3>
           <ul className="space-y-2">
             <li><Link href="/personal-loans" className="hover:text-white transition-colors duration-300">Personal Loans</Link></li>
             <li><Link href="/student-loans" className="hover:text-white transition-colors duration-300">Student Loans</Link></li>
