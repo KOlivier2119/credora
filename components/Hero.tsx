@@ -127,7 +127,7 @@ const Hero = () => {
       </div>
 
       {/* Info Card */}
-      <div className="relative mx-4 sm:mx-6 md:mx-auto md:absolute md:bottom-[-80px] md:right-12 max-w-md w-full">
+      <div className="relative mx-6 sm:mx-6 md:mx-auto md:absolute md:bottom-[-80px] md:right-12 max-w-md w-full">
         <div className="bg-white p-6 rounded-xl shadow-2xl border border-gray-100 transform transition-all duration-300 hover:-translate-y-2 hover:shadow-3xl">
           <h2 className="text-xl md:text-2xl font-bold text-[#061525] mb-3 drop-shadow-sm">
             5% Interest Rate
