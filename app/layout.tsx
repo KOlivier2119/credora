@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Inconsolata } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
-const inconsolata = Inconsolata({
+const inter = Inter({
   subsets: ["latin"],
   weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
-  variable: "--font-inconsolata",
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inconsolata.variable} antialiased bg-gray-50`}>
+      <body className={`${inter.variable} antialiased bg-gray-50`}>
         {children}
       </body>
     </html>

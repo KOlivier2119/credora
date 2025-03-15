@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -48,10 +49,10 @@ const Navbar = () => {
           {/* Buttons Section */}
           <div className="hidden md:flex items-center space-x-5">
             <button className="bg-[#061525] text-white px-6 py-2.5 rounded-md text-base font-medium hover:bg-opacity-90 transition-all duration-300">
-              Login
+              <Link href="/login">Login</Link>
             </button>
             <button className="text-[#4B4F5E] bg-white px-6 py-2.5 rounded-md border border-[#4B4F5E] text-base font-medium hover:bg-[#4B4F5E] hover:text-white transition-all duration-300">
-              Register
+              <Link href="/register">Register</Link>
             </button>
           </div>
 
@@ -104,10 +105,10 @@ const Navbar = () => {
             </div>
             <div className="pt-3 pb-4 px-3 space-y-3">
               <button className="w-full bg-[#061525] text-white px-6 py-3 rounded-md text-lg font-medium hover:bg-opacity-90 transition-all duration-300">
-                Login
+                <Link href="/login">Login</Link>                
               </button>
               <button className="w-full text-[#4B4F5E] bg-white px-6 py-3 rounded-md border border-[#4B4F5E] text-lg font-medium hover:bg-[#061525] hover:text-white transition-all duration-300">
-                Register
+                <Link href="/register">Register</Link>
               </button>
             </div>
           </div>
