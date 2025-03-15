@@ -40,7 +40,7 @@ export default function SignUpPage() {
                 placeholder="Full Name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="w-full ml-2 outline-none"
+                className="w-full ml-2 outline-none text-[#333]"
               />
             </div>
             <div className="flex items-center border rounded-lg px-4 py-2 focus-within:ring-2 focus-within:ring-[#4A56E2]">
@@ -50,7 +50,7 @@ export default function SignUpPage() {
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full ml-2 outline-none"
+                className="w-full ml-2 outline-none text-[#333]"
               />
             </div>
             <div className="flex items-center border rounded-lg px-4 py-2 focus-within:ring-2 focus-within:ring-[#4A56E2]">
@@ -60,7 +60,7 @@ export default function SignUpPage() {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full ml-2 outline-none"
+                className="w-full ml-2 outline-none text-[#333]"
               />
             </div>
             <div className="flex items-center border rounded-lg px-4 py-2 focus-within:ring-2 focus-within:ring-[#4A56E2]">
@@ -70,7 +70,7 @@ export default function SignUpPage() {
                 placeholder="Phone Number"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full ml-2 outline-none"
+                className="w-full ml-2 outline-none text-[#333]"
               />
             </div>
             <div className="flex items-center border rounded-lg px-4 py-2 focus-within:ring-2 focus-within:ring-[#4A56E2]">
@@ -80,7 +80,7 @@ export default function SignUpPage() {
                 placeholder="Address"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                className="w-full ml-2 outline-none"
+                className="w-full ml-2 outline-none text-[#333]"
               />
             </div>
           </div>

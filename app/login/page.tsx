@@ -37,7 +37,7 @@ export default function LoginPage() {
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full ml-2 outline-none"
+                className="w-full ml-2 outline-none text-[#333]"
               />
             </div>
             <div className="flex items-center border rounded-lg px-4 py-2 focus-within:ring-2 focus-within:ring-[#4A56E2]">
@@ -47,7 +47,7 @@ export default function LoginPage() {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full ml-2 outline-none"
+                className="w-full ml-2 outline-none text-[#333]"
               />
             </div>
           </div>
