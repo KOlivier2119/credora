@@ -41,6 +41,12 @@ export default function Dashboard() {
       <Sidebar />
 
       <main className="flex-1 p-8 overflow-auto h-screen">
+        <nav className='h-14 border-b border-black flex justify-between'>
+            <h1>Overview</h1>
+            <div>
+              
+            </div>
+        </nav>
         <h1 className="text-4xl font-bold mb-10">Dashboard Overview</h1>
 
         <div className="grid grid-cols-4 gap-6 mb-8">

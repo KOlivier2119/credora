@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/themes": "^3.2.1",
     "@react-google-maps/api": "^2.20.6",
     "chart.js": "^4.4.8",
     "clsx": "^2.1.1",

@@ -34,7 +34,7 @@ export default function SideBar() {
         ))}
       </nav>
 
-      <button className="mt-auto flex items-center gap-3 text-red-400 hover:text-red-500">
+      <button className="mt-auto flex items-center gap-1 text-red-400 hover:text-red-500 transition-colors">
         <LogOut /> Logout
       </button>
     </aside>
