@@ -3,6 +3,7 @@
 import { Chart, registerables } from 'chart.js';
 import { Bar, Line } from 'react-chartjs-2';
 import Sidebar from '../../components/SideBar';
+import { TextField } from '@radix-ui/themes';
 
 Chart.register(...registerables);
 
@@ -41,12 +42,12 @@ export default function Dashboard() {
       <Sidebar />
 
       <main className="flex-1 p-8 overflow-auto h-screen">
-        <nav className='h-14 border-b border-black flex justify-between'>
-            <h1>Overview</h1>
-            <div>
-              
-            </div>
-        </nav>
+      <nav className='h-14 border-b border-black flex justify-between items-center px-4'>
+        <h1>Overview</h1>
+        <div>
+          <input type="text" placeholder="Search..." className="w-64 p-2 border rounded" />
+        </div>
+      </nav>
         <h1 className="text-4xl font-bold mb-10">Dashboard Overview</h1>
 
         <div className="grid grid-cols-4 gap-6 mb-8">
