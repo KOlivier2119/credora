@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Fira_Sans } from "next/font/google";
 import "./globals.css";
 import { Theme } from "@radix-ui/themes";
 
-const inter = Inter({
+const fira =   Fira_Sans({
   subsets: ["latin"],
   weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
-  variable: "--font-inter",
+  variable: "--font-fira-sans",
 });
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} antialiased bg-gray-50`}>
+      <body className={`${fira.variable} antialiased bg-gray-50`}>
         <Theme>
         {children}
         </Theme>
