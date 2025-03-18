@@ -92,7 +92,7 @@ const Hero = () => {
   }
 
   return (
-    <div className="relative w-full overflow-hidden pt-16">
+    <div className="relative w-full overflow-hidden pt-16 md:pt-[70px]">
       {" "}
       {/* Added pt-16 for navbar space */}
       {/* Pattern Overlay */}

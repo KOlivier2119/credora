@@ -1,16 +1,17 @@
 "use client"
 
 import { useState } from "react"
-import { ArrowDown, ArrowUp, BarChart3, Calendar, Home, LineChart, Search, Settings, Users } from "lucide-react"
+import { Calendar, Download, BarChart3, LineChart, PieChart, Home, Search, Settings, Users } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import ParticipantsBarChart from "@/components/ParticipantsBarChart"
 import MonthlyLineChart from "@/components/MonthlyLineChart"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   DropdownMenu,
@@ -34,8 +35,8 @@ import {
   SidebarGroupContent,
 } from "@/components/ui/sidebar"
 
-export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState("overview")
+export default function AnalyticsPage() {
+  const [timeRange, setTimeRange] = useState("last30days")
 
   return (
     <SidebarProvider>
@@ -44,35 +45,114 @@ export default function Dashboard() {
         <main className="flex-1 w-full">
           <div className="flex flex-col h-screen w-full">
             <DashboardNav />
-            <div className="flex-1 overflow-auto p-6 md:p-8 w-full">
-              <Tabs defaultValue="overview" className="space-y-6" onValueChange={setActiveTab}>
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                  <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-                    <p className="text-muted-foreground">Monitor your organization's performance and activity</p>
-                  </div>
-                  <TabsList>
-                    <TabsTrigger value="overview">Overview</TabsTrigger>
-                    <TabsTrigger value="analytics">Analytics</TabsTrigger>
-                    <TabsTrigger value="reports">Reports</TabsTrigger>
-                  </TabsList>
+            <div className="flex-1 overflow-auto p-6 md:p-8">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+                <div>
+                  <h1 className="text-3xl font-bold tracking-tight">Analytics</h1>
+                  <p className="text-muted-foreground">Detailed insights and performance metrics</p>
                 </div>
+                <div className="flex gap-2">
+                  <Select value={timeRange} onValueChange={setTimeRange}>
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Select time range" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="last7days">Last 7 days</SelectItem>
+                      <SelectItem value="last30days">Last 30 days</SelectItem>
+                      <SelectItem value="last90days">Last 90 days</SelectItem>
+                      <SelectItem value="lastYear">Last year</SelectItem>
+                      <SelectItem value="allTime">All time</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Button variant="outline">
+                    <Download className="mr-2 h-4 w-4" />
+                    Export
+                  </Button>
+                </div>
+              </div>
+
+              <Tabs defaultValue="overview" className="space-y-6">
+                <TabsList>
+                  <TabsTrigger value="overview">Overview</TabsTrigger>
+                  <TabsTrigger value="participation">Participation</TabsTrigger>
+                  <TabsTrigger value="demographics">Demographics</TabsTrigger>
+                  <TabsTrigger value="activities">Activities</TabsTrigger>
+                </TabsList>
 
                 <TabsContent value="overview" className="space-y-6">
-                  <StatsCards />
-                  <Charts activeTab={activeTab} />
-                </TabsContent>
+                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+                    {metrics.map((metric, i) => (
+                      <MetricCard key={i} metric={metric} />
+                    ))}
+                  </div>
 
-                <TabsContent value="analytics">
-                  <div className="flex items-center justify-center h-64 border rounded-lg">
-                    <p className="text-muted-foreground">Analytics content would appear here</p>
+                  <div className="grid gap-6 md:grid-cols-2">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Participation Trends</CardTitle>
+                        <CardDescription>Monthly participation rates</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="h-[300px]">
+                          <MonthlyLineChart />
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Activity Breakdown</CardTitle>
+                        <CardDescription>Participation by activity type</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="h-[300px]">
+                          <ParticipantsBarChart />
+                        </div>
+                      </CardContent>
+                    </Card>
                   </div>
                 </TabsContent>
 
-                <TabsContent value="reports">
-                  <div className="flex items-center justify-center h-64 border rounded-lg">
-                    <p className="text-muted-foreground">Reports content would appear here</p>
-                  </div>
+                <TabsContent value="participation" className="space-y-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Detailed Participation Analysis</CardTitle>
+                      <CardDescription>Comprehensive view of participation metrics</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="h-[400px] flex items-center justify-center border rounded-lg">
+                        <p className="text-muted-foreground">Detailed participation charts would appear here</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="demographics" className="space-y-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Demographic Breakdown</CardTitle>
+                      <CardDescription>Analysis of participant demographics</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="h-[400px] flex items-center justify-center border rounded-lg">
+                        <p className="text-muted-foreground">Demographic charts would appear here</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="activities" className="space-y-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Activity Performance</CardTitle>
+                      <CardDescription>Metrics and analysis by activity type</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="h-[400px] flex items-center justify-center border rounded-lg">
+                        <p className="text-muted-foreground">Activity performance charts would appear here</p>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </TabsContent>
               </Tabs>
             </div>
@@ -210,116 +290,6 @@ function DashboardNav() {
   )
 }
 
-function StatsCards() {
-  const stats = [
-    {
-      title: "Total Families",
-      value: "23,000",
-      trend: "+13%",
-      isPositive: true,
-      icon: Users,
-      color: "bg-blue-50 dark:bg-blue-950",
-      iconColor: "text-blue-600 dark:text-blue-400",
-      trendColor: "text-green-600 dark:text-green-400",
-    },
-    {
-      title: "Total Activities",
-      value: "2,878,000",
-      trend: "-4.6%",
-      isPositive: false,
-      icon: Calendar,
-      color: "bg-purple-50 dark:bg-purple-950",
-      iconColor: "text-purple-600 dark:text-purple-400",
-      trendColor: "text-red-600 dark:text-red-400",
-    },
-    {
-      title: "Active Families",
-      value: "13,986",
-      trend: "+45%",
-      isPositive: true,
-      icon: Users,
-      color: "bg-green-50 dark:bg-green-950",
-      iconColor: "text-green-600 dark:text-green-400",
-      trendColor: "text-green-600 dark:text-green-400",
-    },
-    {
-      title: "Average Participation",
-      value: "45%",
-      trend: "+45%",
-      isPositive: true,
-      icon: BarChart3,
-      color: "bg-amber-50 dark:bg-amber-950",
-      iconColor: "text-amber-600 dark:text-amber-400",
-      trendColor: "text-green-600 dark:text-green-400",
-    },
-  ]
-
-  return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 w-full">
-      {stats.map((stat, i) => (
-        <Card key={i} className="overflow-hidden">
-          <CardHeader className={`flex flex-row items-center justify-between space-y-0 pb-2 ${stat.color}`}>
-            <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-            <div className={`rounded-full p-2 ${stat.color}`}>
-              <stat.icon className={`h-4 w-4 ${stat.iconColor}`} />
-            </div>
-          </CardHeader>
-          <CardContent className="p-6">
-            <div className="text-2xl font-bold">{stat.value}</div>
-            <div className="flex items-center gap-1 text-xs">
-              <span className={stat.trendColor}>
-                {stat.isPositive ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />}
-              </span>
-              <span className={stat.trendColor}>{stat.trend}</span>
-              <span className="text-muted-foreground">since last month</span>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  )
-}
-
-function Charts({ activeTab }: { activeTab: string }) {
-  return (
-    <div className="grid gap-6 md:grid-cols-2 w-full">
-      <ParticipantsChart />
-      <MonthlyParticipationChart />
-    </div>
-  )
-}
-
-function ParticipantsChart() {
-  return (
-    <Card className="col-span-1 w-full">
-      <CardHeader>
-        <CardTitle>Total Participants</CardTitle>
-      </CardHeader>
-      <CardContent className="pt-2">
-        <div className="text-3xl font-bold mb-4">12,000</div>
-        <div className="h-[300px]">
-          <ParticipantsBarChart />
-        </div>
-      </CardContent>
-    </Card>
-  )
-}
-
-function MonthlyParticipationChart() {
-  return (
-    <Card className="col-span-1 w-full">
-      <CardHeader>
-        <CardTitle>Monthly Participation</CardTitle>
-      </CardHeader>
-      <CardContent className="pt-2">
-        <div className="h-[340px]">
-          <MonthlyLineChart />
-        </div>
-      </CardContent>
-    </Card>
-  )
-}
-
 function Menu({ className }: { className?: string }) {
   return (
     <svg
@@ -338,4 +308,46 @@ function Menu({ className }: { className?: string }) {
     </svg>
   )
 }
+
+function MetricCard({ metric }: { metric: (typeof metrics)[0] }) {
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">{metric.title}</CardTitle>
+        <metric.icon className="h-4 w-4 text-muted-foreground" />
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">{metric.value}</div>
+        <p className="text-xs text-muted-foreground">{metric.description}</p>
+      </CardContent>
+    </Card>
+  )
+}
+
+const metrics = [
+  {
+    title: "Total Participants",
+    value: "12,345",
+    description: "+12% from previous period",
+    icon: BarChart3,
+  },
+  {
+    title: "Average Attendance",
+    value: "78%",
+    description: "+5% from previous period",
+    icon: LineChart,
+  },
+  {
+    title: "Active Families",
+    value: "1,234",
+    description: "65% of total families",
+    icon: PieChart,
+  },
+  {
+    title: "Activities Completed",
+    value: "256",
+    description: "Last 30 days",
+    icon: Calendar,
+  },
+]
 

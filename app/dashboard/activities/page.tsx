@@ -1,16 +1,27 @@
 "use client"
 
 import { useState } from "react"
-import { ArrowDown, ArrowUp, BarChart3, Calendar, Home, LineChart, Search, Settings, Users } from "lucide-react"
+import {
+  PlusCircle,
+  Search,
+  Filter,
+  Calendar,
+  Clock,
+  MapPin,
+  Users,
+  BarChart3,
+  Home,
+  LineChart,
+  Settings,
+} from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
-import ParticipantsBarChart from "@/components/ParticipantsBarChart"
-import MonthlyLineChart from "@/components/MonthlyLineChart"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   DropdownMenu,
@@ -34,8 +45,8 @@ import {
   SidebarGroupContent,
 } from "@/components/ui/sidebar"
 
-export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState("overview")
+export default function ActivitiesPage() {
+  const [searchQuery, setSearchQuery] = useState("")
 
   return (
     <SidebarProvider>
@@ -44,34 +55,73 @@ export default function Dashboard() {
         <main className="flex-1 w-full">
           <div className="flex flex-col h-screen w-full">
             <DashboardNav />
-            <div className="flex-1 overflow-auto p-6 md:p-8 w-full">
-              <Tabs defaultValue="overview" className="space-y-6" onValueChange={setActiveTab}>
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                  <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-                    <p className="text-muted-foreground">Monitor your organization's performance and activity</p>
-                  </div>
-                  <TabsList>
-                    <TabsTrigger value="overview">Overview</TabsTrigger>
-                    <TabsTrigger value="analytics">Analytics</TabsTrigger>
-                    <TabsTrigger value="reports">Reports</TabsTrigger>
-                  </TabsList>
+            <div className="flex-1 overflow-auto p-6 md:p-8">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+                <div>
+                  <h1 className="text-3xl font-bold tracking-tight">Activities</h1>
+                  <p className="text-muted-foreground">Browse and manage all scheduled activities</p>
                 </div>
+                <Button>
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  Create Activity
+                </Button>
+              </div>
 
-                <TabsContent value="overview" className="space-y-6">
-                  <StatsCards />
-                  <Charts activeTab={activeTab} />
-                </TabsContent>
+              <div className="flex flex-col sm:flex-row justify-between gap-4 mb-6">
+                <div className="relative flex-1 max-w-md">
+                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="search"
+                    placeholder="Search activities..."
+                    className="pl-8 w-full"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="outline" className="flex gap-2">
+                    <Filter className="h-4 w-4" />
+                    Filter
+                  </Button>
+                  <Button variant="outline" className="flex gap-2">
+                    <Calendar className="h-4 w-4" />
+                    Calendar
+                  </Button>
+                </div>
+              </div>
 
-                <TabsContent value="analytics">
-                  <div className="flex items-center justify-center h-64 border rounded-lg">
-                    <p className="text-muted-foreground">Analytics content would appear here</p>
+              <Tabs defaultValue="upcoming" className="space-y-6">
+                <TabsList>
+                  <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
+                  <TabsTrigger value="past">Past</TabsTrigger>
+                  <TabsTrigger value="all">All</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="upcoming" className="space-y-6">
+                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {activities
+                      .filter((activity) => new Date(activity.date) >= new Date())
+                      .map((activity) => (
+                        <ActivityCard key={activity.id} activity={activity} />
+                      ))}
                   </div>
                 </TabsContent>
 
-                <TabsContent value="reports">
-                  <div className="flex items-center justify-center h-64 border rounded-lg">
-                    <p className="text-muted-foreground">Reports content would appear here</p>
+                <TabsContent value="past" className="space-y-6">
+                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {activities
+                      .filter((activity) => new Date(activity.date) < new Date())
+                      .map((activity) => (
+                        <ActivityCard key={activity.id} activity={activity} />
+                      ))}
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="all" className="space-y-6">
+                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {activities.map((activity) => (
+                      <ActivityCard key={activity.id} activity={activity} />
+                    ))}
                   </div>
                 </TabsContent>
               </Tabs>
@@ -210,112 +260,42 @@ function DashboardNav() {
   )
 }
 
-function StatsCards() {
-  const stats = [
-    {
-      title: "Total Families",
-      value: "23,000",
-      trend: "+13%",
-      isPositive: true,
-      icon: Users,
-      color: "bg-blue-50 dark:bg-blue-950",
-      iconColor: "text-blue-600 dark:text-blue-400",
-      trendColor: "text-green-600 dark:text-green-400",
-    },
-    {
-      title: "Total Activities",
-      value: "2,878,000",
-      trend: "-4.6%",
-      isPositive: false,
-      icon: Calendar,
-      color: "bg-purple-50 dark:bg-purple-950",
-      iconColor: "text-purple-600 dark:text-purple-400",
-      trendColor: "text-red-600 dark:text-red-400",
-    },
-    {
-      title: "Active Families",
-      value: "13,986",
-      trend: "+45%",
-      isPositive: true,
-      icon: Users,
-      color: "bg-green-50 dark:bg-green-950",
-      iconColor: "text-green-600 dark:text-green-400",
-      trendColor: "text-green-600 dark:text-green-400",
-    },
-    {
-      title: "Average Participation",
-      value: "45%",
-      trend: "+45%",
-      isPositive: true,
-      icon: BarChart3,
-      color: "bg-amber-50 dark:bg-amber-950",
-      iconColor: "text-amber-600 dark:text-amber-400",
-      trendColor: "text-green-600 dark:text-green-400",
-    },
-  ]
-
+function ActivityCard({ activity }: { activity: (typeof activities)[0] }) {
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 w-full">
-      {stats.map((stat, i) => (
-        <Card key={i} className="overflow-hidden">
-          <CardHeader className={`flex flex-row items-center justify-between space-y-0 pb-2 ${stat.color}`}>
-            <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-            <div className={`rounded-full p-2 ${stat.color}`}>
-              <stat.icon className={`h-4 w-4 ${stat.iconColor}`} />
-            </div>
-          </CardHeader>
-          <CardContent className="p-6">
-            <div className="text-2xl font-bold">{stat.value}</div>
-            <div className="flex items-center gap-1 text-xs">
-              <span className={stat.trendColor}>
-                {stat.isPositive ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />}
-              </span>
-              <span className={stat.trendColor}>{stat.trend}</span>
-              <span className="text-muted-foreground">since last month</span>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  )
-}
-
-function Charts({ activeTab }: { activeTab: string }) {
-  return (
-    <div className="grid gap-6 md:grid-cols-2 w-full">
-      <ParticipantsChart />
-      <MonthlyParticipationChart />
-    </div>
-  )
-}
-
-function ParticipantsChart() {
-  return (
-    <Card className="col-span-1 w-full">
-      <CardHeader>
-        <CardTitle>Total Participants</CardTitle>
+    <Card className="overflow-hidden">
+      <div className="h-48 bg-cover bg-center" style={{ backgroundImage: `url(${activity.image})` }} />
+      <CardHeader className="pb-2">
+        <div className="flex justify-between items-start">
+          <CardTitle>{activity.title}</CardTitle>
+          <Badge variant={activity.status === "Active" ? "default" : "outline"}>{activity.status}</Badge>
+        </div>
+        <CardDescription>{activity.description}</CardDescription>
       </CardHeader>
-      <CardContent className="pt-2">
-        <div className="text-3xl font-bold mb-4">12,000</div>
-        <div className="h-[300px]">
-          <ParticipantsBarChart />
+      <CardContent className="pb-2">
+        <div className="space-y-2 text-sm">
+          <div className="flex items-center">
+            <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
+            <span>{activity.date}</span>
+          </div>
+          <div className="flex items-center">
+            <Clock className="h-4 w-4 mr-2 text-muted-foreground" />
+            <span>{activity.time}</span>
+          </div>
+          <div className="flex items-center">
+            <MapPin className="h-4 w-4 mr-2 text-muted-foreground" />
+            <span>{activity.location}</span>
+          </div>
+          <div className="flex items-center">
+            <Users className="h-4 w-4 mr-2 text-muted-foreground" />
+            <span>{activity.participants} participants</span>
+          </div>
         </div>
       </CardContent>
-    </Card>
-  )
-}
-
-function MonthlyParticipationChart() {
-  return (
-    <Card className="col-span-1 w-full">
-      <CardHeader>
-        <CardTitle>Monthly Participation</CardTitle>
-      </CardHeader>
-      <CardContent className="pt-2">
-        <div className="h-[340px]">
-          <MonthlyLineChart />
-        </div>
-      </CardContent>
+      <CardFooter className="pt-2">
+        <Button variant="outline" className="w-full">
+          View Details
+        </Button>
+      </CardFooter>
     </Card>
   )
 }
@@ -338,4 +318,73 @@ function Menu({ className }: { className?: string }) {
     </svg>
   )
 }
+
+const activities = [
+  {
+    id: 1,
+    title: "Summer Camp",
+    description: "A week-long outdoor adventure for kids",
+    date: "2025-07-15",
+    time: "9:00 AM - 4:00 PM",
+    location: "Pine Valley Park",
+    participants: 45,
+    status: "Active",
+    image: "/placeholder.svg?height=200&width=400",
+  },
+  {
+    id: 2,
+    title: "Family Game Night",
+    description: "Fun board games for the whole family",
+    date: "2025-04-10",
+    time: "6:00 PM - 9:00 PM",
+    location: "Community Center",
+    participants: 28,
+    status: "Active",
+    image: "/placeholder.svg?height=200&width=400",
+  },
+  {
+    id: 3,
+    title: "Parent Workshop",
+    description: "Educational workshop on child development",
+    date: "2025-03-05",
+    time: "10:00 AM - 12:00 PM",
+    location: "Main Library",
+    participants: 32,
+    status: "Inactive",
+    image: "/placeholder.svg?height=200&width=400",
+  },
+  {
+    id: 4,
+    title: "Science Fair",
+    description: "Annual science project showcase",
+    date: "2024-12-15",
+    time: "1:00 PM - 5:00 PM",
+    location: "Elementary School Gym",
+    participants: 65,
+    status: "Completed",
+    image: "/placeholder.svg?height=200&width=400",
+  },
+  {
+    id: 5,
+    title: "Holiday Celebration",
+    description: "End of year family gathering",
+    date: "2024-12-20",
+    time: "5:00 PM - 8:00 PM",
+    location: "Community Hall",
+    participants: 120,
+    status: "Completed",
+    image: "/placeholder.svg?height=200&width=400",
+  },
+  {
+    id: 6,
+    title: "Spring Picnic",
+    description: "Outdoor lunch and activities",
+    date: "2025-05-22",
+    time: "11:00 AM - 3:00 PM",
+    location: "Riverside Park",
+    participants: 75,
+    status: "Active",
+    image: "/placeholder.svg?height=200&width=400",
+  },
+]
 

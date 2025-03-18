@@ -1,17 +1,25 @@
 "use client"
 
 import { useState } from "react"
-import { ArrowDown, ArrowUp, BarChart3, Calendar, Home, LineChart, Search, Settings, Users } from "lucide-react"
+import {
+  PlusCircle,
+  Search,
+  Filter,
+  MoreHorizontal,
+  BarChart3,
+  Calendar,
+  Home,
+  LineChart,
+  Settings,
+  Users,
+} from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
-import ParticipantsBarChart from "@/components/ParticipantsBarChart"
-import MonthlyLineChart from "@/components/MonthlyLineChart"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,6 +28,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
 import {
   SidebarProvider,
   Sidebar,
@@ -34,8 +44,8 @@ import {
   SidebarGroupContent,
 } from "@/components/ui/sidebar"
 
-export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState("overview")
+export default function FamiliesPage() {
+  const [searchQuery, setSearchQuery] = useState("")
 
   return (
     <SidebarProvider>
@@ -44,37 +54,101 @@ export default function Dashboard() {
         <main className="flex-1 w-full">
           <div className="flex flex-col h-screen w-full">
             <DashboardNav />
-            <div className="flex-1 overflow-auto p-6 md:p-8 w-full">
-              <Tabs defaultValue="overview" className="space-y-6" onValueChange={setActiveTab}>
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                  <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-                    <p className="text-muted-foreground">Monitor your organization's performance and activity</p>
-                  </div>
-                  <TabsList>
-                    <TabsTrigger value="overview">Overview</TabsTrigger>
-                    <TabsTrigger value="analytics">Analytics</TabsTrigger>
-                    <TabsTrigger value="reports">Reports</TabsTrigger>
-                  </TabsList>
+            <div className="flex-1 overflow-auto p-6 md:p-8">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+                <div>
+                  <h1 className="text-3xl font-bold tracking-tight">Families</h1>
+                  <p className="text-muted-foreground">Manage and view all registered families</p>
                 </div>
+                <Button>
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  Add Family
+                </Button>
+              </div>
 
-                <TabsContent value="overview" className="space-y-6">
-                  <StatsCards />
-                  <Charts activeTab={activeTab} />
-                </TabsContent>
-
-                <TabsContent value="analytics">
-                  <div className="flex items-center justify-center h-64 border rounded-lg">
-                    <p className="text-muted-foreground">Analytics content would appear here</p>
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle>Family Directory</CardTitle>
+                  <CardDescription>A list of all families registered in the system</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-col sm:flex-row justify-between gap-4 mb-6">
+                    <div className="relative flex-1">
+                      <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        type="search"
+                        placeholder="Search families..."
+                        className="pl-8 w-full"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                    </div>
+                    <Button variant="outline" className="flex gap-2">
+                      <Filter className="h-4 w-4" />
+                      Filter
+                    </Button>
                   </div>
-                </TabsContent>
 
-                <TabsContent value="reports">
-                  <div className="flex items-center justify-center h-64 border rounded-lg">
-                    <p className="text-muted-foreground">Reports content would appear here</p>
+                  <div className="rounded-md border">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Family</TableHead>
+                          <TableHead>Members</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Last Activity</TableHead>
+                          <TableHead className="text-right">Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {families.map((family) => (
+                          <TableRow key={family.id}>
+                            <TableCell>
+                              <div className="flex items-center gap-3">
+                                <Avatar>
+                                  <AvatarImage src={family.avatar} alt={family.name} />
+                                  <AvatarFallback>
+                                    {family.name
+                                      .split(" ")
+                                      .map((n) => n[0])
+                                      .join("")}
+                                  </AvatarFallback>
+                                </Avatar>
+                                <div>
+                                  <div className="font-medium">{family.name}</div>
+                                  <div className="text-sm text-muted-foreground">{family.email}</div>
+                                </div>
+                              </div>
+                            </TableCell>
+                            <TableCell>{family.members}</TableCell>
+                            <TableCell>
+                              <Badge variant={family.status === "Active" ? "default" : "outline"}>
+                                {family.status}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>{family.lastActivity}</TableCell>
+                            <TableCell className="text-right">
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size="icon">
+                                    <MoreHorizontal className="h-4 w-4" />
+                                    <span className="sr-only">Actions</span>
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                  <DropdownMenuItem>View Details</DropdownMenuItem>
+                                  <DropdownMenuItem>Edit Family</DropdownMenuItem>
+                                  <DropdownMenuItem>Contact</DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
                   </div>
-                </TabsContent>
-              </Tabs>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </main>
@@ -210,116 +284,6 @@ function DashboardNav() {
   )
 }
 
-function StatsCards() {
-  const stats = [
-    {
-      title: "Total Families",
-      value: "23,000",
-      trend: "+13%",
-      isPositive: true,
-      icon: Users,
-      color: "bg-blue-50 dark:bg-blue-950",
-      iconColor: "text-blue-600 dark:text-blue-400",
-      trendColor: "text-green-600 dark:text-green-400",
-    },
-    {
-      title: "Total Activities",
-      value: "2,878,000",
-      trend: "-4.6%",
-      isPositive: false,
-      icon: Calendar,
-      color: "bg-purple-50 dark:bg-purple-950",
-      iconColor: "text-purple-600 dark:text-purple-400",
-      trendColor: "text-red-600 dark:text-red-400",
-    },
-    {
-      title: "Active Families",
-      value: "13,986",
-      trend: "+45%",
-      isPositive: true,
-      icon: Users,
-      color: "bg-green-50 dark:bg-green-950",
-      iconColor: "text-green-600 dark:text-green-400",
-      trendColor: "text-green-600 dark:text-green-400",
-    },
-    {
-      title: "Average Participation",
-      value: "45%",
-      trend: "+45%",
-      isPositive: true,
-      icon: BarChart3,
-      color: "bg-amber-50 dark:bg-amber-950",
-      iconColor: "text-amber-600 dark:text-amber-400",
-      trendColor: "text-green-600 dark:text-green-400",
-    },
-  ]
-
-  return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 w-full">
-      {stats.map((stat, i) => (
-        <Card key={i} className="overflow-hidden">
-          <CardHeader className={`flex flex-row items-center justify-between space-y-0 pb-2 ${stat.color}`}>
-            <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-            <div className={`rounded-full p-2 ${stat.color}`}>
-              <stat.icon className={`h-4 w-4 ${stat.iconColor}`} />
-            </div>
-          </CardHeader>
-          <CardContent className="p-6">
-            <div className="text-2xl font-bold">{stat.value}</div>
-            <div className="flex items-center gap-1 text-xs">
-              <span className={stat.trendColor}>
-                {stat.isPositive ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />}
-              </span>
-              <span className={stat.trendColor}>{stat.trend}</span>
-              <span className="text-muted-foreground">since last month</span>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  )
-}
-
-function Charts({ activeTab }: { activeTab: string }) {
-  return (
-    <div className="grid gap-6 md:grid-cols-2 w-full">
-      <ParticipantsChart />
-      <MonthlyParticipationChart />
-    </div>
-  )
-}
-
-function ParticipantsChart() {
-  return (
-    <Card className="col-span-1 w-full">
-      <CardHeader>
-        <CardTitle>Total Participants</CardTitle>
-      </CardHeader>
-      <CardContent className="pt-2">
-        <div className="text-3xl font-bold mb-4">12,000</div>
-        <div className="h-[300px]">
-          <ParticipantsBarChart />
-        </div>
-      </CardContent>
-    </Card>
-  )
-}
-
-function MonthlyParticipationChart() {
-  return (
-    <Card className="col-span-1 w-full">
-      <CardHeader>
-        <CardTitle>Monthly Participation</CardTitle>
-      </CardHeader>
-      <CardContent className="pt-2">
-        <div className="h-[340px]">
-          <MonthlyLineChart />
-        </div>
-      </CardContent>
-    </Card>
-  )
-}
-
 function Menu({ className }: { className?: string }) {
   return (
     <svg
@@ -338,4 +302,52 @@ function Menu({ className }: { className?: string }) {
     </svg>
   )
 }
+
+const families = [
+  {
+    id: 1,
+    name: "Johnson Family",
+    email: "johnson@example.com",
+    members: 4,
+    status: "Active",
+    lastActivity: "Today",
+    avatar: "/placeholder.svg?height=40&width=40",
+  },
+  {
+    id: 2,
+    name: "Smith Family",
+    email: "smith@example.com",
+    members: 3,
+    status: "Active",
+    lastActivity: "Yesterday",
+    avatar: "/placeholder.svg?height=40&width=40",
+  },
+  {
+    id: 3,
+    name: "Williams Family",
+    email: "williams@example.com",
+    members: 5,
+    status: "Inactive",
+    lastActivity: "2 weeks ago",
+    avatar: "/placeholder.svg?height=40&width=40",
+  },
+  {
+    id: 4,
+    name: "Brown Family",
+    email: "brown@example.com",
+    members: 2,
+    status: "Active",
+    lastActivity: "3 days ago",
+    avatar: "/placeholder.svg?height=40&width=40",
+  },
+  {
+    id: 5,
+    name: "Davis Family",
+    email: "davis@example.com",
+    members: 6,
+    status: "Active",
+    lastActivity: "1 week ago",
+    avatar: "/placeholder.svg?height=40&width=40",
+  },
+]
 
