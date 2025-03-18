@@ -357,8 +357,7 @@ function DashboardNav() {
           </Button>
         </div>
         <div className="relative max-w-md flex-1 md:ml-auto md:mr-8">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input type="search" placeholder="Search..." />
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />          
           <Input
             type="search"
             placeholder="Search..."
