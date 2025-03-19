@@ -199,7 +199,7 @@ export default function ManageLoans() {
               </Card>
             ) : (
               <div className="space-y-6">
-                {filteredLoans.map((loan) => (
+                {loans.map((loan) => (
                   <Card key={loan.id} className="overflow-hidden">
                     <div className="h-1 bg-blue-500"></div>
                     <CardHeader className="pb-2">
