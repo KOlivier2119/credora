@@ -43,8 +43,7 @@ export default function AIInsights() {
     { name: "40k", value: 20 },
   ]
 
-  return (
-    <Layout title="Loan Insights">
+  return (    
       <div className="space-y-6">
         {/* Header */}
         <Card className="bg-gradient-to-r from-[#0a1525] to-[#1a2b45] text-white border-none">
@@ -407,7 +406,7 @@ export default function AIInsights() {
           </TabsContent>
         </Tabs>
       </div>
-    </Layout>
+    
   )
 }
 
