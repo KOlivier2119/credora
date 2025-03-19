@@ -174,7 +174,7 @@ export default function Dashboard() {
                   <CreditCard className="h-4 w-4 mr-2" />
                   Apply for a Loan
                 </Button>
-                <Button variant="outline" className="border-white text-white hover:bg-white/10">
+                <Button variant="outline" className="border-white text-[#0a1525] hover:bg-blue-100">
                   <FileText className="h-4 w-4 mr-2" />
                   View Documents
                 </Button>
