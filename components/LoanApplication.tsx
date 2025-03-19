@@ -1,15 +1,16 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { DollarSign } from "lucide-react"
+import { DollarSign, CreditCard, Briefcase, Home, CheckCircle, ArrowRight, ArrowLeft, HelpCircle } from "lucide-react"
 import Layout from "@/components/layout"
 import AIInsights from "@/components/ai-insights"
 
@@ -27,6 +28,7 @@ const formSchema = z.object({
 export default function LoanApplication() {
   const [step, setStep] = useState(1)
   const [showAIInsights, setShowAIInsights] = useState(false)
+  const [loanPurpose, setLoanPurpose] = useState("")
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -84,45 +86,74 @@ export default function LoanApplication() {
     }
   }
 
+  // Loan purpose options with icons
+  const loanPurposes = [
+    {
+      id: "home_improvement",
+      name: "Home Improvement",
+      icon: Home,
+      description: "Renovations, repairs, or upgrades to your home",
+    },
+    {
+      id: "debt_consolidation",
+      name: "Debt Consolidation",
+      icon: CreditCard,
+      description: "Combine multiple debts into a single payment",
+    },
+    { id: "business", name: "Business", icon: Briefcase, description: "Start or grow your business" },
+    {
+      id: "education",
+      name: "Education",
+      icon: CheckCircle,
+      description: "Education expenses or student loan refinancing",
+    },
+    { id: "medical", name: "Medical Expenses", icon: CheckCircle, description: "Medical bills or healthcare costs" },
+    { id: "other", name: "Other", icon: CheckCircle, description: "Other personal expenses" },
+  ]
+
   return (
     <Layout title="Apply For Loan">
       <div className="max-w-4xl mx-auto">
         {!showAIInsights ? (
-          <Card>
-            <CardHeader>
-              <CardTitle>Loan Application</CardTitle>
-              <CardDescription>
-                Fill out the form below to apply for a loan. Our AI will analyze your application and provide insights.
+          <Card className="border-none shadow-lg">
+            <CardHeader className="bg-gradient-to-r from-[#0a1525] to-[#1a2b45] text-white rounded-t-lg">
+              <CardTitle className="text-2xl">Loan Application</CardTitle>
+              <CardDescription className="text-blue-100">
+                Complete your application to get personalized loan offers
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
               <div className="mb-6">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center">
                     <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 1 ? "bg-[#0a1525] text-white" : "bg-gray-200"}`}
+                      className={`w-10 h-10 rounded-full flex items-center justify-center ${step >= 1 ? "bg-[#0a1525] text-white" : "bg-gray-200"}`}
                     >
                       1
                     </div>
                     <div className="ml-2 font-medium">Loan Details</div>
                   </div>
                   <div className="flex-1 mx-4 h-1 bg-gray-200">
-                    <div className={`h-full bg-[#0a1525] ${step >= 2 ? "w-full" : "w-0"}`}></div>
+                    <div
+                      className={`h-full bg-[#0a1525] transition-all duration-500 ${step >= 2 ? "w-full" : "w-0"}`}
+                    ></div>
                   </div>
                   <div className="flex items-center">
                     <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 2 ? "bg-[#0a1525] text-white" : "bg-gray-200"}`}
+                      className={`w-10 h-10 rounded-full flex items-center justify-center ${step >= 2 ? "bg-[#0a1525] text-white" : "bg-gray-200"}`}
                     >
                       2
                     </div>
                     <div className="ml-2 font-medium">Personal Information</div>
                   </div>
                   <div className="flex-1 mx-4 h-1 bg-gray-200">
-                    <div className={`h-full bg-[#0a1525] ${step >= 3 ? "w-full" : "w-0"}`}></div>
+                    <div
+                      className={`h-full bg-[#0a1525] transition-all duration-500 ${step >= 3 ? "w-full" : "w-0"}`}
+                    ></div>
                   </div>
                   <div className="flex items-center">
                     <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 3 ? "bg-[#0a1525] text-white" : "bg-gray-200"}`}
+                      className={`w-10 h-10 rounded-full flex items-center justify-center ${step >= 3 ? "bg-[#0a1525] text-white" : "bg-gray-200"}`}
                     >
                       3
                     </div>
@@ -135,30 +166,56 @@ export default function LoanApplication() {
                 <form className="space-y-6">
                   {step === 1 && (
                     <>
+                      <div className="bg-blue-50 p-4 rounded-lg mb-6">
+                        <div className="flex items-start">
+                          <HelpCircle className="h-5 w-5 text-blue-500 mr-3 mt-0.5" />
+                          <div>
+                            <h4 className="font-medium text-blue-800">Why we need this information</h4>
+                            <p className="text-sm text-blue-700 mt-1">
+                              These details help us determine the loan options you qualify for. Your information is
+                              secure and will only be used to process your application.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
                       <FormField
                         control={form.control}
-                        name="loanType"
+                        name="purpose"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Loan Type</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select loan type" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectItem value="personal">Personal Loan</SelectItem>
-                                <SelectItem value="business">Business Loan</SelectItem>
-                                <SelectItem value="mortgage">Mortgage</SelectItem>
-                                <SelectItem value="auto">Auto Loan</SelectItem>
-                                <SelectItem value="education">Education Loan</SelectItem>
-                              </SelectContent>
-                            </Select>
+                            <FormLabel>Loan Purpose</FormLabel>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                              {loanPurposes.map((purpose) => (
+                                <div
+                                  key={purpose.id}
+                                  className={`border rounded-lg p-4 cursor-pointer transition-all hover:border-blue-500 ${
+                                    field.value === purpose.id ? "border-blue-500 bg-blue-50" : ""
+                                  }`}
+                                  onClick={() => {
+                                    field.onChange(purpose.id)
+                                    setLoanPurpose(purpose.name)
+                                  }}
+                                >
+                                  <div className="flex items-center mb-2">
+                                    <div
+                                      className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                                        field.value === purpose.id ? "bg-blue-500 text-white" : "bg-gray-100"
+                                      }`}
+                                    >
+                                      <purpose.icon className="h-4 w-4" />
+                                    </div>
+                                    <span className="ml-2 font-medium">{purpose.name}</span>
+                                  </div>
+                                  <p className="text-xs text-gray-500">{purpose.description}</p>
+                                </div>
+                              ))}
+                            </div>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
+
                       <FormField
                         control={form.control}
                         name="amount"
@@ -176,6 +233,7 @@ export default function LoanApplication() {
                           </FormItem>
                         )}
                       />
+
                       <FormField
                         control={form.control}
                         name="term"
@@ -201,26 +259,25 @@ export default function LoanApplication() {
                           </FormItem>
                         )}
                       />
+
                       <FormField
                         control={form.control}
-                        name="purpose"
+                        name="loanType"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Loan Purpose</FormLabel>
+                            <FormLabel>Loan Type</FormLabel>
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                               <FormControl>
                                 <SelectTrigger>
-                                  <SelectValue placeholder="Select loan purpose" />
+                                  <SelectValue placeholder="Select loan type" />
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                <SelectItem value="debt_consolidation">Debt Consolidation</SelectItem>
-                                <SelectItem value="home_improvement">Home Improvement</SelectItem>
-                                <SelectItem value="business">Business</SelectItem>
-                                <SelectItem value="education">Education</SelectItem>
-                                <SelectItem value="major_purchase">Major Purchase</SelectItem>
-                                <SelectItem value="medical">Medical Expenses</SelectItem>
-                                <SelectItem value="other">Other</SelectItem>
+                                <SelectItem value="personal">Personal Loan</SelectItem>
+                                <SelectItem value="business">Business Loan</SelectItem>
+                                <SelectItem value="mortgage">Mortgage</SelectItem>
+                                <SelectItem value="auto">Auto Loan</SelectItem>
+                                <SelectItem value="education">Education Loan</SelectItem>
                               </SelectContent>
                             </Select>
                             <FormMessage />
@@ -232,6 +289,19 @@ export default function LoanApplication() {
 
                   {step === 2 && (
                     <>
+                      <div className="bg-blue-50 p-4 rounded-lg mb-6">
+                        <div className="flex items-start">
+                          <CheckCircle className="h-5 w-5 text-blue-500 mr-3 mt-0.5" />
+                          <div>
+                            <h4 className="font-medium text-blue-800">Loan Details Saved</h4>
+                            <p className="text-sm text-blue-700 mt-1">
+                              {loanPurpose || "Your"} loan for ${form.getValues("amount") || "0"} over{" "}
+                              {form.getValues("term") || "0"} months
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
                       <div className="grid grid-cols-2 gap-6">
                         <FormItem>
                           <FormLabel>First Name</FormLabel>
@@ -289,6 +359,19 @@ export default function LoanApplication() {
 
                   {step === 3 && (
                     <>
+                      <div className="bg-blue-50 p-4 rounded-lg mb-6">
+                        <div className="flex items-start">
+                          <HelpCircle className="h-5 w-5 text-blue-500 mr-3 mt-0.5" />
+                          <div>
+                            <h4 className="font-medium text-blue-800">Why we need your financial information</h4>
+                            <p className="text-sm text-blue-700 mt-1">
+                              This helps us determine your loan eligibility and offer you the best rates. Your
+                              information is secure and protected.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
                       <FormField
                         control={form.control}
                         name="income"
@@ -336,10 +419,32 @@ export default function LoanApplication() {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Credit Score (Estimated)</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Enter your credit score" {...field} />
-                            </FormControl>
-                            <FormDescription>Enter your estimated credit score (300-850)</FormDescription>
+                            <Tabs defaultValue="know" className="w-full mb-4">
+                              <TabsList className="grid w-full grid-cols-2">
+                                <TabsTrigger value="know">I know my score</TabsTrigger>
+                                <TabsTrigger value="estimate">Estimate for me</TabsTrigger>
+                              </TabsList>
+                              <TabsContent value="know" className="pt-4">
+                                <FormControl>
+                                  <Input placeholder="Enter your credit score (300-850)" {...field} />
+                                </FormControl>
+                              </TabsContent>
+                              <TabsContent value="estimate" className="pt-4">
+                                <Select onValueChange={field.onChange}>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select estimated range" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="excellent">Excellent (720-850)</SelectItem>
+                                    <SelectItem value="good">Good (690-719)</SelectItem>
+                                    <SelectItem value="fair">Fair (630-689)</SelectItem>
+                                    <SelectItem value="poor">Poor (580-629)</SelectItem>
+                                    <SelectItem value="bad">Bad (300-579)</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </TabsContent>
+                            </Tabs>
+                            <FormDescription>Your credit score helps determine your interest rate</FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -360,6 +465,7 @@ export default function LoanApplication() {
                   <div className="flex justify-between pt-4">
                     {step > 1 && (
                       <Button type="button" variant="outline" onClick={() => setStep(step - 1)}>
+                        <ArrowLeft className="h-4 w-4 mr-2" />
                         Previous
                       </Button>
                     )}
@@ -374,15 +480,27 @@ export default function LoanApplication() {
                         }
                       }}
                     >
-                      {step < 3 ? "Next" : "Submit Application"}
+                      {step < 3 ? (
+                        <>
+                          Next
+                          <ArrowRight className="h-4 w-4 ml-2" />
+                        </>
+                      ) : (
+                        "Submit Application"
+                      )}
                     </Button>
                   </div>
                 </form>
               </Form>
             </CardContent>
+            <CardFooter className="bg-gray-50 rounded-b-lg border-t p-4 text-center text-sm text-gray-500">
+              Your information is secure and encrypted. We never share your data without permission.
+            </CardFooter>
           </Card>
         ) : (
-          <AIInsights />
+          <div className="p-6">
+            <AIInsights />
+          </div>
         )}
       </div>
     </Layout>

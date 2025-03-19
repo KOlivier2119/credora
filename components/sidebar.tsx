@@ -3,7 +3,15 @@
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { LayoutDashboard, FileText, Settings, BarChart2, LogOut, CreditCard, ChevronRight } from "lucide-react"
+import {
+  LayoutDashboard,
+  CreditCard,
+  Clock,
+  FileText,
+  BarChart2,
+  LogOut,
+  ChevronRight,
+} from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export default function Sidebar() {
@@ -16,8 +24,9 @@ export default function Sidebar() {
   const navItems = [
     { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
     { name: "Apply For Loan", path: "/dashboard/apply-for-loan", icon: CreditCard },
-    { name: "Manage Loans", path: "/dashboard/manage-loans", icon: Settings },
-    { name: "Reports", path: "/dashboard/reports", icon: BarChart2 },
+    { name: "Loan Tracker", path: "/dashboard/loan-tracker", icon: Clock },
+    { name: "My Loans", path: "/dashboard/manage-loans", icon: FileText },
+    { name: "Financial Reports", path: "/dashboard/reports", icon: BarChart2 },
   ]
 
   return (
@@ -26,16 +35,16 @@ export default function Sidebar() {
       <div className="p-6 border-b border-[#1a2b45]">
         <div className="flex items-center space-x-3">
           <div className="h-8 w-8 rounded-md bg-white flex items-center justify-center">
-            <span className="text-[#0a1525] font-bold text-lg">C</span>
+            <span className="text-[#0a1525] font-bold text-lg">L</span>
           </div>
-          <span className="text-xl font-bold">Credora</span>
+          <span className="text-xl font-bold">LoanDash</span>
         </div>
       </div>
 
       {/* Navigation Section */}
       <div className="flex-1 p-5 space-y-2 overflow-y-auto">
         <div className="mb-6">
-          <p className="text-xs uppercase text-gray-400 font-medium mb-3 ml-3">Main Navigation</p>
+          <p className="text-xs uppercase text-gray-400 font-medium mb-3 ml-3">Loan Center</p>
           {navItems.map((item) => (
             <Link href={item.path} key={item.path}>
               <div
@@ -64,18 +73,6 @@ export default function Sidebar() {
             </Link>
           ))}
         </div>
-
-        <div className="mb-6">
-          <p className="text-xs uppercase text-gray-400 font-medium mb-3 ml-3">Resources</p>
-          <div className="space-y-2">
-            <div className="flex items-center space-x-3 px-3 py-3 rounded-xl text-gray-300 hover:bg-[#1a2b45] hover:text-white transition-all duration-200 cursor-pointer">
-              <div className="p-2 rounded-lg bg-[#1a2b45]">
-                <FileText className="h-5 w-5" />
-              </div>
-              <span>Documentation</span>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* User & Logout Section */}
@@ -97,4 +94,3 @@ export default function Sidebar() {
     </div>
   )
 }
-
