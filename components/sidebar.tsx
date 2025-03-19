@@ -22,9 +22,9 @@ export default function Sidebar() {
       <div className="p-6 border-b border-[#1A2B45]">
         <div className="flex items-center space-x-3">
           <div className="h-10 w-10 rounded-md bg-white flex items-center justify-center">
-            <span className="text-[#0A1525] font-bold text-xl">L</span>
+            <span className="text-[#0A1525] font-bold text-xl">C</span>
           </div>
-          <span className="text-xl font-bold">LoanDash</span>
+          <span className="text-xl font-bold">Credora</span>
         </div>
       </div>
       {/* Navigation Section */}
