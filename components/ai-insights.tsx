@@ -168,11 +168,7 @@ export default function AIInsights() {
                     showLegend={false}
                     showXAxis
                     showYAxis
-                  >
-                    <ChartTooltip>
-                      <ChartTooltipContent />
-                    </ChartTooltip>
-                  </LineChart>
+                  />
                 </ChartContainer>
               </div>
 
@@ -245,11 +241,7 @@ export default function AIInsights() {
                     showLegend={false}
                     showXAxis
                     showYAxis
-                  >
-                    <ChartTooltip>
-                      <ChartTooltipContent />
-                    </ChartTooltip>
-                  </LineChart>
+                  />
                 </ChartContainer>
               </div>
 
@@ -293,7 +285,7 @@ export default function AIInsights() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       <div className="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
-                      <span>Not Recommended (>30% of income)</span>
+                      <span>Not Recommended ({'>'}30% of income)</span>
                     </div>
                     <span className="font-medium">$35,000+</span>
                   </div>

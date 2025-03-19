@@ -273,11 +273,7 @@ export default function ManageLoans() {
                   showLegend={false}
                   showXAxis
                   showYAxis
-                >
-                  <ChartTooltip>
-                    <ChartTooltipContent />
-                  </ChartTooltip>
-                </LineChart>
+                />
               </ChartContainer>
             </div>
           </CardContent>

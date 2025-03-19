@@ -78,7 +78,13 @@ export default function Dashboard() {
   }
 
   // Metrics data
-  const metricsData = [
+  const metricsData: {
+    title: string
+    value: string
+    change: string
+    trend: "up" | "down"
+    data: { name: string; value: number }[]
+  }[] = [
     {
       title: "Total families",
       value: "23,000",
@@ -171,11 +177,7 @@ export default function Dashboard() {
                       showLegend={false}
                       showXAxis
                       showYAxis
-                    >
-                      <ChartTooltip>
-                        <ChartTooltipContent />
-                      </ChartTooltip>
-                    </BarChart>
+                    />
                   </ChartContainer>
                 </div>
               </CardContent>
@@ -294,11 +296,7 @@ export default function Dashboard() {
                       showLegend={false}
                       showXAxis
                       showYAxis
-                    >
-                      <ChartTooltip>
-                        <ChartTooltipContent />
-                      </ChartTooltip>
-                    </LineChart>
+                    />
                   </ChartContainer>
                 </div>
               </CardContent>
