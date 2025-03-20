@@ -94,11 +94,11 @@ export default function SignUpPage() {
           setLoading(false)
           return
         }
-
+        console.log( "the data are: ",applicantForm);
         const response = await axios.post("https://credora-web-service.onrender.com/auth/signup", applicantForm, {
           headers: {
             "Content-Type": "application/json",
-          },
+          },        
         })
 
         if (response.status === 200 || response.status === 201) {
