@@ -24,10 +24,7 @@ export default function AdminHeader({ title }: AdminHeaderProps) {
             <Bell className="h-5 w-5" />
           </Button>
           <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-red-500">3</Badge>
-        </div>
-        <Button variant="ghost" size="icon" className="rounded-full">
-          <Moon className="h-5 w-5" />
-        </Button>
+        </div>        
         <div className="h-9 w-9 rounded-full bg-blue-500 flex items-center justify-center text-white">
           <User className="h-5 w-5" />
         </div>

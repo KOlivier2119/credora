@@ -1,5 +1,7 @@
 import { Search, Moon } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Bell } from "lucide-react"
 
 interface HeaderProps {
   title: string
@@ -19,8 +21,9 @@ export default function Header({ title }: HeaderProps) {
           />
         </div>
         <Button variant="ghost" size="icon" className="rounded-full">
-          <Moon className="h-5 w-5" />
-        </Button>
+            <Bell className="h-5 w-5" />
+          </Button>
+          <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-red-500">3</Badge>
       </div>
     </div>
   )
