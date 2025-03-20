@@ -3,18 +3,7 @@
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import {
-  LayoutDashboard,
-  Users,
-  CreditCard,
-  FileText,
-  BarChart2,
-  Settings,
-  LogOut,
-  AlertCircle,
-  Shield,
-  HelpCircle,
-} from "lucide-react"
+import { LayoutDashboard, Users, CreditCard, FileText, BarChart2, LogOut } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export default function AdminSidebar() {
@@ -30,13 +19,6 @@ export default function AdminSidebar() {
     { name: "Customers", path: "/admin/customers", icon: Users },
     { name: "Reports", path: "/admin/reports", icon: BarChart2 },
     { name: "Documents", path: "/admin/documents", icon: FileText },
-  ]
-
-  const systemItems = [
-    { name: "Risk Management", path: "/admin/risk", icon: AlertCircle },
-    { name: "Security", path: "/admin/security", icon: Shield },
-    { name: "Settings", path: "/admin/settings", icon: Settings },
-    { name: "Help & Support", path: "/admin/support", icon: HelpCircle },
   ]
 
   return (
@@ -59,44 +41,6 @@ export default function AdminSidebar() {
         <p className="text-xs uppercase text-gray-400 font-medium mb-4 ml-2 tracking-wider">Main Navigation</p>
         <div className="space-y-2.5">
           {navItems.map((item) => (
-            <Link href={item.path} key={item.path}>
-              <div
-                className={cn(
-                  "flex items-center px-3 py-3.5 rounded-xl transition-all duration-200",
-                  isActive(item.path)
-                    ? "bg-white relative shadow-lg"
-                    : "text-gray-300 hover:bg-[#1A2B45] hover:text-white",
-                )}
-              >
-                {/* Left accent bar for active item */}
-                {isActive(item.path) && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-[70%] bg-blue-500 rounded-r-full" />
-                )}
-                <div className="flex items-center space-x-3 relative">
-                  <div
-                    className={cn(
-                      "p-2 rounded-lg",
-                      isActive(item.path)
-                        ? "bg-blue-500 text-white"
-                        : "bg-[#1A2B45] text-gray-300 group-hover:text-white",
-                    )}
-                  >
-                    <item.icon className="h-5 w-5" />
-                  </div>
-                  <span className={cn("font-medium", isActive(item.path) ? "text-[#0A1525]" : "text-gray-300")}>
-                    {item.name}
-                  </span>
-                </div>
-                {/* Active indicator dot */}
-                {isActive(item.path) && <div className="ml-auto mr-2 h-2 w-2 rounded-full bg-blue-500" />}
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        <p className="text-xs uppercase text-gray-400 font-medium mt-8 mb-4 ml-2 tracking-wider">System</p>
-        <div className="space-y-2.5">
-          {systemItems.map((item) => (
             <Link href={item.path} key={item.path}>
               <div
                 className={cn(
