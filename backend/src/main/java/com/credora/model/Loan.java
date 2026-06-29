@@ -32,6 +32,7 @@ public class Loan {
     private BigDecimal remainingBalance;
     private LocalDate startDate;
     private LocalDate nextPaymentDate;
+    private Boolean autoPayEnabled;
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
@@ -70,5 +71,7 @@ public class Loan {
     public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
     public LocalDate getNextPaymentDate() { return nextPaymentDate; }
     public void setNextPaymentDate(LocalDate nextPaymentDate) { this.nextPaymentDate = nextPaymentDate; }
+    public Boolean getAutoPayEnabled() { return autoPayEnabled; }
+    public void setAutoPayEnabled(Boolean autoPayEnabled) { this.autoPayEnabled = autoPayEnabled; }
     public Instant getCreatedAt() { return createdAt; }
 }

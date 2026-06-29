@@ -24,6 +24,7 @@ import Layout from "@/components/layout"
 import AIInsights from "@/components/ai-insights"
 import LoanTypeFields from "@/components/loan-type-fields"
 import DocumentUploadField from "@/components/document-upload"
+import PhoneVerification from "@/components/phone-verification"
 import { api, ApplicationResponse, DocumentUpload, getErrorMessage } from "@/lib/api"
 import {
   LOAN_TYPES,
@@ -77,6 +78,7 @@ export default function LoanApplication() {
   const [submitError, setSubmitError] = useState("")
   const [applicationResult, setApplicationResult] = useState<ApplicationResponse | null>(null)
   const [documents, setDocuments] = useState<Record<string, DocumentUpload>>({})
+  const [phoneVerified, setPhoneVerified] = useState(false)
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -269,6 +271,7 @@ export default function LoanApplication() {
                                 return (
                                   <motion.div
                                     key={type.id}
+                                    data-testid={`loan-type-${type.id}`}
                                     whileHover={{ scale: 1.02, y: -2 }}
                                     whileTap={{ scale: 0.98 }}
                                     className={`border-2 rounded-xl p-4 cursor-pointer transition-colors ${
@@ -419,8 +422,12 @@ export default function LoanApplication() {
                               <FormItem><FormLabel>Email</FormLabel><FormControl><Input type="email" placeholder="Email" {...field} /></FormControl></FormItem>
                             )} />
                             <FormField control={form.control} name="phone" render={({ field }) => (
-                              <FormItem><FormLabel>Phone</FormLabel><FormControl><Input placeholder="Phone number" {...field} /></FormControl></FormItem>
+                              <FormItem><FormLabel>Phone Number</FormLabel><FormControl><Input placeholder="Phone number" {...field} /></FormControl></FormItem>
                             )} />
+                            <PhoneVerification
+                              phone={form.watch("phone") || ""}
+                              onVerified={setPhoneVerified}
+                            />
                             <FormField control={form.control} name="address" render={({ field }) => (
                               <FormItem><FormLabel>Address</FormLabel><FormControl><Input placeholder="Street address" {...field} /></FormControl></FormItem>
                             )} />

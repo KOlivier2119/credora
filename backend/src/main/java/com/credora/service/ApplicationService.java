@@ -36,17 +36,20 @@ public class ApplicationService {
     private final LoanTypeValidator loanTypeValidator;
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final ApplicationDocumentRepository documentRepository;
+    private final CreditBureauService creditBureauService;
 
     public ApplicationService(LoanApplicationRepository applicationRepository, LoanRepository loanRepository,
                               UserRepository userRepository, AiScoringService aiScoringService,
                               LoanTypeValidator loanTypeValidator,
-                              ApplicationDocumentRepository documentRepository) {
+                              ApplicationDocumentRepository documentRepository,
+                              CreditBureauService creditBureauService) {
         this.applicationRepository = applicationRepository;
         this.loanRepository = loanRepository;
         this.userRepository = userRepository;
         this.aiScoringService = aiScoringService;
         this.loanTypeValidator = loanTypeValidator;
         this.documentRepository = documentRepository;
+        this.creditBureauService = creditBureauService;
     }
 
     @Transactional
@@ -70,6 +73,14 @@ public class ApplicationService {
             income = user.getMonthlyIncome();
         }
         Integer creditScore = parseCreditScore(req.getCreditScore());
+        if (req.getIdPassportNumber() != null && !req.getIdPassportNumber().isBlank()) {
+            ReportDtos.CreditCheckRequest cr = new ReportDtos.CreditCheckRequest();
+            cr.setFullName(user.getFullName());
+            cr.setIdNumber(req.getIdPassportNumber());
+            cr.setPhoneNumber(req.getPhone());
+            ReportDtos.CreditCheckResponse bureau = creditBureauService.check(cr);
+            creditScore = bureau.getCreditScore();
+        }
         BigDecimal mobileMoney = parseDecimal(req.getMobileMoneyAvg());
         int utilityScore = parseInt(req.getUtilityPaymentScore(), 70);
         BigDecimal existingDebt = parseDecimal(req.getExistingDebt());
@@ -398,6 +409,7 @@ public class ApplicationService {
         r.setMonthlyPayment(loan.getMonthlyPayment());
         r.setRemainingBalance(loan.getRemainingBalance());
         r.setPurpose(loan.getApplication() != null ? loan.getApplication().getPurpose() : null);
+        r.setAutoPayEnabled(loan.getAutoPayEnabled());
         return r;
     }
 

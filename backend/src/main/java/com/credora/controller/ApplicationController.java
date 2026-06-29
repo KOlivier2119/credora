@@ -5,6 +5,7 @@ import com.credora.dto.DashboardDtos;
 import com.credora.dto.ReportDtos;
 import com.credora.service.ApplicationService;
 import com.credora.service.LoanPaymentService;
+import com.credora.service.ReminderSchedulerService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +19,14 @@ public class ApplicationController {
 
     private final ApplicationService applicationService;
     private final LoanPaymentService loanPaymentService;
+    private final ReminderSchedulerService reminderSchedulerService;
 
     public ApplicationController(ApplicationService applicationService,
-                                 LoanPaymentService loanPaymentService) {
+                                 LoanPaymentService loanPaymentService,
+                                 ReminderSchedulerService reminderSchedulerService) {
         this.applicationService = applicationService;
         this.loanPaymentService = loanPaymentService;
+        this.reminderSchedulerService = reminderSchedulerService;
     }
 
     private Long getUserId(Authentication auth) {
@@ -75,5 +79,18 @@ public class ApplicationController {
     @GetMapping("/loans/{id}/schedule")
     public List<ReportDtos.ScheduleEntry> getSchedule(Authentication auth, @PathVariable Long id) {
         return loanPaymentService.getSchedule(getUserId(auth), id);
+    }
+
+    @PatchMapping("/loans/{id}/autopay")
+    public DashboardDtos.LoanResponse setAutoPay(
+            Authentication auth,
+            @PathVariable Long id,
+            @RequestBody ReportDtos.AutoPayRequest req) {
+        return loanPaymentService.setAutoPay(getUserId(auth), id, req.isEnabled());
+    }
+
+    @GetMapping("/notifications")
+    public List<ReportDtos.NotificationResponse> notifications(Authentication auth) {
+        return reminderSchedulerService.getUserNotifications(getUserId(auth));
     }
 }

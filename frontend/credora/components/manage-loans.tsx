@@ -15,6 +15,7 @@ export default function ManageLoans() {
   const [activeTab, setActiveTab] = useState("active")
   const [apiLoans, setApiLoans] = useState<LoanResponse[]>([])
   const [payingId, setPayingId] = useState<number | null>(null)
+  const [autopayId, setAutopayId] = useState<number | null>(null)
 
   const loadLoans = () => {
     api.get<LoanResponse[]>("/loans").then((r) => setApiLoans(r.data)).catch(() => {})
@@ -36,6 +37,16 @@ export default function ManageLoans() {
     }
   }
 
+  const toggleAutoPay = async (loanId: number, enabled: boolean) => {
+    setAutopayId(loanId)
+    try {
+      await api.patch(`/loans/${loanId}/autopay`, { enabled })
+      loadLoans()
+    } finally {
+      setAutopayId(null)
+    }
+  }
+
   const loans = apiLoans.length > 0
     ? apiLoans.map((l) => ({
         dbId: l.id,
@@ -49,6 +60,7 @@ export default function ManageLoans() {
         remainingAmount: Number(l.remainingBalance),
         nextPayment: { amount: Number(l.monthlyPayment), date: new Date().toISOString().slice(0, 10) },
         progress: l.termMonths ? Math.round((l.monthsPaid / l.termMonths) * 100) : 0,
+        autoPayEnabled: l.autoPayEnabled ?? false,
         paymentHistory: [{ month: "Current", amount: Number(l.monthlyPayment) }],
       }))
     : []
@@ -265,11 +277,25 @@ export default function ManageLoans() {
                             <FileText className="h-4 w-4 mr-2" />
                             View Payment Schedule
                           </Button>
-                          <Button
-                            className="bg-[#0a1525] hover:bg-[#1a2b45] text-sm"
-                            disabled={payingId === loan.dbId}
-                            onClick={() => loan.dbId && makePayment(loan.dbId, loan.nextPayment.amount)}
-                          >
+                          <div className="flex gap-2">
+                            <Button
+                              variant="outline"
+                              className="text-sm"
+                              disabled={autopayId === loan.dbId}
+                              onClick={() => loan.dbId && toggleAutoPay(loan.dbId, !loan.autoPayEnabled)}
+                            >
+                              {autopayId === loan.dbId ? (
+                                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                              ) : (
+                                <Clock className="h-4 w-4 mr-2" />
+                              )}
+                              {loan.autoPayEnabled ? "Disable Auto-Pay" : "Set Up Auto-Pay"}
+                            </Button>
+                            <Button
+                              className="bg-[#0a1525] hover:bg-[#1a2b45] text-sm"
+                              disabled={payingId === loan.dbId}
+                              onClick={() => loan.dbId && makePayment(loan.dbId, loan.nextPayment.amount)}
+                            >
                             {payingId === loan.dbId ? (
                               <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                             ) : (
@@ -277,6 +303,7 @@ export default function ManageLoans() {
                             )}
                             Make a Payment
                           </Button>
+                          </div>
                         </div>
                       </div>
                     </CardContent>
@@ -421,8 +448,19 @@ export default function ManageLoans() {
               <Calendar className="h-4 w-4 mr-2" />
               View Payment Calendar
             </Button>
-            <Button variant="outline">
-              <Clock className="h-4 w-4 mr-2" />
+            <Button
+              variant="outline"
+              disabled={!loans.length || autopayId !== null}
+              onClick={() => {
+                const first = loans[0]
+                if (first?.dbId) toggleAutoPay(first.dbId, !first.autoPayEnabled)
+              }}
+            >
+              {autopayId !== null ? (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : (
+                <Clock className="h-4 w-4 mr-2" />
+              )}
               Set Up Auto-Pay
             </Button>
           </CardFooter>

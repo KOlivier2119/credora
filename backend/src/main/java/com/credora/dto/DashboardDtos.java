@@ -56,6 +56,7 @@ public class DashboardDtos {
         private BigDecimal monthlyPayment;
         private BigDecimal remainingBalance;
         private String purpose;
+        private Boolean autoPayEnabled;
 
         public Long getId() { return id; }
         public void setId(Long id) { this.id = id; }
@@ -77,6 +78,8 @@ public class DashboardDtos {
         public void setRemainingBalance(BigDecimal remainingBalance) { this.remainingBalance = remainingBalance; }
         public String getPurpose() { return purpose; }
         public void setPurpose(String purpose) { this.purpose = purpose; }
+        public Boolean getAutoPayEnabled() { return autoPayEnabled; }
+        public void setAutoPayEnabled(Boolean autoPayEnabled) { this.autoPayEnabled = autoPayEnabled; }
     }
 
     public static class AdminDashboardSummary {

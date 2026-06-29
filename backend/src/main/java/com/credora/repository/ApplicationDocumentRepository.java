@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ApplicationDocumentRepository extends JpaRepository<ApplicationDocument, Long> {
     List<ApplicationDocument> findByApplication(LoanApplication application);
+    List<ApplicationDocument> findAllByOrderByUploadedAtDesc();
+    List<ApplicationDocument> findByStatusOrderByUploadedAtDesc(String status);
 }

@@ -1,0 +1,112 @@
+# Production stack — use with env file: docker compose -f docker-compose.prod.yml --env-file .env.prod up -d
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-credora}
+      POSTGRES_USER: ${POSTGRES_USER:-credora}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD required}
+    volumes:
+      - credora_pg_prod:/var/lib/postgresql/data
+      - ./backups:/backups
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-credora} -d ${POSTGRES_DB:-credora}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - credora_internal
+
+  ai:
+    build: ./ai
+    restart: unless-stopped
+    environment:
+      ENV: production
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
+    networks:
+      - credora_internal
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DATABASE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-credora}
+      DATABASE_USER: ${POSTGRES_USER:-credora}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD required}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET required}
+      AI_SERVICE_URL: http://ai:8000
+      CORS_ORIGINS: ${CORS_ORIGINS:-https://credora.example.com}
+      CREDIT_BUREAU_MODE: ${CREDIT_BUREAU_MODE:-sandbox}
+      SMS_MODE: ${SMS_MODE:-sandbox}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ai:
+        condition: service_healthy
+    networks:
+      - credora_internal
+
+  frontend:
+    build:
+      context: ./frontend/credora
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-https://api.credora.example.com}
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-https://api.credora.example.com}
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-https://credora.example.com}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:?NEXTAUTH_SECRET required}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+    depends_on:
+      - backend
+    networks:
+      - credora_internal
+
+  nginx:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./deploy/nginx/certs:/etc/nginx/certs:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - credora_internal
+
+  backup:
+    image: postgres:16-alpine
+    restart: "no"
+    profiles: ["backup"]
+    environment:
+      PGHOST: postgres
+      PGUSER: ${POSTGRES_USER:-credora}
+      PGPASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD required}
+      PGDATABASE: ${POSTGRES_DB:-credora}
+    volumes:
+      - ./backups:/backups
+      - ./scripts/backup-postgres.sh:/backup.sh:ro
+    entrypoint: ["/bin/sh", "/backup.sh"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - credora_internal
+
+volumes:
+  credora_pg_prod:
+
+networks:
+  credora_internal:
+    driver: bridge

@@ -129,6 +129,7 @@ export interface LoanResponse {
   monthlyPayment: number;
   remainingBalance: number;
   purpose?: string;
+  autoPayEnabled?: boolean;
 }
 
 export interface DashboardSummary {

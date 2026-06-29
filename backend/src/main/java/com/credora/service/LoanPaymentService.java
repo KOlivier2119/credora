@@ -1,5 +1,6 @@
 package com.credora.service;
 
+import com.credora.dto.DashboardDtos;
 import com.credora.dto.ReportDtos;
 import com.credora.model.Loan;
 import com.credora.model.LoanPayment;
@@ -107,6 +108,25 @@ public class LoanPaymentService {
             due = due.plusMonths(1);
         }
         return schedule;
+    }
+
+    @Transactional
+    public DashboardDtos.LoanResponse setAutoPay(Long userId, Long loanId, boolean enabled) {
+        Loan loan = getLoanForUser(userId, loanId);
+        loan.setAutoPayEnabled(enabled);
+        loan = loanRepository.save(loan);
+        DashboardDtos.LoanResponse r = new DashboardDtos.LoanResponse();
+        r.setId(loan.getId());
+        r.setReferenceId(loan.getReferenceId());
+        r.setPrincipal(loan.getPrincipal());
+        r.setInterestRate(loan.getInterestRate());
+        r.setTermMonths(loan.getTermMonths());
+        r.setMonthsPaid(loan.getMonthsPaid());
+        r.setStatus(loan.getStatus());
+        r.setMonthlyPayment(loan.getMonthlyPayment());
+        r.setRemainingBalance(loan.getRemainingBalance());
+        r.setAutoPayEnabled(enabled);
+        return r;
     }
 
     private Loan getLoanForUser(Long userId, Long loanId) {

@@ -200,6 +200,12 @@ public class ReportDtos {
         private String fileName;
         private String status;
         private String uploadedAt;
+        private String contentType;
+        private Long applicationId;
+        private String applicationRef;
+        private String loanType;
+        private String customerName;
+        private String customerEmail;
         public Long getId() { return id; }
         public void setId(Long id) { this.id = id; }
         public String getDocumentType() { return documentType; }
@@ -210,5 +216,125 @@ public class ReportDtos {
         public void setStatus(String status) { this.status = status; }
         public String getUploadedAt() { return uploadedAt; }
         public void setUploadedAt(String uploadedAt) { this.uploadedAt = uploadedAt; }
+        public String getContentType() { return contentType; }
+        public void setContentType(String contentType) { this.contentType = contentType; }
+        public Long getApplicationId() { return applicationId; }
+        public void setApplicationId(Long applicationId) { this.applicationId = applicationId; }
+        public String getApplicationRef() { return applicationRef; }
+        public void setApplicationRef(String applicationRef) { this.applicationRef = applicationRef; }
+        public String getLoanType() { return loanType; }
+        public void setLoanType(String loanType) { this.loanType = loanType; }
+        public String getCustomerName() { return customerName; }
+        public void setCustomerName(String customerName) { this.customerName = customerName; }
+        public String getCustomerEmail() { return customerEmail; }
+        public void setCustomerEmail(String customerEmail) { this.customerEmail = customerEmail; }
+    }
+
+    public static class DocumentStatusRequest {
+        private String status;
+        public String getStatus() { return status; }
+        public void setStatus(String status) { this.status = status; }
+    }
+
+    public static class CreditCheckRequest {
+        private String fullName;
+        private String idNumber;
+        private String phoneNumber;
+        public String getFullName() { return fullName; }
+        public void setFullName(String fullName) { this.fullName = fullName; }
+        public String getIdNumber() { return idNumber; }
+        public void setIdNumber(String idNumber) { this.idNumber = idNumber; }
+        public String getPhoneNumber() { return phoneNumber; }
+        public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+    }
+
+    public static class CreditCheckResponse {
+        private int creditScore;
+        private String bureau;
+        private String reportSummary;
+        private String riskGrade;
+        public int getCreditScore() { return creditScore; }
+        public void setCreditScore(int creditScore) { this.creditScore = creditScore; }
+        public String getBureau() { return bureau; }
+        public void setBureau(String bureau) { this.bureau = bureau; }
+        public String getReportSummary() { return reportSummary; }
+        public void setReportSummary(String reportSummary) { this.reportSummary = reportSummary; }
+        public String getRiskGrade() { return riskGrade; }
+        public void setRiskGrade(String riskGrade) { this.riskGrade = riskGrade; }
+    }
+
+    public static class OtpSendRequest {
+        private String phoneNumber;
+        public String getPhoneNumber() { return phoneNumber; }
+        public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+    }
+
+    public static class OtpSendResponse {
+        private String message;
+        private String devCode;
+        public String getMessage() { return message; }
+        public void setMessage(String message) { this.message = message; }
+        public String getDevCode() { return devCode; }
+        public void setDevCode(String devCode) { this.devCode = devCode; }
+    }
+
+    public static class OtpVerifyRequest {
+        private String phoneNumber;
+        private String code;
+        public String getPhoneNumber() { return phoneNumber; }
+        public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+        public String getCode() { return code; }
+        public void setCode(String code) { this.code = code; }
+    }
+
+    public static class OtpVerifyResponse {
+        private boolean verified;
+        public boolean isVerified() { return verified; }
+        public void setVerified(boolean verified) { this.verified = verified; }
+    }
+
+    public static class MpesaVerifyRequest {
+        private String phoneNumber;
+        private double amount;
+        public String getPhoneNumber() { return phoneNumber; }
+        public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+        public double getAmount() { return amount; }
+        public void setAmount(double amount) { this.amount = amount; }
+    }
+
+    public static class MpesaVerifyResponse {
+        private boolean verified;
+        private double avgMonthlyVolume;
+        private String transactionId;
+        public boolean isVerified() { return verified; }
+        public void setVerified(boolean verified) { this.verified = verified; }
+        public double getAvgMonthlyVolume() { return avgMonthlyVolume; }
+        public void setAvgMonthlyVolume(double avgMonthlyVolume) { this.avgMonthlyVolume = avgMonthlyVolume; }
+        public String getTransactionId() { return transactionId; }
+        public void setTransactionId(String transactionId) { this.transactionId = transactionId; }
+    }
+
+    public static class AutoPayRequest {
+        private boolean enabled;
+        public boolean isEnabled() { return enabled; }
+        public void setEnabled(boolean enabled) { this.enabled = enabled; }
+    }
+
+    public static class NotificationResponse {
+        private Long id;
+        private String message;
+        private String channel;
+        private String sentAt;
+        private String dueDate;
+        public Long getId() { return id; }
+        public void setId(Long id) { this.id = id; }
+        public String getMessage() { return message; }
+        public void setMessage(String message) { this.message = message; }
+        public String getChannel() { return channel; }
+        public void setChannel(String channel) { this.channel = channel; }
+        public String getSentAt() { return sentAt; }
+        public void setSentAt(String sentAt) { this.sentAt = sentAt; }
+        public String getDueDate() { return dueDate; }
+        public void setDueDate(String dueDate) { this.dueDate = dueDate; }
     }
 }

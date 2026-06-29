@@ -1,0 +1,17 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+logging:
+  level:
+    com.credora: WARN
+    org.springframework: WARN
+
+credora:
+  cors:
+    allowed-origins: ${CORS_ORIGINS:https://credora.example.com}
+
+server:
+  forward-headers-strategy: framework

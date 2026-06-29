@@ -5,6 +5,7 @@ import com.credora.dto.AuthDtos;
 import com.credora.dto.DashboardDtos;
 import com.credora.dto.ReportDtos;
 import com.credora.service.ApplicationService;
+import com.credora.service.DocumentService;
 import com.credora.service.ReportService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +18,13 @@ public class AdminController {
 
     private final ApplicationService applicationService;
     private final ReportService reportService;
+    private final DocumentService documentService;
 
-    public AdminController(ApplicationService applicationService, ReportService reportService) {
+    public AdminController(ApplicationService applicationService, ReportService reportService,
+                           DocumentService documentService) {
         this.applicationService = applicationService;
         this.reportService = reportService;
+        this.documentService = documentService;
     }
 
     @GetMapping("/dashboard")
@@ -49,5 +53,18 @@ public class AdminController {
     @GetMapping("/reports")
     public ReportDtos.AdminReportsSummary reports() {
         return reportService.getAdminReports();
+    }
+
+    @GetMapping("/documents")
+    public List<ReportDtos.DocumentResponse> documents(
+            @RequestParam(defaultValue = "all") String status) {
+        return documentService.listAll(status);
+    }
+
+    @PatchMapping("/documents/{id}/status")
+    public ReportDtos.DocumentResponse updateDocumentStatus(
+            @PathVariable Long id,
+            @RequestBody ReportDtos.DocumentStatusRequest req) {
+        return documentService.updateStatus(id, req.getStatus());
     }
 }

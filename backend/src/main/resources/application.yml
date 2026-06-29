@@ -27,6 +27,12 @@ credora:
     expiration-ms: 86400000
   ai:
     service-url: ${AI_SERVICE_URL:http://localhost:8000}
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:3000,http://127.0.0.1:3000}
+  credit-bureau:
+    mode: ${CREDIT_BUREAU_MODE:sandbox}
+  sms:
+    mode: ${SMS_MODE:sandbox}
 
 logging:
   level:
