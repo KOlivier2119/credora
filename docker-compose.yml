@@ -1,0 +1,60 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: credora
+      POSTGRES_USER: credora
+      POSTGRES_PASSWORD: credora
+    ports:
+      - "5432:5432"
+    volumes:
+      - credora_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U credora -d credora"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  ai:
+    build: ./ai
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgres:5432/credora
+      DATABASE_USER: credora
+      DATABASE_PASSWORD: credora
+      JWT_SECRET: credora-dev-secret-change-in-production-min-32-chars
+      AI_SERVICE_URL: http://host.docker.internal:8000
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend/credora
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8080
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8080
+      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_SECRET: credora-nextauth-dev-secret-min-32-chars-long
+    depends_on:
+      - backend
+
+volumes:
+  credora_pg:
