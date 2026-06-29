@@ -23,13 +23,15 @@ import {
 import Layout from "@/components/layout"
 import AIInsights from "@/components/ai-insights"
 import LoanTypeFields from "@/components/loan-type-fields"
-import { api, ApplicationResponse, getErrorMessage } from "@/lib/api"
+import DocumentUploadField from "@/components/document-upload"
+import { api, ApplicationResponse, DocumentUpload, getErrorMessage } from "@/lib/api"
 import {
   LOAN_TYPES,
   LOAN_PURPOSES,
   getLoanTypeConfig,
   mapCreditScore,
   formatCurrency,
+  COMMON_APPLICANT_FIELDS,
 } from "@/lib/loan-types"
 
 const formSchema = z.object({
@@ -45,6 +47,10 @@ const formSchema = z.object({
   city: z.string().optional(),
   state: z.string().optional(),
   zipCode: z.string().optional(),
+  idPassportNumber: z.string().min(1, "ID/Passport required"),
+  employerName: z.string().optional(),
+  bankName: z.string().min(1, "Bank name required"),
+  bankAccountNumber: z.string().min(1, "Account number required"),
   income: z.string().min(1, "Enter monthly income"),
   employment: z.string().min(1, "Select employment status"),
   creditScore: z.string().min(1, "Enter or estimate credit score"),
@@ -62,7 +68,7 @@ const stepVariants = {
   exit: { opacity: 0, x: -30 },
 }
 
-const STEPS = ["Loan Type", "Details", "Personal", "Financial", "Review"]
+const STEPS = ["Loan Type", "Details", "Personal", "Financial", "Documents", "Review"]
 
 export default function LoanApplication() {
   const [step, setStep] = useState(0)
@@ -70,6 +76,7 @@ export default function LoanApplication() {
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState("")
   const [applicationResult, setApplicationResult] = useState<ApplicationResponse | null>(null)
+  const [documents, setDocuments] = useState<Record<string, DocumentUpload>>({})
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -84,6 +91,10 @@ export default function LoanApplication() {
       mobileMoneyAvg: "",
       utilityPaymentScore: "70",
       existingDebt: "",
+      idPassportNumber: "",
+      employerName: "",
+      bankName: "",
+      bankAccountNumber: "",
       sectorDetails: {},
     },
   })
@@ -103,6 +114,7 @@ export default function LoanApplication() {
         ...values,
         creditScore: mapCreditScore(values.creditScore),
         sectorDetails: values.sectorDetails || {},
+        documents: Object.values(documents),
       }
       const { data } = await api.post<ApplicationResponse>("/applications", payload)
       setApplicationResult(data)
@@ -142,9 +154,20 @@ export default function LoanApplication() {
         return true
       }
       case 2:
-        return true
+        return form.trigger(["firstName", "lastName", "phone", "idPassportNumber", "bankName", "bankAccountNumber"])
       case 3:
         return form.trigger(["income", "employment", "creditScore"])
+      case 4: {
+        if (!loanConfig) return true
+        for (const doc of loanConfig.requiredDocuments) {
+          if (!documents[doc.type]) {
+            setSubmitError(`Please upload: ${doc.label}`)
+            return false
+          }
+        }
+        setSubmitError("")
+        return true
+      }
       default:
         return true
     }
@@ -412,6 +435,25 @@ export default function LoanApplication() {
                                 <FormItem><FormLabel>Zip</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>
                               )} />
                             </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              {COMMON_APPLICANT_FIELDS.map((field) => (
+                                <FormField
+                                  key={field.name}
+                                  control={form.control}
+                                  name={field.name as "idPassportNumber" | "employerName" | "bankName" | "bankAccountNumber"}
+                                  render={({ field: f }) => (
+                                    <FormItem>
+                                      <FormLabel>
+                                        {field.label}
+                                        {field.required && <span className="text-red-500"> *</span>}
+                                      </FormLabel>
+                                      <FormControl><Input placeholder={field.label} {...f} /></FormControl>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                              ))}
+                            </div>
                           </motion.div>
                         )}
 
@@ -531,8 +573,47 @@ export default function LoanApplication() {
                           </motion.div>
                         )}
 
-                        {/* Step 4: Review */}
-                        {step === 4 && (
+                        {/* Step 4: KYC Documents */}
+                        {step === 4 && loanConfig && (
+                          <motion.div
+                            key="step4docs"
+                            variants={stepVariants}
+                            initial="enter"
+                            animate="center"
+                            exit="exit"
+                            transition={{ duration: 0.3 }}
+                            className="space-y-4"
+                          >
+                            <p className="text-sm text-gray-600">
+                              Upload required documents for your {loanConfig.name}. All files are encrypted.
+                            </p>
+                            <div className="grid grid-cols-1 gap-4">
+                              {loanConfig.requiredDocuments.map((doc) => (
+                                <DocumentUploadField
+                                  key={doc.type}
+                                  label={doc.label}
+                                  documentType={doc.type}
+                                  required
+                                  value={documents[doc.type]}
+                                  onChange={(d) =>
+                                    setDocuments((prev) => {
+                                      const next = { ...prev }
+                                      if (d) next[doc.type] = d
+                                      else delete next[doc.type]
+                                      return next
+                                    })
+                                  }
+                                />
+                              ))}
+                            </div>
+                            {submitError && step === 4 && (
+                              <p className="text-red-600 text-sm">{submitError}</p>
+                            )}
+                          </motion.div>
+                        )}
+
+                        {/* Step 5: Review */}
+                        {step === 5 && (
                           <motion.div
                             key="step4"
                             variants={stepVariants}

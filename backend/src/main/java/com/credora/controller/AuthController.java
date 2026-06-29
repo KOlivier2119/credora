@@ -38,6 +38,19 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.loginInstitution(req));
     }
 
+    @PostMapping("/google")
+    public ResponseEntity<AuthDtos.AuthResponse> googleAuth(@Valid @RequestBody AuthDtos.GoogleAuthRequest req) {
+        return ResponseEntity.ok(authService.googleAuth(req));
+    }
+
+    @PatchMapping("/profile")
+    public ResponseEntity<AuthDtos.UserResponse> updateProfile(
+            org.springframework.security.core.Authentication auth,
+            @RequestBody AuthDtos.ProfileUpdateRequest req) {
+        Long userId = (Long) auth.getDetails();
+        return ResponseEntity.ok(authService.updateProfile(userId, req));
+    }
+
     @GetMapping("/me")
     public ResponseEntity<?> me(org.springframework.security.core.Authentication auth) {
         if (auth == null || !auth.isAuthenticated()) {

@@ -21,6 +21,12 @@ public class User {
     @Column(precision = 12, scale = 2)
     private BigDecimal monthlyIncome;
     private String idPassportNumber;
+    private String city;
+    private String state;
+    private String zipCode;
+    private String employerName;
+    private String bankName;
+    private String bankAccountNumber;
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
@@ -47,5 +53,17 @@ public class User {
     public void setMonthlyIncome(BigDecimal monthlyIncome) { this.monthlyIncome = monthlyIncome; }
     public String getIdPassportNumber() { return idPassportNumber; }
     public void setIdPassportNumber(String idPassportNumber) { this.idPassportNumber = idPassportNumber; }
+    public String getCity() { return city; }
+    public void setCity(String city) { this.city = city; }
+    public String getState() { return state; }
+    public void setState(String state) { this.state = state; }
+    public String getZipCode() { return zipCode; }
+    public void setZipCode(String zipCode) { this.zipCode = zipCode; }
+    public String getEmployerName() { return employerName; }
+    public void setEmployerName(String employerName) { this.employerName = employerName; }
+    public String getBankName() { return bankName; }
+    public void setBankName(String bankName) { this.bankName = bankName; }
+    public String getBankAccountNumber() { return bankAccountNumber; }
+    public void setBankAccountNumber(String bankAccountNumber) { this.bankAccountNumber = bankAccountNumber; }
     public Instant getCreatedAt() { return createdAt; }
 }

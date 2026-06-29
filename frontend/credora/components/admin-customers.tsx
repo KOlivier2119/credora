@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -28,116 +28,37 @@ import {
   TrendingDown,
 } from "lucide-react"
 import AdminLayout from "@/components/admin-layout"
+import { api, CustomerSummary } from "@/lib/api"
 
 export default function AdminCustomers() {
   const [statusFilter, setStatusFilter] = useState("all")
   const [selectedCustomers, setSelectedCustomers] = useState<string[]>([])
+  const [customers, setCustomers] = useState<CustomerSummary[]>([])
+  const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState("")
 
-  // Sample data for customers
-  const customers = [
-    {
-      id: "CUST-2023-001",
-      name: "John Doe",
-      email: "john.doe@example.com",
-      phone: "+1 (555) 123-4567",
-      status: "active",
-      joinDate: "2023-01-15",
-      creditScore: 720,
-      activeLoans: 1,
-      totalBorrowed: 15000,
-      lastActivity: "2023-09-10",
-    },
-    {
-      id: "CUST-2023-002",
-      name: "Jane Smith",
-      email: "jane.smith@example.com",
-      phone: "+1 (555) 987-6543",
-      status: "active",
-      joinDate: "2023-02-20",
-      creditScore: 780,
-      activeLoans: 2,
-      totalBorrowed: 65000,
-      lastActivity: "2023-09-15",
-    },
-    {
-      id: "CUST-2023-003",
-      name: "Robert Johnson",
-      email: "robert.johnson@example.com",
-      phone: "+1 (555) 456-7890",
-      status: "inactive",
-      joinDate: "2023-03-05",
-      creditScore: 620,
-      activeLoans: 0,
-      totalBorrowed: 25000,
-      lastActivity: "2023-07-22",
-    },
-    {
-      id: "CUST-2023-004",
-      name: "Emily Davis",
-      email: "emily.davis@example.com",
-      phone: "+1 (555) 789-0123",
-      status: "active",
-      joinDate: "2023-03-18",
-      creditScore: 760,
-      activeLoans: 1,
-      totalBorrowed: 300000,
-      lastActivity: "2023-09-12",
-    },
-    {
-      id: "CUST-2023-005",
-      name: "Michael Wilson",
-      email: "michael.wilson@example.com",
-      phone: "+1 (555) 234-5678",
-      status: "active",
-      joinDate: "2023-04-02",
-      creditScore: 700,
-      activeLoans: 1,
-      totalBorrowed: 20000,
-      lastActivity: "2023-09-08",
-    },
-    {
-      id: "CUST-2023-006",
-      name: "Sarah Brown",
-      email: "sarah.brown@example.com",
-      phone: "+1 (555) 345-6789",
-      status: "flagged",
-      joinDate: "2023-04-15",
-      creditScore: 690,
-      activeLoans: 1,
-      totalBorrowed: 10000,
-      lastActivity: "2023-08-30",
-    },
-    {
-      id: "CUST-2023-007",
-      name: "David Miller",
-      email: "david.miller@example.com",
-      phone: "+1 (555) 567-8901",
-      status: "active",
-      joinDate: "2023-05-10",
-      creditScore: 800,
-      activeLoans: 1,
-      totalBorrowed: 75000,
-      lastActivity: "2023-09-14",
-    },
-    {
-      id: "CUST-2023-008",
-      name: "Jennifer Taylor",
-      email: "jennifer.taylor@example.com",
-      phone: "+1 (555) 678-9012",
-      status: "inactive",
-      joinDate: "2023-05-25",
-      creditScore: 640,
-      activeLoans: 0,
-      totalBorrowed: 18000,
-      lastActivity: "2023-06-18",
-    },
-  ]
+  useEffect(() => {
+    api.get<CustomerSummary[]>("/admin/customers")
+      .then((r) => setCustomers(r.data))
+      .catch(() => setCustomers([]))
+      .finally(() => setLoading(false))
+  }, [])
 
-  // Filter customers based on status
-  const filteredCustomers = customers.filter((customer) => {
-    if (statusFilter === "all") return true
-    return customer.status === statusFilter
-  })
+  const filteredCustomers = useMemo(() => {
+    return customers.filter((c) => {
+      const matchStatus = statusFilter === "all" || c.status === statusFilter
+      const q = search.toLowerCase()
+      const matchSearch = !q || c.name?.toLowerCase().includes(q) || c.email?.toLowerCase().includes(q)
+      return matchStatus && matchSearch
+    })
+  }, [customers, statusFilter, search])
+
+  const customerMetrics = useMemo(() => ({
+    total: customers.length,
+    active: customers.filter((c) => c.status === "active").length,
+    inactive: customers.filter((c) => c.status === "inactive").length,
+    flagged: customers.filter((c) => c.status === "flagged").length,
+  }), [customers])
 
   // Status badge styling
   const statusConfig = {
@@ -160,25 +81,14 @@ export default function AdminCustomers() {
     if (selectedCustomers.length === filteredCustomers.length) {
       setSelectedCustomers([])
     } else {
-      setSelectedCustomers(filteredCustomers.map((customer) => customer.id))
+      setSelectedCustomers(filteredCustomers.map((customer) => String(customer.id)))
     }
-  }
-
-  // Customer metrics
-  const customerMetrics = {
-    totalCustomers: 215,
-    customersTrend: 7,
-    activeCustomers: 185,
-    activeTrend: 5,
-    inactiveCustomers: 30,
-    inactiveTrend: 2,
-    flaggedCustomers: 8,
-    flaggedTrend: -1,
   }
 
   return (
     <AdminLayout title="Customer Management">
       <div className="space-y-6">
+        {loading && <p className="text-sm text-gray-500">Loading customers...</p>}
         {/* Customer Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
@@ -186,21 +96,8 @@ export default function AdminCustomers() {
               <div className="flex justify-between items-start">
                 <div>
                   <p className="text-sm text-gray-500">Total Customers</p>
-                  <p className="text-2xl font-bold">{customerMetrics.totalCustomers}</p>
+                  <p className="text-2xl font-bold">{customerMetrics.total}</p>
                 </div>
-                <div
-                  className={`flex items-center text-sm ${customerMetrics.customersTrend > 0 ? "text-green-500" : "text-red-500"}`}
-                >
-                  {customerMetrics.customersTrend > 0 ? (
-                    <TrendingUp className="h-4 w-4 mr-1" />
-                  ) : (
-                    <TrendingDown className="h-4 w-4 mr-1" />
-                  )}
-                  {Math.abs(customerMetrics.customersTrend)}%
-                </div>
-              </div>
-              <div className="mt-4 flex items-center justify-between text-xs text-gray-500">
-                <span>Since last month</span>
               </div>
             </CardContent>
           </Card>
@@ -210,21 +107,8 @@ export default function AdminCustomers() {
               <div className="flex justify-between items-start">
                 <div>
                   <p className="text-sm text-green-700">Active Customers</p>
-                  <p className="text-2xl font-bold text-green-800">{customerMetrics.activeCustomers}</p>
+                  <p className="text-2xl font-bold text-green-800">{customerMetrics.active}</p>
                 </div>
-                <div
-                  className={`flex items-center text-sm ${customerMetrics.activeTrend > 0 ? "text-green-700" : "text-red-600"}`}
-                >
-                  {customerMetrics.activeTrend > 0 ? (
-                    <TrendingUp className="h-4 w-4 mr-1" />
-                  ) : (
-                    <TrendingDown className="h-4 w-4 mr-1" />
-                  )}
-                  {Math.abs(customerMetrics.activeTrend)}%
-                </div>
-              </div>
-              <div className="mt-4 flex items-center justify-between text-xs text-green-700">
-                <span>86% of total customers</span>
               </div>
             </CardContent>
           </Card>
@@ -234,21 +118,8 @@ export default function AdminCustomers() {
               <div className="flex justify-between items-start">
                 <div>
                   <p className="text-sm text-gray-700">Inactive Customers</p>
-                  <p className="text-2xl font-bold text-gray-800">{customerMetrics.inactiveCustomers}</p>
+                  <p className="text-2xl font-bold text-gray-800">{customerMetrics.inactive}</p>
                 </div>
-                <div
-                  className={`flex items-center text-sm ${customerMetrics.inactiveTrend > 0 ? "text-yellow-600" : "text-green-600"}`}
-                >
-                  {customerMetrics.inactiveTrend > 0 ? (
-                    <TrendingUp className="h-4 w-4 mr-1" />
-                  ) : (
-                    <TrendingDown className="h-4 w-4 mr-1" />
-                  )}
-                  {Math.abs(customerMetrics.inactiveTrend)}%
-                </div>
-              </div>
-              <div className="mt-4 flex items-center justify-between text-xs text-gray-700">
-                <span>14% of total customers</span>
               </div>
             </CardContent>
           </Card>
@@ -258,24 +129,8 @@ export default function AdminCustomers() {
               <div className="flex justify-between items-start">
                 <div>
                   <p className="text-sm text-red-700">Flagged Accounts</p>
-                  <p className="text-2xl font-bold text-red-800">{customerMetrics.flaggedCustomers}</p>
+                  <p className="text-2xl font-bold text-red-800">{customerMetrics.flagged}</p>
                 </div>
-                <div
-                  className={`flex items-center text-sm ${customerMetrics.flaggedTrend < 0 ? "text-green-600" : "text-red-700"}`}
-                >
-                  {customerMetrics.flaggedTrend < 0 ? (
-                    <TrendingDown className="h-4 w-4 mr-1" />
-                  ) : (
-                    <TrendingUp className="h-4 w-4 mr-1" />
-                  )}
-                  {Math.abs(customerMetrics.flaggedTrend)}%
-                </div>
-              </div>
-              <div className="mt-4 flex items-center justify-between text-xs text-red-700">
-                <span>Requires attention</span>
-                <Button size="sm" variant="outline" className="border-red-500 text-red-700 hover:bg-red-100">
-                  View All
-                </Button>
               </div>
             </CardContent>
           </Card>
@@ -385,8 +240,8 @@ export default function AdminCustomers() {
                     <TableRow key={customer.id}>
                       <TableCell>
                         <Checkbox
-                          checked={selectedCustomers.includes(customer.id)}
-                          onCheckedChange={() => toggleSelection(customer.id)}
+                          checked={selectedCustomers.includes(String(customer.id))}
+                          onCheckedChange={() => toggleSelection(String(customer.id))}
                         />
                       </TableCell>
                       <TableCell>
@@ -439,7 +294,7 @@ export default function AdminCustomers() {
                           {customer.activeLoans}
                         </div>
                       </TableCell>
-                      <TableCell>${customer.totalBorrowed.toLocaleString()}</TableCell>
+                      <TableCell>${Number(customer.totalBorrowed || 0).toLocaleString()}</TableCell>
                       <TableCell>
                         <div className="flex items-center">
                           <Calendar className="h-4 w-4 mr-2 text-gray-500" />

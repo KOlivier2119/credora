@@ -20,6 +20,19 @@ public class ApplicationDtos {
         private String utilityPaymentScore;
         private String existingDebt;
         private Map<String, String> sectorDetails;
+        private String firstName;
+        private String lastName;
+        private String email;
+        private String phone;
+        private String address;
+        private String city;
+        private String state;
+        private String zipCode;
+        private String idPassportNumber;
+        private String employerName;
+        private String bankName;
+        private String bankAccountNumber;
+        private List<ReportDtos.DocumentUploadRequest> documents;
         public String getLoanType() { return loanType; }
         public void setLoanType(String loanType) { this.loanType = loanType; }
         public String getAmount() { return amount; }
@@ -42,6 +55,32 @@ public class ApplicationDtos {
         public void setExistingDebt(String existingDebt) { this.existingDebt = existingDebt; }
         public Map<String, String> getSectorDetails() { return sectorDetails; }
         public void setSectorDetails(Map<String, String> sectorDetails) { this.sectorDetails = sectorDetails; }
+        public String getFirstName() { return firstName; }
+        public void setFirstName(String firstName) { this.firstName = firstName; }
+        public String getLastName() { return lastName; }
+        public void setLastName(String lastName) { this.lastName = lastName; }
+        public String getEmail() { return email; }
+        public void setEmail(String email) { this.email = email; }
+        public String getPhone() { return phone; }
+        public void setPhone(String phone) { this.phone = phone; }
+        public String getAddress() { return address; }
+        public void setAddress(String address) { this.address = address; }
+        public String getCity() { return city; }
+        public void setCity(String city) { this.city = city; }
+        public String getState() { return state; }
+        public void setState(String state) { this.state = state; }
+        public String getZipCode() { return zipCode; }
+        public void setZipCode(String zipCode) { this.zipCode = zipCode; }
+        public String getIdPassportNumber() { return idPassportNumber; }
+        public void setIdPassportNumber(String idPassportNumber) { this.idPassportNumber = idPassportNumber; }
+        public String getEmployerName() { return employerName; }
+        public void setEmployerName(String employerName) { this.employerName = employerName; }
+        public String getBankName() { return bankName; }
+        public void setBankName(String bankName) { this.bankName = bankName; }
+        public String getBankAccountNumber() { return bankAccountNumber; }
+        public void setBankAccountNumber(String bankAccountNumber) { this.bankAccountNumber = bankAccountNumber; }
+        public List<ReportDtos.DocumentUploadRequest> getDocuments() { return documents; }
+        public void setDocuments(List<ReportDtos.DocumentUploadRequest> documents) { this.documents = documents; }
     }
 
     public static class ApplicationResponse {

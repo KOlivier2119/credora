@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Service
 public class AuthService {
@@ -81,6 +82,46 @@ public class AuthService {
         return buildInstitutionAuthResponse(inst);
     }
 
+    public AuthDtos.AuthResponse googleAuth(AuthDtos.GoogleAuthRequest req) {
+        User user = userRepository.findByEmail(req.getEmail()).orElseGet(() -> {
+            User u = new User();
+            u.setEmail(req.getEmail());
+            u.setFullName(req.getFullName());
+            u.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
+            return userRepository.save(u);
+        });
+        if (req.getFullName() != null && !req.getFullName().isBlank()) {
+            user.setFullName(req.getFullName());
+            user = userRepository.save(user);
+        }
+        return buildApplicantAuthResponse(user);
+    }
+
+    public AuthDtos.UserResponse updateProfile(Long userId, AuthDtos.ProfileUpdateRequest req) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        if (req.getFullName() != null) user.setFullName(req.getFullName());
+        if (req.getPhoneNumber() != null) user.setPhoneNumber(req.getPhoneNumber());
+        if (req.getAddress() != null) user.setAddress(req.getAddress());
+        if (req.getCity() != null) user.setCity(req.getCity());
+        if (req.getState() != null) user.setState(req.getState());
+        if (req.getZipCode() != null) user.setZipCode(req.getZipCode());
+        if (req.getEmploymentStatus() != null) user.setEmploymentStatus(req.getEmploymentStatus());
+        if (req.getMonthlyIncome() != null) user.setMonthlyIncome(parseDecimal(req.getMonthlyIncome()));
+        if (req.getIdPassportNumber() != null) user.setIdPassportNumber(req.getIdPassportNumber());
+        if (req.getEmployerName() != null) user.setEmployerName(req.getEmployerName());
+        if (req.getBankName() != null) user.setBankName(req.getBankName());
+        if (req.getBankAccountNumber() != null) {
+            user.setBankAccountNumber(maskAccount(req.getBankAccountNumber()));
+        }
+        return toUserResponse(userRepository.save(user));
+    }
+
+    private String maskAccount(String account) {
+        if (account.length() <= 4) return account;
+        return "****" + account.substring(account.length() - 4);
+    }
+
     public AuthDtos.UserResponse getUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
@@ -119,6 +160,12 @@ public class AuthService {
         r.setEmploymentStatus(user.getEmploymentStatus());
         r.setMonthlyIncome(user.getMonthlyIncome());
         r.setIdPassportNumber(user.getIdPassportNumber());
+        r.setCity(user.getCity());
+        r.setState(user.getState());
+        r.setZipCode(user.getZipCode());
+        r.setEmployerName(user.getEmployerName());
+        r.setBankName(user.getBankName());
+        r.setBankAccountNumber(user.getBankAccountNumber());
         return r;
     }
 

@@ -43,7 +43,15 @@ export interface LoanTypeConfig {
   baseApr: number
   sectorFields: LoanFieldConfig[]
   purposes: LoanPurposeId[]
+  requiredDocuments: { type: string; label: string }[]
 }
+
+export const COMMON_APPLICANT_FIELDS = [
+  { name: "idPassportNumber", label: "National ID / Passport Number", required: true },
+  { name: "employerName", label: "Employer / Business Name", required: false },
+  { name: "bankName", label: "Bank Name", required: true },
+  { name: "bankAccountNumber", label: "Bank Account Number", required: true },
+] as const
 
 export const LOAN_PURPOSES: {
   id: LoanPurposeId
@@ -98,6 +106,10 @@ export const LOAN_TYPES: LoanTypeConfig[] = [
       "medical",
       "other",
     ],
+    requiredDocuments: [
+      { type: "id_document", label: "Government ID / Passport" },
+      { type: "bank_statement", label: "Recent Bank Statement (3 months)" },
+    ],
     sectorFields: [
       {
         name: "existingDebt",
@@ -125,6 +137,12 @@ export const LOAN_TYPES: LoanTypeConfig[] = [
     terms: [12, 24, 36, 48, 60, 84],
     baseApr: 11.0,
     purposes: ["business"],
+    requiredDocuments: [
+      { type: "id_document", label: "Government ID / Passport" },
+      { type: "business_registration", label: "Business Registration Certificate" },
+      { type: "bank_statement", label: "Business Bank Statements (6 months)" },
+      { type: "tax_returns", label: "Tax Returns (last year)" },
+    ],
     sectorFields: [
       {
         name: "businessName",
@@ -185,6 +203,11 @@ export const LOAN_TYPES: LoanTypeConfig[] = [
     terms: [120, 180, 240, 360],
     baseApr: 6.5,
     purposes: ["home_improvement", "other"],
+    requiredDocuments: [
+      { type: "id_document", label: "Government ID / Passport" },
+      { type: "property_deed", label: "Property Title / Deed" },
+      { type: "income_proof", label: "Proof of Income (payslips or tax returns)" },
+    ],
     sectorFields: [
       {
         name: "propertyValue",
@@ -242,6 +265,11 @@ export const LOAN_TYPES: LoanTypeConfig[] = [
     terms: [12, 24, 36, 48, 60, 72, 84],
     baseApr: 7.5,
     purposes: ["other"],
+    requiredDocuments: [
+      { type: "id_document", label: "Government ID / Passport" },
+      { type: "vehicle_invoice", label: "Vehicle Invoice / Bill of Sale" },
+      { type: "insurance_quote", label: "Insurance Quote" },
+    ],
     sectorFields: [
       {
         name: "vehicleMake",
@@ -301,6 +329,11 @@ export const LOAN_TYPES: LoanTypeConfig[] = [
     terms: [12, 24, 36, 48, 60, 120],
     baseApr: 5.5,
     purposes: ["education"],
+    requiredDocuments: [
+      { type: "id_document", label: "Government ID / Passport" },
+      { type: "admission_letter", label: "Admission / Enrollment Letter" },
+      { type: "tuition_invoice", label: "Tuition Fee Invoice" },
+    ],
     sectorFields: [
       {
         name: "institutionName",

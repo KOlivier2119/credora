@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fira_Sans } from "next/font/google";
 import "./globals.css";
 import { Theme } from "@radix-ui/themes";
+import Providers from "@/components/providers";
 
 const fira =   Fira_Sans({
   subsets: ["latin"],
@@ -23,7 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${fira.variable} antialiased bg-gray-50`}>
         <Theme>
-        {children}
+        <Providers>{children}</Providers>
         </Theme>
       </body>
     </html>

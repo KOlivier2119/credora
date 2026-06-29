@@ -2,7 +2,9 @@ package com.credora.controller;
 
 import com.credora.dto.ApplicationDtos;
 import com.credora.dto.DashboardDtos;
+import com.credora.dto.ReportDtos;
 import com.credora.service.ApplicationService;
+import com.credora.service.LoanPaymentService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +17,12 @@ import java.util.List;
 public class ApplicationController {
 
     private final ApplicationService applicationService;
+    private final LoanPaymentService loanPaymentService;
 
-    public ApplicationController(ApplicationService applicationService) {
+    public ApplicationController(ApplicationService applicationService,
+                                 LoanPaymentService loanPaymentService) {
         this.applicationService = applicationService;
+        this.loanPaymentService = loanPaymentService;
     }
 
     private Long getUserId(Authentication auth) {
@@ -52,5 +57,23 @@ public class ApplicationController {
             Authentication auth,
             @RequestParam(defaultValue = "all") String status) {
         return applicationService.getUserLoans(getUserId(auth), status);
+    }
+
+    @PostMapping("/loans/{id}/payments")
+    public ReportDtos.PaymentResponse makePayment(
+            Authentication auth,
+            @PathVariable Long id,
+            @RequestBody ReportDtos.PaymentRequest req) {
+        return loanPaymentService.makePayment(getUserId(auth), id, req);
+    }
+
+    @GetMapping("/loans/{id}/payments")
+    public List<ReportDtos.PaymentResponse> getPayments(Authentication auth, @PathVariable Long id) {
+        return loanPaymentService.getPayments(getUserId(auth), id);
+    }
+
+    @GetMapping("/loans/{id}/schedule")
+    public List<ReportDtos.ScheduleEntry> getSchedule(Authentication auth, @PathVariable Long id) {
+        return loanPaymentService.getSchedule(getUserId(auth), id);
     }
 }

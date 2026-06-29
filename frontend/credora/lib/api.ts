@@ -154,3 +154,61 @@ export interface AdminDashboardSummary {
   totalCustomers: number;
   recentApplications: ApplicationResponse[];
 }
+
+export interface CustomerSummary {
+  id: number;
+  name: string;
+  email: string;
+  phone?: string;
+  status: string;
+  joinDate: string;
+  creditScore: number;
+  activeLoans: number;
+  totalBorrowed: number;
+  lastActivity: string;
+}
+
+export interface AdminReportsSummary {
+  totalLoanVolume: number;
+  approvalRate: number;
+  averageInterestRate: number;
+  defaultRate: number;
+  totalApplications: number;
+  approvedApplications: number;
+  rejectedApplications: number;
+  pendingApplications: number;
+  loanPerformance: { month: string; applications: number; approvals: number; rejections: number }[];
+  loanDistribution: { type: string; amount: number; count: number }[];
+  creditScoreDistribution: { range: string; count: number }[];
+  defaultRateTrend: { month: string; defaultRate: number }[];
+}
+
+export interface PaymentResponse {
+  id: number;
+  amount: number;
+  principalPortion: number;
+  interestPortion: number;
+  paymentDate: string;
+  status: string;
+  referenceNumber: string;
+  remainingBalance: number;
+  monthsPaid: number;
+  loanStatus: string;
+}
+
+export interface ScheduleEntry {
+  installment: number;
+  dueDate: string;
+  payment: number;
+  principal: number;
+  interest: number;
+  balance: number;
+  status: string;
+}
+
+export interface DocumentUpload {
+  documentType: string;
+  fileName: string;
+  contentType: string;
+  contentBase64: string;
+}

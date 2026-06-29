@@ -3,7 +3,9 @@ package com.credora.controller;
 import com.credora.dto.ApplicationDtos;
 import com.credora.dto.AuthDtos;
 import com.credora.dto.DashboardDtos;
+import com.credora.dto.ReportDtos;
 import com.credora.service.ApplicationService;
+import com.credora.service.ReportService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +16,11 @@ import java.util.List;
 public class AdminController {
 
     private final ApplicationService applicationService;
+    private final ReportService reportService;
 
-    public AdminController(ApplicationService applicationService) {
+    public AdminController(ApplicationService applicationService, ReportService reportService) {
         this.applicationService = applicationService;
+        this.reportService = reportService;
     }
 
     @GetMapping("/dashboard")
@@ -38,7 +42,12 @@ public class AdminController {
     }
 
     @GetMapping("/customers")
-    public List<AuthDtos.UserResponse> customers() {
-        return applicationService.getAllCustomers();
+    public List<ReportDtos.CustomerSummary> customers() {
+        return reportService.getCustomerSummaries();
+    }
+
+    @GetMapping("/reports")
+    public ReportDtos.AdminReportsSummary reports() {
+        return reportService.getAdminReports();
     }
 }

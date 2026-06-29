@@ -42,7 +42,7 @@ export default function LoginPage() {
       sessionStorage.setItem("preferredUserType", userType);
 
       await signIn("google", {
-        callbackUrl: userType === "applicant" ? "/dashboard" : "/admin",
+        callbackUrl: "/auth/google-callback",
         redirect: true,
       });
     } catch (error) {

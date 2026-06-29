@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:e2e": "playwright test",
+    "test:e2e:api": "playwright test e2e/loan-flow.spec.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.3",
@@ -47,6 +49,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.51.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-chartjs-2": "^2.5.7",

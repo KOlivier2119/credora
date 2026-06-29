@@ -6,10 +6,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.credora.dto.ApplicationDtos;
 import com.credora.dto.AuthDtos;
 import com.credora.dto.DashboardDtos;
+import com.credora.dto.ReportDtos;
 import com.credora.model.*;
 import com.credora.repository.LoanApplicationRepository;
 import com.credora.repository.LoanRepository;
 import com.credora.repository.UserRepository;
+import com.credora.repository.ApplicationDocumentRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,15 +35,18 @@ public class ApplicationService {
     private final AiScoringService aiScoringService;
     private final LoanTypeValidator loanTypeValidator;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ApplicationDocumentRepository documentRepository;
 
     public ApplicationService(LoanApplicationRepository applicationRepository, LoanRepository loanRepository,
                               UserRepository userRepository, AiScoringService aiScoringService,
-                              LoanTypeValidator loanTypeValidator) {
+                              LoanTypeValidator loanTypeValidator,
+                              ApplicationDocumentRepository documentRepository) {
         this.applicationRepository = applicationRepository;
         this.loanRepository = loanRepository;
         this.userRepository = userRepository;
         this.aiScoringService = aiScoringService;
         this.loanTypeValidator = loanTypeValidator;
+        this.documentRepository = documentRepository;
     }
 
     @Transactional
@@ -56,6 +61,9 @@ public class ApplicationService {
         sectorDetails.put("loanAmount", amount.toPlainString());
 
         loanTypeValidator.validate(req.getLoanType(), amount, term, sectorDetails);
+
+        updateUserProfileFromApplication(user, req);
+        user = userRepository.save(user);
 
         BigDecimal income = parseDecimal(req.getIncome());
         if (income.compareTo(BigDecimal.ZERO) == 0 && user.getMonthlyIncome() != null) {
@@ -110,6 +118,19 @@ public class ApplicationService {
         }
 
         app = applicationRepository.save(app);
+
+        if (req.getDocuments() != null) {
+            for (ReportDtos.DocumentUploadRequest doc : req.getDocuments()) {
+                if (doc.getFileName() == null || doc.getContentBase64() == null) continue;
+                ApplicationDocument ad = new ApplicationDocument();
+                ad.setApplication(app);
+                ad.setDocumentType(doc.getDocumentType());
+                ad.setFileName(doc.getFileName());
+                ad.setContentType(doc.getContentType());
+                ad.setContentBase64(doc.getContentBase64());
+                documentRepository.save(ad);
+            }
+        }
 
         if (app.getStatus() == ApplicationStatus.APPROVED) {
             createLoanFromApplication(app);
@@ -281,6 +302,40 @@ public class ApplicationService {
         double r = monthlyRate.doubleValue();
         double payment = p * r * Math.pow(1 + r, months) / (Math.pow(1 + r, months) - 1);
         return BigDecimal.valueOf(payment).setScale(2, RoundingMode.HALF_UP);
+    }
+
+    private void updateUserProfileFromApplication(User user, ApplicationDtos.CreateApplicationRequest req) {
+        if (req.getFirstName() != null || req.getLastName() != null) {
+            String first = req.getFirstName() != null ? req.getFirstName() : "";
+            String last = req.getLastName() != null ? req.getLastName() : "";
+            String combined = (first + " " + last).trim();
+            if (!combined.isBlank()) user.setFullName(combined);
+        }
+        if (req.getPhone() != null && !req.getPhone().isBlank()) user.setPhoneNumber(req.getPhone());
+        if (req.getAddress() != null && !req.getAddress().isBlank()) user.setAddress(req.getAddress());
+        if (req.getCity() != null && !req.getCity().isBlank()) user.setCity(req.getCity());
+        if (req.getState() != null && !req.getState().isBlank()) user.setState(req.getState());
+        if (req.getZipCode() != null && !req.getZipCode().isBlank()) user.setZipCode(req.getZipCode());
+        if (req.getIdPassportNumber() != null && !req.getIdPassportNumber().isBlank()) {
+            user.setIdPassportNumber(req.getIdPassportNumber());
+        }
+        if (req.getEmployerName() != null && !req.getEmployerName().isBlank()) {
+            user.setEmployerName(req.getEmployerName());
+        }
+        if (req.getBankName() != null && !req.getBankName().isBlank()) user.setBankName(req.getBankName());
+        if (req.getBankAccountNumber() != null && !req.getBankAccountNumber().isBlank()) {
+            user.setBankAccountNumber(maskAccount(req.getBankAccountNumber()));
+        }
+        if (req.getEmployment() != null && !req.getEmployment().isBlank()) {
+            user.setEmploymentStatus(req.getEmployment());
+        }
+        BigDecimal income = parseDecimal(req.getIncome());
+        if (income.compareTo(BigDecimal.ZERO) > 0) user.setMonthlyIncome(income);
+    }
+
+    private String maskAccount(String account) {
+        if (account.length() <= 4) return account;
+        return "****" + account.substring(account.length() - 4);
     }
 
     private ApplicationStatus mapRecommendationToStatus(String recommendation, Double probability) {

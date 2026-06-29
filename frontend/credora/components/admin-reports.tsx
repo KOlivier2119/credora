@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
@@ -18,65 +18,60 @@ import {
   ArrowUpDown,
 } from "lucide-react"
 import AdminLayout from "@/components/admin-layout"
+import { api, AdminReportsSummary } from "@/lib/api"
 
 export default function AdminReports() {
   const [timeRange, setTimeRange] = useState("month")
   const [reportType, setReportType] = useState("performance")
+  const [reports, setReports] = useState<AdminReportsSummary | null>(null)
+  const [loading, setLoading] = useState(true)
 
-  // Sample data for loan performance chart
-  const loanPerformanceData = [
-    { name: "Jan", applications: 45, approvals: 32, rejections: 13 },
-    { name: "Feb", applications: 52, approvals: 38, rejections: 14 },
-    { name: "Mar", applications: 48, approvals: 35, rejections: 13 },
-    { name: "Apr", applications: 55, approvals: 42, rejections: 13 },
-    { name: "May", applications: 62, approvals: 48, rejections: 14 },
-    { name: "Jun", applications: 58, approvals: 45, rejections: 13 },
-    { name: "Jul", applications: 65, approvals: 52, rejections: 13 },
-    { name: "Aug", applications: 72, approvals: 58, rejections: 14 },
-    { name: "Sep", applications: 68, approvals: 54, rejections: 14 },
-  ]
+  useEffect(() => {
+    api.get<AdminReportsSummary>("/admin/reports")
+      .then((r) => setReports(r.data))
+      .catch(() => setReports(null))
+      .finally(() => setLoading(false))
+  }, [])
 
-  // Sample data for loan distribution chart
-  const loanDistributionData = [
-    { name: "Personal", value: 850000 },
-    { name: "Business", value: 1200000 },
-    { name: "Mortgage", value: 3500000 },
-    { name: "Auto", value: 650000 },
-    { name: "Education", value: 450000 },
-  ]
+  const loanPerformanceData = reports?.loanPerformance?.map((m) => ({
+    name: m.month,
+    applications: m.applications,
+    approvals: m.approvals,
+    rejections: m.rejections,
+  })) ?? []
 
-  // Sample data for credit score distribution
-  const creditScoreData = [
-    { name: "300-579", value: 45 },
-    { name: "580-669", value: 85 },
-    { name: "670-739", value: 120 },
-    { name: "740-799", value: 95 },
-    { name: "800-850", value: 55 },
-  ]
+  const loanDistributionData = reports?.loanDistribution?.map((d) => ({
+    name: d.type,
+    value: Number(d.amount),
+  })) ?? []
 
-  // Sample data for default rate trend
-  const defaultRateTrendData = [
-    { name: "Jan", value: 2.8 },
-    { name: "Feb", value: 2.7 },
-    { name: "Mar", value: 2.9 },
-    { name: "Apr", value: 2.6 },
-    { name: "May", value: 2.5 },
-    { name: "Jun", value: 2.4 },
-    { name: "Jul", value: 2.3 },
-    { name: "Aug", value: 2.2 },
-    { name: "Sep", value: 2.1 },
-  ]
+  const creditScoreData = reports?.creditScoreDistribution?.map((b) => ({
+    name: b.range,
+    value: b.count,
+  })) ?? []
 
-  // Report metrics
+  const defaultRateTrendData = reports?.defaultRateTrend?.map((d) => ({
+    name: d.month,
+    value: d.defaultRate,
+  })) ?? []
+
   const reportMetrics = {
-    totalLoanAmount: 6650000,
-    amountTrend: 15,
-    approvalRate: 78.5,
-    approvalTrend: 2.3,
-    averageInterestRate: 5.4,
-    rateTrend: -0.2,
-    defaultRate: 2.1,
-    defaultTrend: -0.3,
+    totalLoanAmount: Number(reports?.totalLoanVolume ?? 0),
+    amountTrend: 0,
+    approvalRate: reports?.approvalRate ?? 0,
+    approvalTrend: 0,
+    averageInterestRate: reports?.averageInterestRate ?? 0,
+    rateTrend: 0,
+    defaultRate: reports?.defaultRate ?? 0,
+    defaultTrend: 0,
+  }
+
+  if (loading) {
+    return (
+      <AdminLayout title="Financial Reports">
+        <p className="text-gray-500">Loading reports...</p>
+      </AdminLayout>
+    )
   }
 
   return (

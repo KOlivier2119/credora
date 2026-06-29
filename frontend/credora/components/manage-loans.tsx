@@ -7,20 +7,38 @@ import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { LineChart, ChartContainer } from "@/components/ui/charts"
-import { Calendar, CheckCircle, Clock, DollarSign, FileText, AlertCircle, Download, CreditCard } from "lucide-react"
+import { Calendar, CheckCircle, Clock, DollarSign, FileText, AlertCircle, Download, CreditCard, Loader2 } from "lucide-react"
 import Layout from "@/components/layout"
-import { api, LoanResponse } from "@/lib/api"
+import { api, LoanResponse, PaymentResponse } from "@/lib/api"
 
 export default function ManageLoans() {
   const [activeTab, setActiveTab] = useState("active")
   const [apiLoans, setApiLoans] = useState<LoanResponse[]>([])
+  const [payingId, setPayingId] = useState<number | null>(null)
+
+  const loadLoans = () => {
+    api.get<LoanResponse[]>("/loans").then((r) => setApiLoans(r.data)).catch(() => {})
+  }
 
   useEffect(() => {
-    api.get<LoanResponse[]>("/loans").then((r) => setApiLoans(r.data)).catch(() => {})
+    loadLoans()
   }, [])
+
+  const makePayment = async (loanId: number, amount?: number) => {
+    setPayingId(loanId)
+    try {
+      await api.post<PaymentResponse>(`/loans/${loanId}/payments`, {
+        amount: amount ? String(amount) : "",
+      })
+      loadLoans()
+    } finally {
+      setPayingId(null)
+    }
+  }
 
   const loans = apiLoans.length > 0
     ? apiLoans.map((l) => ({
+        dbId: l.id,
         id: l.referenceId,
         amount: Number(l.principal),
         purpose: l.purpose || "Loan",
@@ -33,102 +51,32 @@ export default function ManageLoans() {
         progress: l.termMonths ? Math.round((l.monthsPaid / l.termMonths) * 100) : 0,
         paymentHistory: [{ month: "Current", amount: Number(l.monthlyPayment) }],
       }))
-    : [
-    {
-      id: "LOAN-2023-001",
-      amount: 15000,
-      purpose: "Home Improvement",
-      status: "active",
-      startDate: "2023-01-15",
-      term: 36,
-      interestRate: 5.2,
-      remainingAmount: 12500,
-      nextPayment: {
-        amount: 450,
-        date: "2023-12-15",
-      },
-      progress: 17, // 17% paid off
-      paymentHistory: [
-        { month: "Jan", amount: 450 },
-        { month: "Feb", amount: 450 },
-        { month: "Mar", amount: 450 },
-        { month: "Apr", amount: 450 },
-        { month: "May", amount: 450 },
-        { month: "Jun", amount: 450 },
-        { month: "Jul", amount: 450 },
-        { month: "Aug", amount: 450 },
-        { month: "Sep", amount: 450 },
-        { month: "Oct", amount: 450 },
-        { month: "Nov", amount: 450 },
-      ],
-    },
-    {
-      id: "LOAN-2023-002",
-      amount: 8000,
-      purpose: "Debt Consolidation",
-      status: "active",
-      startDate: "2023-03-10",
-      term: 24,
-      interestRate: 4.8,
-      remainingAmount: 5200,
-      nextPayment: {
-        amount: 350,
-        date: "2023-12-10",
-      },
-      progress: 35, // 35% paid off
-      paymentHistory: [
-        { month: "Mar", amount: 350 },
-        { month: "Apr", amount: 350 },
-        { month: "May", amount: 350 },
-        { month: "Jun", amount: 350 },
-        { month: "Jul", amount: 350 },
-        { month: "Aug", amount: 350 },
-        { month: "Sep", amount: 350 },
-        { month: "Oct", amount: 350 },
-        { month: "Nov", amount: 350 },
-      ],
-    },
-  ]
+    : []
 
-  // Sample data for completed loans
-  const completedLoans = [
-    {
-      id: "LOAN-2022-045",
-      amount: 12000,
-      purpose: "Education",
+  const completedLoans = apiLoans
+    .filter((l) => l.status === "PAID_OFF" || l.status === "paid_off")
+    .map((l) => ({
+      id: l.referenceId,
+      amount: Number(l.principal),
+      purpose: l.purpose || "Loan",
       status: "completed",
-      startDate: "2022-05-20",
-      endDate: "2023-05-20",
-      term: 12,
-      interestRate: 4.5,
-      totalPaid: 12540,
-    },
-  ]
+      startDate: new Date().toISOString().slice(0, 10),
+      endDate: new Date().toISOString().slice(0, 10),
+      term: l.termMonths,
+      interestRate: Number(l.interestRate),
+      totalPaid: Number(l.principal),
+    }))
 
-  // Upcoming payments
-  const upcomingPayments = [
-    {
-      loanId: "LOAN-2023-001",
-      purpose: "Home Improvement",
-      amount: 450,
-      date: "2023-12-15",
+  const upcomingPayments = loans
+    .filter((l) => l.status === "active")
+    .map((l) => ({
+      loanDbId: l.dbId,
+      loanId: l.id,
+      purpose: l.purpose,
+      amount: l.nextPayment.amount,
+      date: l.nextPayment.date,
       status: "upcoming",
-    },
-    {
-      loanId: "LOAN-2023-002",
-      purpose: "Debt Consolidation",
-      amount: 350,
-      date: "2023-12-10",
-      status: "upcoming",
-    },
-    {
-      loanId: "LOAN-2023-001",
-      purpose: "Home Improvement",
-      amount: 450,
-      date: "2024-01-15",
-      status: "scheduled",
-    },
-  ]
+    }))
 
   // Filter loans based on active tab
   const filteredLoans = activeTab === "active" ? loans : completedLoans
@@ -317,8 +265,16 @@ export default function ManageLoans() {
                             <FileText className="h-4 w-4 mr-2" />
                             View Payment Schedule
                           </Button>
-                          <Button className="bg-[#0a1525] hover:bg-[#1a2b45] text-sm">
-                            <DollarSign className="h-4 w-4 mr-2" />
+                          <Button
+                            className="bg-[#0a1525] hover:bg-[#1a2b45] text-sm"
+                            disabled={payingId === loan.dbId}
+                            onClick={() => loan.dbId && makePayment(loan.dbId, loan.nextPayment.amount)}
+                          >
+                            {payingId === loan.dbId ? (
+                              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                            ) : (
+                              <DollarSign className="h-4 w-4 mr-2" />
+                            )}
                             Make a Payment
                           </Button>
                         </div>
@@ -444,7 +400,17 @@ export default function ManageLoans() {
                       <div className="font-medium">${payment.amount}</div>
                       <div className="text-sm text-gray-500">Due {new Date(payment.date).toLocaleDateString()}</div>
                     </div>
-                    <Button className="bg-[#0a1525] hover:bg-[#1a2b45]">Pay Now</Button>
+                    <Button
+                      className="bg-[#0a1525] hover:bg-[#1a2b45]"
+                      disabled={payingId === payment.loanDbId}
+                      onClick={() => payment.loanDbId && makePayment(payment.loanDbId, payment.amount)}
+                    >
+                      {payingId === payment.loanDbId ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        "Pay Now"
+                      )}
+                    </Button>
                   </div>
                 ))
               )}

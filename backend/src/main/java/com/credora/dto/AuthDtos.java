@@ -90,6 +90,12 @@ public class AuthDtos {
         private String employmentStatus;
         private BigDecimal monthlyIncome;
         private String idPassportNumber;
+        private String city;
+        private String state;
+        private String zipCode;
+        private String employerName;
+        private String bankName;
+        private String bankAccountNumber;
         public Long getId() { return id; }
         public void setId(Long id) { this.id = id; }
         public String getFullName() { return fullName; }
@@ -106,6 +112,69 @@ public class AuthDtos {
         public void setMonthlyIncome(BigDecimal monthlyIncome) { this.monthlyIncome = monthlyIncome; }
         public String getIdPassportNumber() { return idPassportNumber; }
         public void setIdPassportNumber(String idPassportNumber) { this.idPassportNumber = idPassportNumber; }
+        public String getCity() { return city; }
+        public void setCity(String city) { this.city = city; }
+        public String getState() { return state; }
+        public void setState(String state) { this.state = state; }
+        public String getZipCode() { return zipCode; }
+        public void setZipCode(String zipCode) { this.zipCode = zipCode; }
+        public String getEmployerName() { return employerName; }
+        public void setEmployerName(String employerName) { this.employerName = employerName; }
+        public String getBankName() { return bankName; }
+        public void setBankName(String bankName) { this.bankName = bankName; }
+        public String getBankAccountNumber() { return bankAccountNumber; }
+        public void setBankAccountNumber(String bankAccountNumber) { this.bankAccountNumber = bankAccountNumber; }
+    }
+
+    public static class ProfileUpdateRequest {
+        private String fullName;
+        private String phoneNumber;
+        private String address;
+        private String city;
+        private String state;
+        private String zipCode;
+        private String employmentStatus;
+        private String monthlyIncome;
+        private String idPassportNumber;
+        private String employerName;
+        private String bankName;
+        private String bankAccountNumber;
+        public String getFullName() { return fullName; }
+        public void setFullName(String fullName) { this.fullName = fullName; }
+        public String getPhoneNumber() { return phoneNumber; }
+        public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+        public String getAddress() { return address; }
+        public void setAddress(String address) { this.address = address; }
+        public String getCity() { return city; }
+        public void setCity(String city) { this.city = city; }
+        public String getState() { return state; }
+        public void setState(String state) { this.state = state; }
+        public String getZipCode() { return zipCode; }
+        public void setZipCode(String zipCode) { this.zipCode = zipCode; }
+        public String getEmploymentStatus() { return employmentStatus; }
+        public void setEmploymentStatus(String employmentStatus) { this.employmentStatus = employmentStatus; }
+        public String getMonthlyIncome() { return monthlyIncome; }
+        public void setMonthlyIncome(String monthlyIncome) { this.monthlyIncome = monthlyIncome; }
+        public String getIdPassportNumber() { return idPassportNumber; }
+        public void setIdPassportNumber(String idPassportNumber) { this.idPassportNumber = idPassportNumber; }
+        public String getEmployerName() { return employerName; }
+        public void setEmployerName(String employerName) { this.employerName = employerName; }
+        public String getBankName() { return bankName; }
+        public void setBankName(String bankName) { this.bankName = bankName; }
+        public String getBankAccountNumber() { return bankAccountNumber; }
+        public void setBankAccountNumber(String bankAccountNumber) { this.bankAccountNumber = bankAccountNumber; }
+    }
+
+    public static class GoogleAuthRequest {
+        @Email @NotBlank private String email;
+        @NotBlank private String fullName;
+        private String googleId;
+        public String getEmail() { return email; }
+        public void setEmail(String email) { this.email = email; }
+        public String getFullName() { return fullName; }
+        public void setFullName(String fullName) { this.fullName = fullName; }
+        public String getGoogleId() { return googleId; }
+        public void setGoogleId(String googleId) { this.googleId = googleId; }
     }
 
     public static class InstitutionResponse {
