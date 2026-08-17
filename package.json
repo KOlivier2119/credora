@@ -1,0 +1,13 @@
+{
+  "name": "credora-root",
+  "private": true,
+  "description": "Root package for Vercel — Next.js app lives in frontend/credora",
+  "dependencies": {
+    "next": "15.5.21"
+  },
+  "scripts": {
+    "build": "npm run build --prefix frontend/credora",
+    "dev": "npm run dev --prefix frontend/credora",
+    "start": "npm run start --prefix frontend/credora"
+  }
+}

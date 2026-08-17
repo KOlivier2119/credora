@@ -1,9 +1,16 @@
+import path from "path";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  outputFileTracingRoot: path.join(__dirname),
   images: {
-    domains: ["s3-alpha-sig.figma.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "s3-alpha-sig.figma.com",
+      },
+    ],
   },
 };
 

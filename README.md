@@ -114,6 +114,22 @@ GOOGLE_CLIENT_SECRET=your-secret
 
 Until credentials are set, the Google button stays visible and explains that configuration is missing.
 
+## Deploy on Vercel
+
+The Next.js app is in **`frontend/credora`**, not the repo root.
+
+**Option A (recommended):** In Vercel → Project → Settings → General → **Root Directory**, set:
+
+```
+frontend/credora
+```
+
+Then redeploy. Vercel will read `frontend/credora/package.json` and detect Next.js automatically.
+
+**Option B:** Leave Root Directory as the repo root. The root `vercel.json` and `package.json` run install/build in `frontend/credora` and include `next` at the root for framework detection.
+
+Add the env vars from `frontend/credora/.env.example` in Vercel (see table in prior docs). Set `NEXTAUTH_URL` to your production URL and add the same origin/redirect URI in Google Cloud Console.
+
 ## Team
 
 RUYANGE Arnold and Team — Credora Project
