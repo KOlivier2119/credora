@@ -83,15 +83,19 @@ public class AuthService {
     }
 
     public AuthDtos.AuthResponse googleAuth(AuthDtos.GoogleAuthRequest req) {
-        User user = userRepository.findByEmail(req.getEmail()).orElseGet(() -> {
+        String email = req.getEmail() == null ? "" : req.getEmail().trim().toLowerCase();
+        String fullName = (req.getFullName() == null || req.getFullName().isBlank())
+                ? email
+                : req.getFullName().trim();
+        User user = userRepository.findByEmailIgnoreCase(email).orElseGet(() -> {
             User u = new User();
-            u.setEmail(req.getEmail());
-            u.setFullName(req.getFullName());
+            u.setEmail(email);
+            u.setFullName(fullName);
             u.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
             return userRepository.save(u);
         });
-        if (req.getFullName() != null && !req.getFullName().isBlank()) {
-            user.setFullName(req.getFullName());
+        if (!fullName.isBlank() && (user.getFullName() == null || user.getFullName().isBlank())) {
+            user.setFullName(fullName);
             user = userRepository.save(user);
         }
         return buildApplicantAuthResponse(user);

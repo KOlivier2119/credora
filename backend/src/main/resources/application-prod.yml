@@ -11,7 +11,7 @@ logging:
 
 credora:
   cors:
-    allowed-origins: ${CORS_ORIGINS:https://credora.example.com}
+    allowed-origins: ${CORS_ORIGINS:https://credora-fawn.vercel.app}
 
 server:
   forward-headers-strategy: framework

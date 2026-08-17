@@ -51,11 +51,18 @@ function LoginForm() {
   }, []);
 
   useEffect(() => {
-    if (authError) {
-      setError(
-        "Google sign-in failed. Add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET to .env.local, then restart the app."
-      );
+    if (!authError) return;
+    if (authError === "OAuthSignin" || authError === "OAuthCallback" || authError === "OAuthCreateAccount") {
+      setError("Could not reach Google. Check your connection and try again.");
+      return;
     }
+    if (authError === "Configuration") {
+      setError(
+        "Google sign-in is not configured. Add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET, then restart."
+      );
+      return;
+    }
+    setError("Google sign-in failed. Please try again or use email and password.");
   }, [authError]);
 
   const destination = () => {

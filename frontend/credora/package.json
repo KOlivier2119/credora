@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "NODE_OPTIONS='--dns-result-order=ipv4first' next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_OPTIONS='--dns-result-order=ipv4first' next start",
     "lint": "next lint",
     "test:e2e": "playwright test",
     "test:e2e:api": "playwright test e2e/loan-flow.spec.ts"
