@@ -1,4 +1,9 @@
 @import url("@radix-ui/themes/styles.css");
+@import "@fontsource/plus-jakarta-sans/400.css";
+@import "@fontsource/plus-jakarta-sans/500.css";
+@import "@fontsource/plus-jakarta-sans/600.css";
+@import "@fontsource/plus-jakarta-sans/700.css";
+@import "@fontsource/plus-jakarta-sans/800.css";
 
 @tailwind base;
 @tailwind components;
@@ -6,82 +11,79 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    /* Navy brand #061525 */
+    --background: 210 40% 98%;
+    --foreground: 211 72% 8%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --card-foreground: 211 72% 8%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
+    --popover-foreground: 211 72% 8%;
+    --primary: 211 72% 8%;
     --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
+    --secondary: 210 25% 96%;
+    --secondary-foreground: 211 72% 8%;
+    --muted: 210 20% 96%;
+    --muted-foreground: 215 12% 45%;
+    --accent: 211 55% 94%;
+    --accent-foreground: 211 72% 8%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --radius: 0.5rem;
+    --border: 214 20% 90%;
+    --input: 214 20% 90%;
+    --ring: 211 72% 8%;
+    --radius: 0.75rem;
 
-    /* Chart colors */
-    --chart-1: 12 76% 61%;
+    --chart-1: 211 72% 28%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
 
-    /* Sidebar colors */
-    --sidebar: 0 0% 100%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-    --sidebar-background: 0 0% 98%;
+    --sidebar: 211 72% 8%;
+    --sidebar-foreground: 210 40% 96%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 211 45% 16%;
+    --sidebar-accent-foreground: 210 40% 96%;
+    --sidebar-border: 211 40% 18%;
+    --sidebar-ring: 217 91% 60%;
+    --sidebar-background: 211 72% 8%;
   }
 
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
+    --background: 211 72% 6%;
+    --foreground: 210 40% 98%;
+    --card: 211 55% 9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 211 55% 9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 211 72% 8%;
+    --secondary: 211 40% 16%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 211 40% 16%;
+    --muted-foreground: 215 16% 65%;
+    --accent: 211 40% 16%;
+    --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-
-    /* Sidebar colors */
-    --sidebar: 240 10% 3.9%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --border: 211 30% 18%;
+    --input: 211 30% 18%;
+    --ring: 217 91% 60%;
+    --sidebar: 211 72% 6%;
+    --sidebar-foreground: 210 40% 96%;
+    --sidebar-primary: 224 76% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 211 40% 14%;
+    --sidebar-accent-foreground: 210 40% 96%;
+    --sidebar-border: 211 30% 16%;
+    --sidebar-ring: 217 91% 60%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
+    --sidebar-background: 211 72% 6%;
   }
 }
 
@@ -89,8 +91,29 @@
   * {
     @apply border-border;
   }
+  html {
+    @apply scroll-smooth overflow-x-hidden;
+  }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased overflow-x-hidden;
+  }
+  h1, h2, h3, h4 {
+    @apply tracking-tight text-foreground;
   }
 }
 
+@layer utilities {
+  .outlined-text {
+    -webkit-text-stroke: 1px currentColor;
+    color: transparent;
+  }
+  .section-shell {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+  .section-pad {
+    @apply py-12 sm:py-16 md:py-24;
+  }
+  .section-label {
+    @apply inline-flex items-center rounded-full border border-primary/20 bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-primary;
+  }
+}

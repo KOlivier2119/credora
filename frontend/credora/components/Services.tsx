@@ -1,87 +1,82 @@
-import React from "react";
+import Link from "next/link";
+import { CoverImage } from "@/components/cover-image";
+
+const services = [
+  {
+    title: "Personal loans",
+    body: "Flexible terms scored on income and payment regularity, not only bureau history.",
+    image: "/images/service-personal.jpg",
+    alt: "Applicant reviewing personal loan options",
+  },
+  {
+    title: "Emergency loans",
+    body: "Faster access when cash-flow signals support the application.",
+    image: "/images/service-emergency.jpg",
+    alt: "Community support during an urgent cash need",
+  },
+  {
+    title: "Business loans",
+    body: "Working capital for MSMEs using mobile-money and revenue patterns.",
+    image: "/images/service-business.jpg",
+    alt: "Small business owner at a café counter",
+  },
+  {
+    title: "Student loans",
+    body: "Education financing with clear terms and early-repayment options.",
+    image: "/images/service-student.jpg",
+    alt: "Students collaborating on campus",
+  },
+  {
+    title: "Mortgage loans",
+    body: "Home financing with documented income and alternative data overlays.",
+    image: "/images/service-mortgage.jpg",
+    alt: "Home ready for mortgage financing",
+  },
+  {
+    title: "Small business loans",
+    body: "Asset-light businesses scored on cash flow instead of collateral alone.",
+    image: "/images/service-msme.jpg",
+    alt: "Retail shop using point-of-sale payments",
+  },
+];
 
 const Services = () => {
   return (
-    <div className="w-full p-8 bg-gray-50">
-      {/* Header Section */}
-      <div className="flex justify-center w-full">
-        <button className="text-[#4B415F] border border-[#4B415F] rounded-full py-2 px-5 mb-8">
-          OUR SERVICES
-        </button>
+    <section id="services" className="section-pad scroll-mt-24 w-full bg-muted/60">
+      <div className="section-shell">
+        <div className="mb-6 flex justify-center sm:mb-8">
+          <span className="section-label">Our services</span>
+        </div>
+        <h2 className="mb-8 text-center text-2xl font-bold sm:mb-12 sm:text-3xl md:text-4xl">
+          Loans tailored to how people actually earn
+        </h2>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {services.map((item) => (
+            <div key={item.title} className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
+              <CoverImage
+                src={item.image}
+                alt={item.alt}
+                className="h-40 sm:h-44"
+                imageClassName="object-[center_25%]"
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+              />
+              <div className="p-5 sm:p-6">
+                <h3 className="text-lg font-semibold text-primary">{item.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.body}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-center pt-8 sm:pt-10">
+          <Link
+            href="/register"
+            className="w-full rounded-full bg-primary px-6 py-2.5 text-center text-sm font-medium text-primary-foreground transition hover:opacity-90 sm:w-auto"
+          >
+            Apply now
+          </Link>
+        </div>
       </div>
-
-      {/* Title */}
-      <h1 className="text-[#061525] font-bold text-4xl text-center mb-12">
-        Comprehensive financial solutions tailored to your needs
-      </h1>
-
-      {/* Table Section */}
-      <div className="overflow-x-auto">
-        <table className="max-w-screen-2xl mx-auto border-collapse border-spacing-4">
-          <tbody>
-            {/* Row 1 */}
-            <tr className="flex flex-wrap md:table-row">
-              <td className="md:w-1/2 p-8 border border-gray-300">
-                <div>
-                  <h2 className="text-lg font-bold text-[#061525]">Personal Loans</h2>
-                  <p className="text-gray-600">
-                    Our Personal Loans offer flexible terms and competitive rates, tailored to meet your individual needs.
-                  </p>
-                </div>
-              </td>
-              <td className="md:w-1/2 p-8 border border-gray-300">
-                <div>
-                  <h2 className="text-lg font-bold text-[#061525]">Emergency Loans</h2>
-                  <p className="text-gray-600">Quick and reliable emergency loans, providing fast access to funds when you need them most. Apply now for instant relief.</p>
-                </div>
-              </td>
-            </tr>
-
-            {/* Row 2 */}
-            <tr className="flex flex-wrap md:table-row">
-              <td className="md:w-1/2 p-8 border border-gray-300">
-                <div>
-                  <h2 className="text-lg font-bold text-[#061525]">Business Loans</h2>
-                  <p className="text-gray-600">
-                    Empower your business with our flexible financing options. Tailored to meet the unique needs of your enterprise.
-                  </p>
-                </div>
-              </td>
-              <td className="md:w-1/2 p-8 border border-gray-300">
-                <div>
-                  <h2 className="text-lg font-bold text-[#061525]">Student Loans</h2>
-                  <p className="text-gray-600">Student loans open doors to education but can also become a heavy financial burden if not managed wisely. Plan carefully.</p>
-                </div>
-              </td>
-            </tr>
-
-            {/* Row 3 */}
-            <tr className="flex flex-wrap md:table-row">
-              <td className="md:w-1/2 p-8 border border-gray-300">
-                <div>
-                  <h2 className="text-lg font-bold text-[#061525]">Mortgage Loans</h2>
-                  <p className="text-gray-600">
-                    Secure your dream home with our competitive mortgage loans. Enjoy flexible terms and low interest rates.
-                  </p>
-                </div>
-              </td>
-              <td className="md:w-1/2 p-8 border border-gray-300">
-                <div>
-                  <h2 className="text-lg font-bold text-[#061525]">Small business Loans</h2>
-                  <p className="text-gray-600">This content highlights the key benefits of your small business loan offerings, appealing to entrepreneurs seeking financial support.
-                  </p>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div className="flex justify-center py-4">
-        <button className="bg-[#061525] hover:bg-[#172c42] transition-all duration-500  py-2 px-5 text-white rounded-full">
-          View More
-        </button>
-      </div>
-    </div>
+    </section>
   );
 };
 

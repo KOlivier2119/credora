@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { Search, Clock, CheckCircle, XCircle, AlertCircle, ChevronRight, Bell, FileText } from "lucide-react"
+import Link from "next/link"
 import Layout from "@/components/layout"
 import { api, ApplicationResponse } from "@/lib/api"
 
@@ -58,19 +59,19 @@ export default function LoanTracker() {
     <Layout title="Loan Tracker">
       <div className="space-y-6">
         {/* Header with search */}
-        <Card className="bg-gradient-to-r from-[#0a1525] to-[#1a2b45] text-white border-none">
-          <CardContent className="p-6">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
+        <Card className="border-none bg-gradient-to-r from-primary to-[#163a63] text-white">
+          <CardContent className="p-5 sm:p-6">
+            <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
               <div>
-                <h2 className="text-2xl font-bold">Loan Application Tracker</h2>
-                <p className="mt-1 text-blue-100">Track the status of your loan applications in real-time</p>
+                <h2 className="text-xl font-bold sm:text-2xl">Loan Application Tracker</h2>
+                <p className="mt-1 text-sm text-white/80">Track the status of your loan applications in real-time</p>
               </div>
-              <div className="mt-4 md:mt-0">
-                <Button className="bg-white text-[#0a1525] hover:bg-blue-100">
-                  <FileText className="h-4 w-4 mr-2" />
-                  New Application
-                </Button>
-              </div>
+              <Button asChild className="w-full bg-white text-primary hover:bg-white/90 md:w-auto">
+                <Link href="/dashboard/apply-for-loan">
+                  <FileText className="mr-2 h-4 w-4" />
+                  New application
+                </Link>
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -112,7 +113,9 @@ export default function LoanTracker() {
                     ? "Try adjusting your search query"
                     : "You don't have any loan applications with this status"}
                 </p>
-                <Button className="mt-4 bg-[#0a1525] hover:bg-[#1a2b45]">Apply for a Loan</Button>
+                <Button asChild className="mt-4 bg-primary hover:bg-primary/90">
+                  <Link href="/dashboard/apply-for-loan">Apply for a Loan</Link>
+                </Button>
               </CardContent>
             </Card>
           ) : (
@@ -301,19 +304,25 @@ export default function LoanTracker() {
                     {/* Action buttons */}
                     <div className="flex justify-end space-x-2 mt-4">
                       {application.status === "approved" && (
-                        <Button className="bg-[#0a1525] hover:bg-[#1a2b45]">
-                          View Loan Details
-                          <ChevronRight className="h-4 w-4 ml-1" />
+                        <Button asChild className="bg-primary hover:bg-primary/90">
+                          <Link href="/dashboard/manage-loans">
+                            View loan details
+                            <ChevronRight className="ml-1 h-4 w-4" />
+                          </Link>
                         </Button>
                       )}
                       {(application.status === "pending" || application.status === "processing") && (
-                        <Button className="bg-[#0a1525] hover:bg-[#1a2b45]">
-                          Track Updates
-                          <Bell className="h-4 w-4 ml-2" />
+                        <Button asChild variant="outline">
+                          <Link href="/dashboard/loan-tracker">
+                            Track updates
+                            <Bell className="ml-2 h-4 w-4" />
+                          </Link>
                         </Button>
                       )}
                       {application.status === "rejected" && (
-                        <Button className="bg-[#0a1525] hover:bg-[#1a2b45]">Apply Again</Button>
+                        <Button asChild className="bg-primary hover:bg-primary/90">
+                          <Link href="/dashboard/apply-for-loan">Apply Again</Link>
+                        </Button>
                       )}
                     </div>
                   </div>

@@ -35,13 +35,21 @@ export function getStoredAuth() {
   };
 }
 
+function setAuthCookie(token: string, remember: boolean) {
+  if (typeof document === "undefined") return;
+  const maxAge = remember ? 60 * 60 * 24 * 7 : 60 * 60 * 24;
+  document.cookie = `credora_token=${token}; path=/; max-age=${maxAge}; SameSite=Lax`;
+}
+
 export function clearAuth() {
+  if (typeof window === "undefined") return;
   localStorage.removeItem("token");
   localStorage.removeItem("userType");
   localStorage.removeItem("userData");
   sessionStorage.removeItem("token");
   sessionStorage.removeItem("userType");
   sessionStorage.removeItem("userData");
+  document.cookie = "credora_token=; path=/; max-age=0; SameSite=Lax";
 }
 
 export function setAuth(
@@ -51,9 +59,19 @@ export function setAuth(
   remember = false
 ) {
   const storage = remember ? localStorage : sessionStorage;
+  const other = remember ? sessionStorage : localStorage;
+  other.removeItem("token");
+  other.removeItem("userType");
+  other.removeItem("userData");
   storage.setItem("token", token);
   storage.setItem("userType", userType);
   storage.setItem("userData", JSON.stringify(userData));
+  setAuthCookie(token, remember);
+}
+
+export function isProfileIncomplete(userData: UserData | null | undefined): boolean {
+  if (!userData) return true;
+  return !userData.phoneNumber || !userData.monthlyIncome || !userData.idPassportNumber;
 }
 
 export function getErrorMessage(error: unknown): string {
@@ -73,6 +91,7 @@ export interface UserData {
   address?: string;
   employmentStatus?: string;
   monthlyIncome?: number;
+  idPassportNumber?: string;
 }
 
 export interface InstitutionData {

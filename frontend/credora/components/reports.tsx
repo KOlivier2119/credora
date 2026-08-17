@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { BarChart, LineChart, ChartContainer } from "@/components/ui/charts"
 import { Download, TrendingUp, DollarSign, Share2, FileText, Printer, HelpCircle, AlertCircle } from "lucide-react"
 import Layout from "@/components/layout"
+import Link from "next/link"
 
 export default function Reports() {
   const [timeRange, setTimeRange] = useState("year")
@@ -71,18 +72,12 @@ export default function Reports() {
     <Layout title="Financial Reports">
       <div className="space-y-6">
         {/* Header */}
-        <Card className="bg-gradient-to-r from-[#0a1525] to-[#1a2b45] text-white border-none">
-          <CardContent className="p-6">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
+        <Card className="border-none bg-gradient-to-r from-primary to-[#163a63] text-white">
+          <CardContent className="p-5 sm:p-6">
+            <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
               <div>
-                <h2 className="text-2xl font-bold">Financial Reports</h2>
-                <p className="mt-1 text-blue-100">Track your financial health and loan performance</p>
-              </div>
-              <div className="mt-4 md:mt-0 flex space-x-2">
-                <Button className="bg-white text-[#0a1525] hover:bg-blue-100">
-                  <Download className="h-4 w-4 mr-2" />
-                  Download Reports
-                </Button>
+                <h2 className="text-xl font-bold sm:text-2xl">Financial Reports</h2>
+                <p className="mt-1 text-sm text-white/80">Track your financial health and loan performance</p>
               </div>
             </div>
           </CardContent>
@@ -445,7 +440,9 @@ export default function Reports() {
             </div>
           </CardContent>
           <CardFooter className="border-t pt-4">
-            <Button className="w-full bg-[#0a1525] hover:bg-[#1a2b45]">Get Personalized Financial Plan</Button>
+            <Button asChild className="w-full bg-primary hover:bg-primary/90">
+              <Link href="/dashboard/apply-for-loan">Get a personalized loan plan</Link>
+            </Button>
           </CardFooter>
         </Card>
       </div>

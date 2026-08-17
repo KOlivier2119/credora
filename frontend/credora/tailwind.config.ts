@@ -72,7 +72,9 @@ export default {
   		},
   		fontFamily: {
   			sans: [
-  				'var(--font-poppins)',
+  				'"Plus Jakarta Sans"',
+  				'ui-sans-serif',
+  				'system-ui',
   				'sans-serif'
   			]
   		},

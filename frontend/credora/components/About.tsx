@@ -1,90 +1,101 @@
 "use client";
-import React from "react";
-import Image from "next/image";
-import man from "@/public/man_2.svg";
-import discuss from "@/public/discuss.svg";
+
+import { CoverImage } from "@/components/cover-image";
 
 const About = () => {
   return (
-    <div className="p-6 md:p-12 text-[#4B4F5E] text-base sm:text-lg md:text-xl">
-      <button className="text-[#4B415F] border border-[#4B415F] rounded-full py-2 px-5 mb-5 text-sm sm:text-base">
-        ABOUT US
-      </button>
-
-      <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
-        <div className="w-full md:w-1/2 text-center md:text-left mt-12 md:mt-24">
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">
-            25 years of expert loan and finance services.
-          </h1>
-          <div>
-            <p className="mt-4 text-start">
-              With over 25 years of expertise in the finance industry, we bring unparalleled experience and knowledge to every client we serve.
+    <section id="about" className="section-pad scroll-mt-24">
+      <div className="section-shell">
+        <span className="section-label">About us</span>
+        <div className="mt-8 flex flex-col items-start gap-10 lg:flex-row lg:gap-12">
+          <div className="w-full lg:w-1/2">
+            <h2 className="text-2xl font-bold sm:text-3xl md:text-4xl">
+              Scoring that sees cash flow, not just credit files
+            </h2>
+            <p className="mt-4 text-sm text-muted-foreground sm:text-base">
+              Traditional scoring excludes informal workers, women-owned MSMEs, and anyone without a bureau history.
+              Credora uses salary, employment, mobile-money volume, and utility regularity — the same alternative
+              signals inclusive lenders already rely on.
             </p>
-            <p className="mt-4 text-start">
-              Our highly skilled team is dedicated to providing comprehensive finance solutions tailored to your needs, ensuring you receive the best coverage and service.
+            <p className="mt-4 text-sm text-muted-foreground sm:text-base">
+              Applicants apply once. Institutions review AI recommendations with a full audit trail.
             </p>
-            <p className="mt-4 text-start">
-              We are committed to building long-term relationships, offering strategic advice that supports your financial growth and security.
-            </p>
+            <div className="mt-8 grid grid-cols-3 gap-3 sm:mt-12 sm:gap-6">
+              <Stat value="Alt-data" label="Income & utilities" />
+              <Stat value="AI" label="Score + APR band" />
+              <Stat value="2 portals" label="Applicant & lender" />
+            </div>
           </div>
-          <div className="flex flex-col sm:flex-row justify-between my-10 md:mr-8 mt-12 md:mt-20 gap-6">
-            <div className="flex flex-col items-center py-4 md:py-0 md:items-start">
-              <h1 className="text-4xl sm:text-5xl font-bold outlined-text">25+</h1>
-              <span>Years of trusted expertise</span>
+
+          <div className="grid w-full grid-cols-2 gap-3 sm:gap-4 lg:w-1/2">
+            <div className="relative col-span-2 overflow-hidden rounded-2xl">
+              <CoverImage
+                src="/images/about-lender.jpg"
+                alt="Lending team collaborating on applications"
+                className="h-48 sm:h-64 md:h-72"
+                imageClassName="object-[center_35%]"
+                sizes="(min-width: 1024px) 50vw, 100vw"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-4 text-white sm:p-6">
+                <p className="text-[11px] uppercase tracking-wider text-white/70 sm:text-xs">For lenders</p>
+                <p className="mt-1 text-base font-semibold leading-snug sm:text-lg md:text-xl">
+                  Review, approve, and track applications in one admin workspace.
+                </p>
+              </div>
             </div>
-            <div className="flex flex-col items-center py-4 md:py-0 md:items-start">
-              <h1 className="text-4xl sm:text-5xl font-bold outlined-text">50K</h1>
-              <span>Loan approved</span>
+            <div className="relative overflow-hidden rounded-2xl">
+              <CoverImage
+                src="/images/about-applicant.jpg"
+                alt="Shop owner serving a customer"
+                className="h-36 sm:h-44 md:h-48"
+                sizes="(min-width: 1024px) 25vw, 50vw"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+              <p className="absolute inset-x-0 bottom-0 p-3 text-xs font-semibold leading-snug text-white sm:p-4 sm:text-sm">
+                Apply without a prior credit file
+              </p>
             </div>
-            <div className="flex flex-col items-center py-4 md:py-0 md:items-start">
-              <h1 className="text-4xl sm:text-5xl font-bold outlined-text">10K</h1>
-              <span>Satisfied clients</span>
+            <div className="relative overflow-hidden rounded-2xl">
+              <CoverImage
+                src="/images/about-team.jpg"
+                alt="Team working together on scoring decisions"
+                className="h-36 sm:h-44 md:h-48"
+                sizes="(min-width: 1024px) 25vw, 50vw"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+              <p className="absolute inset-x-0 bottom-0 p-3 text-xs font-semibold leading-snug text-white sm:p-4 sm:text-sm">
+                ML scoring with a human review trail
+              </p>
             </div>
           </div>
         </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full md:w-1/2">
-          <div className="row-span-1 sm:row-span-2">
-            <Image
-              src={man}
-              alt="Man Image"
-              width={300}
-              height={100}
-              className="rounded-lg object-cover w-full"
-            />
-          </div>
-          <div>
-            <Image
-              src={discuss}
-              alt="Discussion Image"
-              width={50}
-              height={20}
-              className="rounded-md object-cover w-full"
-            />
-          </div>
-          <div className="bg-[#061525] flex flex-col justify-center items-center p-4 sm:p-6 lg:p-10 rounded-lg text-center">
-            <h1 className="font-bold text-white text-2xl sm:text-3xl outlined-text">25+</h1>
-            <p className="text-white text-sm sm:text-base">Years of Experience</p>
-          </div>
+        <div className="mt-10 grid gap-4 sm:mt-12 sm:grid-cols-3 sm:gap-6">
+          <Mission title="Mission" body="Expand access to fair credit using data people already generate." />
+          <Mission title="Vision" body="A lending stack where thin-file applicants are scored, not turned away." />
+          <Mission title="Teams" body="Applicant portal, institution review, and an AI scoring service working together." />
         </div>
       </div>
-
-      <div className="flex flex-col sm:flex-row gap-6 w-full mx-auto py-6">
-        <div className="bg-[#EDEEEF] p-6 sm:p-8 h-auto flex flex-col justify-center rounded-md">
-          <h1 className="text-[#4B4F5E] font-bold">Company Mission</h1>
-          <p>Our mission is to provide innovative and reliable financial solutions tailored to your unique needs.</p>
-        </div>
-        <div className="bg-[#EDEEEF] p-6 sm:p-8 h-auto flex flex-col justify-center rounded-md">
-          <h1 className="text-[#4B4F5E] font-bold">Target, Vision & Goal</h1>
-          <p>Our vision is to provide reliable and innovative financial solutions tailored to your needs.</p>
-        </div>
-        <div className="bg-[#EDEEEF] p-6 sm:p-8 h-auto flex flex-col justify-center rounded-md">
-          <h1 className="text-[#4B4F5E] font-bold">Dedicated Teams</h1>
-          <p>Our dedicated teams are committed to providing personalized solutions for all your financial needs.</p>
-        </div>
-      </div>
-    </div>
+    </section>
   );
 };
+
+function Stat({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="min-w-0">
+      <p className="text-lg font-bold text-primary sm:text-2xl md:text-3xl">{value}</p>
+      <p className="mt-1 text-[11px] leading-snug text-muted-foreground sm:text-sm">{label}</p>
+    </div>
+  );
+}
+
+function Mission({ title, body }: { title: string; body: string }) {
+  return (
+    <div className="rounded-xl bg-muted p-5 sm:p-6">
+      <h3 className="font-semibold">{title}</h3>
+      <p className="mt-2 text-sm text-muted-foreground">{body}</p>
+    </div>
+  );
+}
 
 export default About;

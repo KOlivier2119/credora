@@ -62,6 +62,9 @@ docker run --rm -v "%cd%":/app -w /app maven:3.9-eclipse-temurin-21 mvn -q -Dski
 ```bash
 cd frontend/credora
 cp .env.example .env.local
+# Fill GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET for Google sign-in
+# Origin: http://localhost:3000
+# Redirect: http://localhost:3000/api/auth/callback/google
 npm install
 npm run dev
 ```
@@ -94,6 +97,22 @@ npm run dev
 ## Environment variables
 
 See `frontend/credora/.env.example` and `docker-compose.yml`.
+
+## Google sign-in (applicants)
+
+1. Create an OAuth 2.0 **Web** client in [Google Cloud Console](https://console.cloud.google.com/apis/credentials).
+2. Authorized JavaScript origin: `http://localhost:3000`
+3. Authorized redirect URI: `http://localhost:3000/api/auth/callback/google`
+4. Copy the client ID and secret into `frontend/credora/.env.local`:
+
+```
+GOOGLE_CLIENT_ID=your-id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your-secret
+```
+
+5. Restart `npm run dev`. Google sign-in is for **applicants only**; institutions use email and password.
+
+Until credentials are set, the Google button stays visible and explains that configuration is missing.
 
 ## Team
 

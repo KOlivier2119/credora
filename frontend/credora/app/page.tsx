@@ -11,7 +11,7 @@ import WeAre from "@/components/WeAre";
 
 export default function Home() {
   return (
-    <div className="w-full min-h-screen overflow-x-hidden bg-gradient-to-b from-gray-50 to-white font-sans antialiased">
+    <div className="w-full min-h-screen overflow-x-hidden bg-background font-sans antialiased">
       <Navbar />
       <Hero />
       <About />

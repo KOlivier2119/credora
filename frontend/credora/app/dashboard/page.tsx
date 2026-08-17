@@ -23,14 +23,17 @@ import {
   Lightbulb,
 } from "lucide-react"
 import Layout from "@/components/layout"
-import { api, DashboardSummary } from "@/lib/api"
+import { api, DashboardSummary, getStoredAuth, isProfileIncomplete, UserData } from "@/lib/api"
+import Link from "next/link"
 
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState("overview")
   const [summary, setSummary] = useState<DashboardSummary | null>(null)
+  const [profileIncomplete, setProfileIncomplete] = useState(false)
 
   useEffect(() => {
     api.get<DashboardSummary>("/dashboard/summary").then((r) => setSummary(r.data)).catch(() => {})
+    const auth = getStoredAuth()
+    setProfileIncomplete(isProfileIncomplete(auth?.userData as UserData | undefined))
   }, [])
 
   // User profile data
@@ -55,56 +58,43 @@ export default function Dashboard() {
     { name: "Dec", value: 720 },
   ]
 
-  // Recent applications
-  const recentApplications = [
-    {
-      id: "LOAN-APP-2023-001",
-      amount: 15000,
-      purpose: "Home Improvement",
-      status: "approved",
-      date: "Nov 22, 2023",
-      disbursementDate: "Nov 29, 2023",
-    },
-    {
-      id: "LOAN-APP-2023-002",
-      amount: 25000,
-      purpose: "Business",
-      status: "processing",
-      date: "Dec 1, 2023",
-      progress: 60,
-    },
-  ]
+  // Recent applications from API
+  const recentApplications = (summary?.recentApplications ?? []).map((app) => ({
+    id: app.referenceId || String(app.id),
+    amount: app.amount,
+    purpose: app.purpose || app.loanType,
+    status: (() => {
+      const s = (app.status || "pending").toLowerCase()
+      if (s === "pending" || s === "submitted" || s === "review") return "processing"
+      return s
+    })(),
+    date: app.submittedDate ? new Date(app.submittedDate).toLocaleDateString() : "",
+    disbursementDate: app.approvalDate ? new Date(app.approvalDate).toLocaleDateString() : "",
+    progress: (app.status || "").toLowerCase() === "approved" ? 100 : 55,
+  }))
 
-  // Active loans
-  const activeLoans = [
-    {
-      id: "LOAN-2023-001",
-      amount: 15000,
-      purpose: "Home Improvement",
-      remainingBalance: 12500,
-      nextPayment: {
-        amount: 450,
-        date: "Dec 15, 2023",
-      },
-      progress: 17, // 17% paid off
+  // Active loans from API
+  const activeLoans = (summary?.activeLoanList ?? []).map((loan) => ({
+    id: loan.referenceId || String(loan.id),
+    amount: loan.principal,
+    purpose: loan.purpose || "Loan",
+    remainingBalance: loan.remainingBalance,
+    nextPayment: {
+      amount: loan.monthlyPayment,
+      date: "Next cycle",
     },
-  ]
+    progress: loan.termMonths
+      ? Math.round((loan.monthsPaid / loan.termMonths) * 100)
+      : 0,
+    interestRate: loan.interestRate,
+  }))
 
-  // Upcoming payments
-  const upcomingPayments = [
-    {
-      loanId: "LOAN-2023-001",
-      amount: 450,
-      date: "Dec 15, 2023",
-      status: "upcoming",
-    },
-    {
-      loanId: "LOAN-2023-001",
-      amount: 450,
-      date: "Jan 15, 2024",
-      status: "scheduled",
-    },
-  ]
+  const upcomingPayments = activeLoans.slice(0, 2).map((loan) => ({
+    loanId: loan.id,
+    amount: loan.nextPayment.amount,
+    date: loan.nextPayment.date,
+    status: "upcoming" as const,
+  }))
 
   // Financial insights
   const financialInsights = [
@@ -167,22 +157,38 @@ export default function Dashboard() {
   return (
     <Layout title="Dashboard">
       <div className="space-y-6">
+        {profileIncomplete && (
+          <Card className="border-amber-200 bg-amber-50">
+            <CardContent className="flex flex-col items-start justify-between gap-3 p-4 sm:flex-row sm:items-center">
+              <p className="text-sm text-amber-900">
+                Complete your profile (phone, income, and ID) before applying — the scoring engine needs those fields.
+              </p>
+              <Button asChild className="bg-primary">
+                <Link href="/dashboard/apply-for-loan">Complete in application</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        )}
         {/* Welcome Banner */}
-        <Card className="bg-gradient-to-r from-[#0a1525] to-[#1a2b45] text-white">
-          <CardContent className="p-6">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
+        <Card className="border-none bg-gradient-to-r from-primary to-[#163a63] text-white">
+          <CardContent className="p-5 sm:p-6">
+            <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
               <div>
-                <h2 className="text-2xl font-bold">Welcome back, {userProfile.name}</h2>
-                <p className="mt-1 text-blue-100">Here's your financial overview and loan status</p>
+                <h2 className="text-xl font-bold sm:text-2xl">Welcome back, {userProfile.name}</h2>
+                <p className="mt-1 text-sm text-white/80 sm:text-base">Here&apos;s your financial overview and loan status</p>
               </div>
-              <div className="mt-4 md:mt-0 flex space-x-3">
-                <Button className="bg-white text-[#0a1525] hover:bg-blue-100">
-                  <CreditCard className="h-4 w-4 mr-2" />
-                  Apply for a Loan
+              <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:space-x-3 sm:gap-0">
+                <Button asChild className="w-full bg-white text-primary hover:bg-white/90 sm:w-auto">
+                  <Link href="/dashboard/apply-for-loan">
+                    <CreditCard className="mr-2 h-4 w-4" />
+                    Apply for a loan
+                  </Link>
                 </Button>
-                <Button variant="outline" className="border-white text-[#0a1525] hover:bg-blue-100">
-                  <FileText className="h-4 w-4 mr-2" />
-                  View Documents
+                <Button asChild variant="outline" className="w-full border-white/40 bg-transparent text-white hover:bg-white/10 sm:w-auto">
+                  <Link href="/dashboard/loan-tracker">
+                    <FileText className="mr-2 h-4 w-4" />
+                    Track applications
+                  </Link>
                 </Button>
               </div>
             </div>
@@ -190,8 +196,8 @@ export default function Dashboard() {
         </Card>
 
         {/* Dashboard Tabs */}
-        <Tabs defaultValue="overview" onValueChange={setActiveTab}>
-          <TabsList className="mb-4">
+        <Tabs defaultValue="overview">
+          <TabsList className="mb-4 flex h-auto w-full flex-wrap justify-start gap-1">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="applications">Applications</TabsTrigger>
             <TabsTrigger value="loans">Active Loans</TabsTrigger>
@@ -293,8 +299,8 @@ export default function Dashboard() {
                   </div>
                 </CardContent>
                 <CardFooter className="border-t pt-4">
-                  <Button variant="outline" className="w-full">
-                    View Full Credit Report
+                  <Button asChild variant="outline" className="w-full">
+                    <Link href="/dashboard/reports">View credit report</Link>
                   </Button>
                 </CardFooter>
               </Card>
@@ -340,7 +346,9 @@ export default function Dashboard() {
                   </div>
                 </CardContent>
                 <CardFooter className="border-t pt-4">
-                  <Button className="w-full bg-[#0a1525] hover:bg-[#1a2b45]">Check Loan Options</Button>
+                  <Button asChild className="w-full bg-primary hover:bg-primary/90">
+                    <Link href="/dashboard/apply-for-loan">Check Loan Options</Link>
+                  </Button>
                 </CardFooter>
               </Card>
             </div>
@@ -355,6 +363,14 @@ export default function Dashboard() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
+                    {recentApplications.length === 0 && upcomingPayments.length === 0 ? (
+                      <div className="rounded-xl border border-dashed py-8 text-center">
+                        <p className="text-sm text-muted-foreground">No recent applications or payments yet.</p>
+                        <Button asChild className="mt-4 bg-primary">
+                          <Link href="/dashboard/apply-for-loan">Apply for a loan</Link>
+                        </Button>
+                      </div>
+                    ) : null}
                     {recentApplications.map((app) => (
                       <div key={app.id} className="flex items-center justify-between p-3 border rounded-lg">
                         <div className="flex items-center">
@@ -409,8 +425,8 @@ export default function Dashboard() {
                   </div>
                 </CardContent>
                 <CardFooter className="border-t pt-4">
-                  <Button variant="outline" className="w-full">
-                    View All Activity
+                  <Button asChild variant="outline" className="w-full">
+                    <Link href="/dashboard/loan-tracker">View all activity</Link>
                   </Button>
                 </CardFooter>
               </Card>
@@ -443,8 +459,8 @@ export default function Dashboard() {
                   </div>
                 </CardContent>
                 <CardFooter className="border-t pt-4">
-                  <Button variant="outline" className="w-full">
-                    View All Insights
+                  <Button asChild variant="outline" className="w-full">
+                    <Link href="/dashboard/apply-for-loan">Apply with these tips</Link>
                   </Button>
                 </CardFooter>
               </Card>
@@ -466,7 +482,9 @@ export default function Dashboard() {
                     </div>
                     <h3 className="text-lg font-medium">No applications yet</h3>
                     <p className="text-gray-500 mt-1 mb-4">You haven't submitted any loan applications</p>
-                    <Button className="bg-[#0a1525] hover:bg-[#1a2b45]">Apply for a Loan</Button>
+                    <Button asChild className="bg-primary hover:bg-primary/90">
+                      <Link href="/dashboard/apply-for-loan">Apply for a Loan</Link>
+                    </Button>
                   </div>
                 ) : (
                   <div className="space-y-6">
@@ -524,9 +542,11 @@ export default function Dashboard() {
                           )}
 
                           <div className="flex justify-end mt-4">
-                            <Button variant="outline" className="text-sm">
-                              View Details
-                              <ChevronRight className="h-4 w-4 ml-1" />
+                            <Button asChild variant="outline" className="text-sm">
+                              <Link href="/dashboard/loan-tracker">
+                                View Details
+                                <ChevronRight className="h-4 w-4 ml-1" />
+                              </Link>
                             </Button>
                           </div>
                         </div>
@@ -553,7 +573,9 @@ export default function Dashboard() {
                     </div>
                     <h3 className="text-lg font-medium">No active loans</h3>
                     <p className="text-gray-500 mt-1 mb-4">You don't have any active loans at the moment</p>
-                    <Button className="bg-[#0a1525] hover:bg-[#1a2b45]">Apply for a Loan</Button>
+                    <Button asChild className="bg-primary hover:bg-primary/90">
+                      <Link href="/dashboard/apply-for-loan">Apply for a Loan</Link>
+                    </Button>
                   </div>
                 ) : (
                   <div className="space-y-6">
@@ -597,16 +619,18 @@ export default function Dashboard() {
                             </div>
                             <div className="border rounded-lg p-3">
                               <div className="text-sm text-gray-500">Interest Rate</div>
-                              <div className="text-lg font-semibold">7.5%</div>
+                              <div className="text-lg font-semibold">{loan.interestRate}%</div>
                               <div className="text-xs text-gray-500">Fixed rate</div>
                             </div>
                           </div>
 
                           <div className="flex justify-between mt-6">
-                            <Button variant="outline" className="text-sm">
-                              View Payment Schedule
+                            <Button asChild variant="outline" className="text-sm">
+                              <Link href="/dashboard/manage-loans">View Payment Schedule</Link>
                             </Button>
-                            <Button className="bg-[#0a1525] hover:bg-[#1a2b45] text-sm">Make a Payment</Button>
+                            <Button asChild className="bg-primary hover:bg-primary/90 text-sm">
+                              <Link href="/dashboard/manage-loans">Make a Payment</Link>
+                            </Button>
                           </div>
                         </div>
                       </div>
@@ -626,25 +650,27 @@ export default function Dashboard() {
                 <CardContent>
                   <div className="space-y-4">
                     {upcomingPayments.map((payment, index) => (
-                      <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div key={index} className="flex flex-col gap-3 rounded-lg border p-4 sm:flex-row sm:items-center sm:justify-between">
                         <div className="flex items-center">
-                          <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
                             <Calendar className="h-5 w-5 text-blue-500" />
                           </div>
                           <div className="ml-4">
                             <div className="font-medium">Payment for Loan #{payment.loanId}</div>
-                            <div className="text-sm text-gray-500">
+                            <div className="text-sm text-muted-foreground">
                               {payment.status === "upcoming" ? "Due soon" : "Scheduled"}
                             </div>
                           </div>
                         </div>
-                        <div className="text-right">
-                          <div className="font-medium">${payment.amount}</div>
-                          <div className="text-sm text-gray-500">{payment.date}</div>
+                        <div className="flex items-center justify-between gap-4 sm:justify-end">
+                          <div className="text-left sm:text-right">
+                            <div className="font-medium">${payment.amount}</div>
+                            <div className="text-sm text-muted-foreground">{payment.date}</div>
+                          </div>
+                          <Button asChild variant="outline" size="sm">
+                            <Link href="/dashboard/manage-loans">Pay now</Link>
+                          </Button>
                         </div>
-                        <Button variant="outline" size="sm">
-                          Pay Now
-                        </Button>
                       </div>
                     ))}
                   </div>
@@ -699,7 +725,9 @@ export default function Dashboard() {
                         </div>
 
                         <div className="flex justify-end mt-4">
-                          <Button className="bg-[#0a1525] hover:bg-[#1a2b45]">Apply Now</Button>
+                          <Button asChild className="bg-primary hover:bg-primary/90">
+                            <Link href="/dashboard/apply-for-loan">Apply Now</Link>
+                          </Button>
                         </div>
                       </div>
                     </div>
@@ -775,9 +803,11 @@ export default function Dashboard() {
                   <Calendar className="h-4 w-4 text-blue-500" />
                 </div>
                 <div>
-                  <div className="font-medium text-sm">Upcoming Payment Reminder</div>
+                  <div className="font-medium text-sm">Stay on top of applications</div>
                   <div className="text-xs text-gray-700 mt-1">
-                    Your next payment of $450 for Loan #LOAN-2023-001 is due on December 15, 2023.
+                    {summary?.pendingApplications
+                      ? `You have ${summary.pendingApplications} application(s) in review.`
+                      : "No pending applications. Apply when you are ready."}
                   </div>
                 </div>
               </div>

@@ -300,7 +300,7 @@ def _generate_training_data(n: int = 3000):
 
     approval_prob = 1 / (1 + np.exp(-(credit_scores - 550) / 60 + debt_to_income * 3))
 
-    approved = (approval_prob + rng.normal(0, 0.05, n) > 0.5).astype(int)
+    approved = (approval_prob > np.median(approval_prob)).astype(int)
 
     return features, credit_scores, approved
 
@@ -330,7 +330,14 @@ def train_and_save_models() -> None:
 
     X, y_score, y_approve = _generate_training_data()
 
-    X_train, _, ys_train, _, ya_train, _ = train_test_split(X, y_score, y_approve, test_size=0.2, random_state=42)
+    if len(np.unique(y_approve)) < 2:
+        y_approve = y_approve.copy()
+        y_approve[0] = 0
+        y_approve[-1] = 1
+
+    X_train, _, ys_train, _, ya_train, _ = train_test_split(
+        X, y_score, y_approve, test_size=0.2, random_state=42, stratify=y_approve
+    )
 
     _regressor = GradientBoostingRegressor(n_estimators=80, max_depth=4, random_state=42)
 
@@ -342,7 +349,7 @@ def train_and_save_models() -> None:
 
     joblib.dump(_regressor, regressor_path)
 
-    joblib.dump(_classifier, regressor_path)
+    joblib.dump(_classifier, classifier_path)
 
 
 

@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { LineChart, ChartContainer } from "@/components/ui/charts"
 import { Calendar, CheckCircle, Clock, DollarSign, FileText, AlertCircle, Download, CreditCard, Loader2 } from "lucide-react"
+import Link from "next/link"
 import Layout from "@/components/layout"
 import { api, LoanResponse, PaymentResponse } from "@/lib/api"
 
@@ -97,19 +98,19 @@ export default function ManageLoans() {
     <Layout title="My Loans">
       <div className="space-y-6">
         {/* Header */}
-        <Card className="bg-gradient-to-r from-[#0a1525] to-[#1a2b45] text-white border-none">
-          <CardContent className="p-6">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
+        <Card className="border-none bg-gradient-to-r from-primary to-[#163a63] text-white">
+          <CardContent className="p-5 sm:p-6">
+            <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
               <div>
-                <h2 className="text-2xl font-bold">My Loans</h2>
-                <p className="mt-1 text-blue-100">Manage your active loans and payment schedule</p>
+                <h2 className="text-xl font-bold sm:text-2xl">My Loans</h2>
+                <p className="mt-1 text-sm text-white/80">Manage your active loans and payment schedule</p>
               </div>
-              <div className="mt-4 md:mt-0">
-                <Button className="bg-white text-[#0a1525] hover:bg-blue-100">
-                  <CreditCard className="h-4 w-4 mr-2" />
-                  Apply for a New Loan
-                </Button>
-              </div>
+              <Button asChild className="w-full bg-white text-primary hover:bg-white/90 md:w-auto">
+                <Link href="/dashboard/apply-for-loan">
+                  <CreditCard className="mr-2 h-4 w-4" />
+                  Apply for a new loan
+                </Link>
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -173,7 +174,9 @@ export default function ManageLoans() {
                   </div>
                   <h3 className="text-lg font-medium">No {activeTab} loans</h3>
                   <p className="text-gray-500 mt-1 mb-4">You don't have any {activeTab} loans at the moment</p>
-                  <Button className="bg-[#0a1525] hover:bg-[#1a2b45]">Apply for a Loan</Button>
+                  <Button asChild className="bg-primary hover:bg-primary/90">
+                    <Link href="/dashboard/apply-for-loan">Apply for a Loan</Link>
+                  </Button>
                 </CardContent>
               </Card>
             ) : (
@@ -292,7 +295,7 @@ export default function ManageLoans() {
                               {loan.autoPayEnabled ? "Disable Auto-Pay" : "Set Up Auto-Pay"}
                             </Button>
                             <Button
-                              className="bg-[#0a1525] hover:bg-[#1a2b45] text-sm"
+                              className="bg-primary hover:bg-primary/90 text-sm"
                               disabled={payingId === loan.dbId}
                               onClick={() => loan.dbId && makePayment(loan.dbId, loan.nextPayment.amount)}
                             >
@@ -428,7 +431,7 @@ export default function ManageLoans() {
                       <div className="text-sm text-gray-500">Due {new Date(payment.date).toLocaleDateString()}</div>
                     </div>
                     <Button
-                      className="bg-[#0a1525] hover:bg-[#1a2b45]"
+                      className="bg-primary hover:bg-primary/90"
                       disabled={payingId === payment.loanDbId}
                       onClick={() => payment.loanDbId && makePayment(payment.loanDbId, payment.amount)}
                     >

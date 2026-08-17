@@ -1,101 +1,81 @@
-// app/components/Footer.jsx
-'use client';
+"use client";
 
-import { FaApple, FaAppStore, FaFacebook, FaGooglePlay, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
-import Link from 'next/link';
+import { FaFacebook, FaGooglePlay, FaInstagram, FaLinkedin, FaTwitter, FaAppStore } from "react-icons/fa";
+import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-[#061525] text-[#DDDDDD] px-4 md:px-12 py-16 mt-6">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-8">
-        {/* Company Info Section */}
+    <footer className="mt-6 w-full bg-primary px-4 py-12 text-white/80 sm:py-16 md:px-12">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-4">
         <div className="md:col-span-2">
-          <div className="text-2xl font-bold mb-4">Credora</div>
-          <p className="text-gray-400 mb-6">
-            25 years of expert loan and finance services. Trusted solutions tailored to your financial growth and security.
+          <div className="mb-4 text-2xl font-bold text-white">Credora</div>
+          <p className="mb-6 max-w-md text-sm text-white/60">
+            AI credit scoring on alternative data — so applicants without a traditional file can still be assessed fairly.
           </p>
-          <div>
-            <h3 className="text-lg font-semibold mb-3">Get your mobile app</h3>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link 
-                href="https://www.apple.com/app-store/" 
-                target="_blank"
-                className="flex items-center justify-center gap-2 border border-gray-500 hover:border-white py-2 px-4 rounded-md transition-colors duration-300"
-              >
-                <FaAppStore size={20} /> App Store
-              </Link>
-              <Link 
-                href="https://play.google.com/store" 
-                target="_blank"
-                className="flex items-center justify-center gap-2 border border-gray-500 hover:border-white py-2 px-4 rounded-md transition-colors duration-300"
-              >
-                <FaGooglePlay size={20} /> Google Play
-              </Link>
-            </div>
+          <h3 className="mb-3 text-sm font-semibold text-white">Get the app</h3>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Link
+              href="https://www.apple.com/app-store/"
+              target="_blank"
+              className="inline-flex items-center justify-center gap-2 rounded-md border border-white/30 px-4 py-2 text-sm transition hover:border-white hover:text-white"
+            >
+              <FaAppStore size={18} /> App Store
+            </Link>
+            <Link
+              href="https://play.google.com/store"
+              target="_blank"
+              className="inline-flex items-center justify-center gap-2 rounded-md border border-white/30 px-4 py-2 text-sm transition hover:border-white hover:text-white"
+            >
+              <FaGooglePlay size={18} /> Google Play
+            </Link>
           </div>
         </div>
 
-        {/* Social Media Section */}
-        <div className="flex flex-col items-start md:items-center">
-          <h3 className="text-lg font-semibold mb-3">Follow Us</h3>
+        <div>
+          <h3 className="mb-4 font-semibold text-white">Pages</h3>
+          <ul className="space-y-2 text-sm">
+            <li>
+              <Link href="/#about" className="hover:text-white">
+                About
+              </Link>
+            </li>
+            <li>
+              <Link href="/#services" className="hover:text-white">
+                Services
+              </Link>
+            </li>
+            <li>
+              <Link href="/#faq" className="hover:text-white">
+                FAQ
+              </Link>
+            </li>
+            <li>
+              <Link href="/register" className="hover:text-white">
+                Apply
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 className="mb-4 font-semibold text-white">Follow</h3>
           <div className="flex gap-4">
-            <Link href="https://facebook.com" target="_blank" className="hover:text-white transition-colors duration-300">
-              <FaFacebook size={24} />
+            <Link href="https://facebook.com" target="_blank" className="hover:text-white" aria-label="Facebook">
+              <FaFacebook size={20} />
             </Link>
-            <Link href="https://twitter.com" target="_blank" className="hover:text-white transition-colors duration-300">
-              <FaTwitter size={24} />
+            <Link href="https://twitter.com" target="_blank" className="hover:text-white" aria-label="Twitter">
+              <FaTwitter size={20} />
             </Link>
-            <Link href="https://linkedin.com" target="_blank" className="hover:text-white transition-colors duration-300">
-              <FaLinkedin size={24} />
+            <Link href="https://linkedin.com" target="_blank" className="hover:text-white" aria-label="LinkedIn">
+              <FaLinkedin size={20} />
             </Link>
-            <Link href="https://instagram.com" target="_blank" className="hover:text-white transition-colors duration-300">
-              <FaInstagram size={24} />
+            <Link href="https://instagram.com" target="_blank" className="hover:text-white" aria-label="Instagram">
+              <FaInstagram size={20} />
             </Link>
-          </div>
-        </div>
-
-        {/* Pages Section */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Pages</h3>
-          <ul className="space-y-2">
-            <li><Link href="/how-it-works" className="hover:text-white transition-colors duration-300">How it works</Link></li>
-            <li><Link href="/pricing" className="hover:text-white transition-colors duration-300">Pricing</Link></li>
-            <li><Link href="/blog" className="hover:text-white transition-colors duration-300">Blog</Link></li>
-            <li><Link href="/demo" className="hover:text-white transition-colors duration-300">Demo</Link></li>
-          </ul>
-        </div>
-
-        {/* Services Section */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Services</h3>
-          <ul className="space-y-2">
-            <li><Link href="/personal-loans" className="hover:text-white transition-colors duration-300">Personal Loans</Link></li>
-            <li><Link href="/student-loans" className="hover:text-white transition-colors duration-300">Student Loans</Link></li>
-            <li><Link href="/business-loans" className="hover:text-white transition-colors duration-300">Small Business Loans</Link></li>
-            <li><Link href="/emergency-loans" className="hover:text-white transition-colors duration-300">Emergency Loans</Link></li>
-          </ul>
-        </div>
-
-        {/* Map Section */}
-        <div className="flex flex-col min-w-0">
-          <h3 className="text-lg font-semibold mb-3">Our Location</h3>
-          <div className="w-full">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d377965.73481983!2d-124.12856331399925!3d53.072575540246056!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8254214a3196af57%3A0x13945eec8c70c0cb!2sCredora!5e1!3m2!1sen!2srw!4v1740473179583!5m2!1sen!2srw"
-              width="100%"
-              height="250"
-              style={{ border: 0, borderRadius: '8px' }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              className="max-w-full"
-            ></iframe>
           </div>
         </div>
       </div>
-
-      {/* Bottom Section */}
-      <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-gray-800 text-center text-sm text-gray-500">
+      <div className="mx-auto mt-12 max-w-7xl border-t border-white/10 pt-8 text-center text-sm text-white/50">
         <p>© {new Date().getFullYear()} Credora. All rights reserved.</p>
       </div>
     </footer>

@@ -53,6 +53,8 @@ services:
       NEXT_PUBLIC_API_URL: http://localhost:8080
       NEXTAUTH_URL: http://localhost:3000
       NEXTAUTH_SECRET: credora-nextauth-dev-secret-min-32-chars-long
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
     depends_on:
       - backend
 

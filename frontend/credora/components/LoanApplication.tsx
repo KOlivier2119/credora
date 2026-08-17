@@ -209,7 +209,7 @@ export default function LoanApplication() {
               transition={{ duration: 0.4 }}
             >
               <Card className="border-none shadow-lg overflow-hidden">
-                <CardHeader className="bg-gradient-to-r from-[#0a1525] to-[#1a2b45] text-white rounded-t-lg">
+                <CardHeader className="bg-gradient-to-r from-primary to-[#1a2b45] text-white rounded-t-lg">
                   <div className="flex items-center gap-2">
                     <Sparkles className="h-5 w-5 text-blue-300" />
                     <div>
@@ -229,7 +229,7 @@ export default function LoanApplication() {
                         <div key={label} className="flex flex-col items-center flex-1">
                           <motion.div
                             className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                              i <= step ? "bg-[#0a1525] text-white" : "bg-gray-200 text-gray-500"
+                              i <= step ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
                             }`}
                             animate={i === step ? { scale: [1, 1.15, 1] } : {}}
                             transition={{ duration: 0.3 }}
@@ -242,7 +242,7 @@ export default function LoanApplication() {
                     </div>
                     <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
                       <motion.div
-                        className="h-full bg-gradient-to-r from-[#0a1525] to-blue-600"
+                        className="h-full bg-gradient-to-r from-primary to-blue-600"
                         initial={{ width: 0 }}
                         animate={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
                         transition={{ duration: 0.5, ease: "easeOut" }}
@@ -668,7 +668,7 @@ export default function LoanApplication() {
                         )}
                         <Button
                           type="button"
-                          className="ml-auto bg-[#0a1525] hover:bg-[#1a2b45]"
+                          className="ml-auto bg-primary hover:bg-primary/90"
                           onClick={handleNext}
                           disabled={submitting}
                         >
