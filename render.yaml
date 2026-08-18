@@ -1,18 +1,24 @@
-# Credora on Render — Postgres, Spring API, AI scorer
+# Credora on Render (free tier)
 # Dashboard: https://dashboard.render.com → New → Blueprint → this repo
+# Or: https://render.com/deploy?repo=https://github.com/KOlivier2119/credora
+#
+# Free web services spin down after 15 minutes idle (first request ~1 min).
+# Free Postgres expires after 30 days and is limited to 1 GB / 1 database per workspace.
+# Free web services cannot receive private-network traffic, so the API calls the
+# AI service over its public *.onrender.com hostname.
 
 databases:
   - name: credora-db
     databaseName: credora
     user: credora
-    plan: basic-256mb
+    plan: free
     postgresMajorVersion: "16"
 
 services:
   - type: web
     name: credora-ai
     runtime: docker
-    plan: starter
+    plan: free
     dockerfilePath: ./ai/Dockerfile
     dockerContext: ./ai
     healthCheckPath: /health
@@ -23,7 +29,7 @@ services:
   - type: web
     name: credora-api
     runtime: docker
-    plan: starter
+    plan: free
     dockerfilePath: ./backend/Dockerfile
     dockerContext: ./backend
     healthCheckPath: /health
@@ -42,7 +48,7 @@ services:
         fromService:
           name: credora-ai
           type: web
-          property: hostport
+          property: host
       - key: CREDIT_BUREAU_MODE
         value: sandbox
       - key: SMS_MODE

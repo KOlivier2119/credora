@@ -54,7 +54,7 @@ public class DatasourceConfig {
         ds.setUsername(username);
         ds.setPassword(password);
         ds.setDriverClassName("org.postgresql.Driver");
-        ds.setMaximumPoolSize(5);
+        ds.setMaximumPoolSize(3);
         return ds;
     }
 }

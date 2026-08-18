@@ -130,19 +130,24 @@ Then redeploy. Vercel will read `frontend/credora/package.json` and detect Next.
 
 Add the env vars from `frontend/credora/.env.example` in Vercel. Set `NEXTAUTH_URL` to your production URL and add the same origin/redirect URI in Google Cloud Console.
 
-## Deploy the API on Render (required for Vercel auth)
+## Deploy the API on Render (free)
 
 Vercel only hosts the Next.js UI. Register, login, Google OAuth, and the dashboard need the Spring Boot API on the public internet.
 
-1. Push this repo to GitHub (already on `main`).
-2. Open [Render Dashboard](https://dashboard.render.com) → **New** → **Blueprint**.
-3. Connect the `credora` repo. Render reads `render.yaml` and creates:
-   - **credora-db** — PostgreSQL
-   - **credora-ai** — FastAPI scoring service
-   - **credora-api** — Spring Boot API
-4. Wait until **credora-api** is Live. Open it and copy the URL, e.g. `https://credora-api.onrender.com`.
-5. Confirm `https://credora-api.onrender.com/health` returns `{"status":"UP"}`.
-6. In **Vercel → Settings → Environment Variables**, set (Production + Preview) and **redeploy**:
+No credit card is required. Free web services **spin down after 15 minutes idle** (first request ~1 minute). Free Postgres **expires after 30 days** (1 GB, one database per workspace).
+
+**One-click:** [Deploy to Render](https://render.com/deploy?repo=https://github.com/KOlivier2119/credora)
+
+Or manually:
+
+1. Open [Render Dashboard](https://dashboard.render.com) → **New** → **Blueprint**.
+2. Connect the `credora` GitHub repo (`main`). Render reads `render.yaml` and creates:
+   - **credora-db** — free PostgreSQL
+   - **credora-ai** — FastAPI scoring service (free)
+   - **credora-api** — Spring Boot API (free)
+3. Wait until **credora-api** is Live. Copy the URL, e.g. `https://credora-api.onrender.com`.
+4. Confirm `https://credora-api.onrender.com/health` returns `{"status":"UP"}`.
+5. In **Vercel → Settings → Environment Variables**, set (Production + Preview) and **redeploy**:
 
 | Variable | Value |
 |----------|--------|
@@ -153,15 +158,13 @@ Vercel only hosts the Next.js UI. Register, login, Google OAuth, and the dashboa
 | `GOOGLE_CLIENT_ID` | from Google Cloud (same as `.env.local`) |
 | `GOOGLE_CLIENT_SECRET` | from Google Cloud (same as `.env.local`) |
 
-7. In [Google Cloud credentials](https://console.cloud.google.com/apis/credentials), add:
+6. In [Google Cloud credentials](https://console.cloud.google.com/apis/credentials), add:
    - Origin: `https://credora-fawn.vercel.app`
    - Redirect: `https://credora-fawn.vercel.app/api/auth/callback/google`
 
-8. On the **credora-api** service in Render, `CORS_ORIGINS` is already `https://credora-fawn.vercel.app`. If the frontend URL changes, update that env var and restart the API.
+7. On **credora-api** in Render, `CORS_ORIGINS` is already `https://credora-fawn.vercel.app`. If the frontend URL changes, update that env var and restart the API.
 
-Postgres on Render (`basic-256mb`) is a paid starter database. Web services on the **starter** plan stay up; if you later switch them to free, they **spin down when idle** and the first login can take 30–60s.
-
-After the Blueprint is live, paste the real `credora-api` URL into Vercel (`API_URL` + `NEXT_PUBLIC_API_URL`) and redeploy. Email and Google login will not work on Vercel until that URL is public HTTPS, not `localhost`.
+Email and Google login on Vercel will not work until `API_URL` is this public HTTPS URL, not `localhost`.
 
 ## Team
 
