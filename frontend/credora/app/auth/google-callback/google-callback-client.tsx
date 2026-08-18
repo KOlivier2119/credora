@@ -61,9 +61,9 @@ export function GoogleCallbackClient({
 
   if (error) {
     return (
-      <div className="max-w-lg px-6 text-center">
-        <p className="text-red-600">{error}</p>
-        <Link href="/login" className="mt-4 inline-block font-medium text-primary hover:underline">
+      <div className="mx-4 w-full max-w-md rounded-2xl border border-border/60 bg-white p-8 text-center shadow-lg">
+        <p className="text-sm font-medium text-red-600">{error}</p>
+        <Link href="/login" className="mt-5 inline-block text-sm font-medium text-primary hover:underline">
           Back to login
         </Link>
       </div>
@@ -71,9 +71,9 @@ export function GoogleCallbackClient({
   }
 
   return (
-    <div className="max-w-md px-6 text-center">
+    <div className="mx-4 w-full max-w-md rounded-2xl border border-border/60 bg-white p-8 text-center shadow-lg">
       <Loader2 className="mx-auto h-8 w-8 animate-spin text-primary" />
-      <p className="mt-4 text-muted-foreground">Completing Google sign-in…</p>
+      <p className="mt-4 text-sm text-muted-foreground">Completing Google sign-in…</p>
     </div>
   );
 }

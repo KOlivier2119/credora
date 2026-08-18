@@ -6,6 +6,7 @@ export const API_BASE_URL =
 export const api = axios.create({
   baseURL: API_BASE_URL,
   headers: { "Content-Type": "application/json" },
+  timeout: 20000,
 });
 
 api.interceptors.request.use((config) => {
@@ -77,7 +78,14 @@ export function isProfileIncomplete(userData: UserData | null | undefined): bool
 export function getErrorMessage(error: unknown): string {
   if (axios.isAxiosError(error)) {
     const err = error as AxiosError<{ message?: string }>;
-    return err.response?.data?.message || err.message || "Request failed";
+    if (err.response?.data?.message) return err.response.data.message;
+    if (err.code === "ECONNABORTED") {
+      return "The API took too long to respond. Render services can sleep when idle — wait about 30 seconds and try again.";
+    }
+    if (!err.response) {
+      return "Can't reach the Credora API. On Vercel, set NEXT_PUBLIC_API_URL (and API_URL) to your Render URL, then redeploy.";
+    }
+    return err.message || "Request failed";
   }
   return "An unexpected error occurred";
 }

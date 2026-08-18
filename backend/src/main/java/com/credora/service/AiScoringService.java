@@ -111,8 +111,7 @@ public class AiScoringService {
 
 
             JsonNode response = restClient.post()
-
-                    .uri(aiServiceUrl + "/predict")
+                    .uri(normalizeAiUrl(aiServiceUrl) + "/predict")
 
                     .header("Content-Type", "application/json")
 
@@ -262,6 +261,19 @@ public class AiScoringService {
 
         return insights;
 
+    }
+
+    private String normalizeAiUrl(String url) {
+        if (url == null || url.isBlank()) return "http://localhost:8000";
+        String trimmed = url.trim().replaceAll("/$", "");
+        if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+            return trimmed;
+        }
+        // Render private network is host:port without TLS (e.g. credora-ai:10000)
+        if (trimmed.contains(".onrender.com") && !trimmed.contains(":")) {
+            return "https://" + trimmed;
+        }
+        return "http://" + trimmed;
     }
 
 }

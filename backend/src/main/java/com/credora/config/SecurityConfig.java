@@ -22,7 +22,7 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("${credora.cors.allowed-origins:http://localhost:3000,http://127.0.0.1:3000}")
+    @Value("${credora.cors.allowed-origins:http://localhost:3000,http://127.0.0.1:3000,https://credora-fawn.vercel.app}")
     private String corsOrigins;
 
     private final JwtAuthFilter jwtAuthFilter;
@@ -55,7 +55,11 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of(corsOrigins.split(",")));
+        java.util.List<String> origins = java.util.Arrays.stream(corsOrigins.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .toList();
+        config.setAllowedOriginPatterns(origins);
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);

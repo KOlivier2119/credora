@@ -2,7 +2,9 @@ spring:
   application:
     name: credora-backend
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/credora}
+    # Do not interpolate DATABASE_URL here — Render uses postgres:// which is not JDBC.
+    # DatasourceConfig converts DATABASE_URL when present.
+    url: jdbc:postgresql://localhost:5432/credora
     username: ${DATABASE_USER:credora}
     password: ${DATABASE_PASSWORD:credora}
     driver-class-name: org.postgresql.Driver

@@ -50,7 +50,7 @@ export default async function GoogleCallbackPage() {
   const result = await exchangeGoogleSession();
 
   return (
-    <div className="flex min-h-[100dvh] items-center justify-center bg-background">
+    <div className="flex min-h-[100dvh] items-center justify-center bg-gradient-to-b from-slate-50 to-background">
       <GoogleCallbackClient initialError={result.error} payload={result.payload} />
     </div>
   );

@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from typing import Any
+import threading
 
 from app.scorer import predict_credit, train_and_save_models
 
@@ -33,7 +34,8 @@ class PredictRequest(BaseModel):
 
 @app.on_event("startup")
 def startup():
-    train_and_save_models()
+    # Train off the request thread so Render health checks can pass immediately.
+    threading.Thread(target=train_and_save_models, daemon=True).start()
 
 
 @app.get("/health")

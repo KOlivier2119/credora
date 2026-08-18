@@ -1,0 +1,49 @@
+# Credora on Render — Postgres, Spring API, AI scorer
+# Dashboard: https://dashboard.render.com → New → Blueprint → this repo
+
+databases:
+  - name: credora-db
+    databaseName: credora
+    user: credora
+    plan: basic-256mb
+    postgresMajorVersion: "16"
+
+services:
+  - type: web
+    name: credora-ai
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./ai/Dockerfile
+    dockerContext: ./ai
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+
+  - type: web
+    name: credora-api
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /health
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: DATABASE_URL
+        fromDatabase:
+          name: credora-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGINS
+        value: https://credora-fawn.vercel.app
+      - key: AI_SERVICE_URL
+        fromService:
+          name: credora-ai
+          type: web
+          property: hostport
+      - key: CREDIT_BUREAU_MODE
+        value: sandbox
+      - key: SMS_MODE
+        value: sandbox

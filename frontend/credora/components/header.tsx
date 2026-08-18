@@ -10,7 +10,7 @@ interface HeaderProps {
 
 export default function Header({ title, onMenuClick }: HeaderProps) {
   return (
-    <header className="flex items-center justify-between gap-3 border-b bg-white px-4 py-3 sm:px-6 sm:py-4">
+    <header className="flex items-center justify-between gap-3 border-b bg-white/90 px-4 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
       <div className="flex min-w-0 items-center gap-3">
         <Button variant="ghost" size="icon" className="lg:hidden" onClick={onMenuClick} aria-label="Open menu">
           <Menu className="h-5 w-5" />

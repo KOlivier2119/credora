@@ -21,7 +21,10 @@ public class RateLimitFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
-        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+        String path = request.getRequestURI();
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())
+                || "/health".equals(path)
+                || "/actuator/health".equals(path)) {
             chain.doFilter(request, response);
             return;
         }

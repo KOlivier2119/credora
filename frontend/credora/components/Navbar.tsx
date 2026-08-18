@@ -68,15 +68,15 @@ const Navbar = () => {
           <div className="hidden items-center space-x-3 lg:flex">
             <Link
               href="/login"
-              className="rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:opacity-90"
+              className="rounded-lg px-4 py-2.5 text-sm font-medium text-primary transition-all hover:bg-muted"
             >
-              Login
+              Log in
             </Link>
             <Link
               href="/register"
-              className="rounded-lg border border-primary/20 px-5 py-2.5 text-sm font-medium text-primary transition-all hover:bg-primary hover:text-primary-foreground"
+              className="rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:opacity-90"
             >
-              Register
+              Get started
             </Link>
           </div>
 
@@ -116,17 +116,17 @@ const Navbar = () => {
           <div className="space-y-3 px-4 pb-4 pt-2">
             <Link
               href="/login"
-              className="flex w-full items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground"
-              onClick={() => setIsOpen(false)}
-            >
-              Login
-            </Link>
-            <Link
-              href="/register"
               className="flex w-full items-center justify-center rounded-lg border border-primary/20 px-6 py-3 text-sm font-medium text-primary"
               onClick={() => setIsOpen(false)}
             >
-              Register
+              Log in
+            </Link>
+            <Link
+              href="/register"
+              className="flex w-full items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground"
+              onClick={() => setIsOpen(false)}
+            >
+              Get started
             </Link>
           </div>
         </div>
