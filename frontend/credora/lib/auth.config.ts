@@ -1,7 +1,6 @@
 import GoogleProvider from "next-auth/providers/google";
-import type { Session } from "next-auth";
+import type { NextAuthOptions, Session } from "next-auth";
 import type { JWT } from "next-auth/jwt";
-import type { Provider } from "next-auth/providers";
 
 declare module "next-auth" {
   interface Session {
@@ -14,7 +13,7 @@ declare module "next-auth" {
   }
 }
 
-function googleProvider(): Provider[] {
+function googleProvider(): NextAuthOptions["providers"] {
   const clientId = process.env.GOOGLE_CLIENT_ID;
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
   if (!clientId || !clientSecret) return [];
@@ -41,7 +40,7 @@ function googleProvider(): Provider[] {
   ];
 }
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   providers: googleProvider(),
   callbacks: {
     async session({ session, token }: { session: Session; token: JWT }) {

@@ -48,10 +48,6 @@ const Hero = () => {
 
         <div className="order-2 flex flex-col justify-center bg-gradient-to-br from-[#061525] via-[#0d2744] to-[#163a63] px-5 py-10 sm:px-10 sm:py-14 lg:order-1 lg:px-16 lg:pb-20 lg:pt-28">
           <div className="mx-auto w-full max-w-xl">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-medium tracking-wider text-white/90 backdrop-blur-sm sm:mb-6 sm:px-4 sm:text-xs">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-              Alternative data · AI credit scoring
-            </div>
             <h1 className="mb-4 text-3xl font-bold leading-tight tracking-tight text-white sm:mb-6 sm:text-4xl md:text-5xl lg:text-[3.25rem]">
               Credit for people without a traditional file
             </h1>

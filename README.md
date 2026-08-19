@@ -145,14 +145,14 @@ Or manually:
    - **credora-db** — free PostgreSQL
    - **credora-ai** — FastAPI scoring service (free)
    - **credora-api** — Spring Boot API (free)
-3. Wait until **credora-api** is Live. Copy the URL, e.g. `https://credora-api.onrender.com`.
-4. Confirm `https://credora-api.onrender.com/health` returns `{"status":"UP"}`.
+3. Wait until **credora-api** is Live. Current URL: `https://credora-api-8fig.onrender.com`.
+4. Confirm [`/health`](https://credora-api-8fig.onrender.com/health) returns `{"status":"UP"}`.
 5. In **Vercel → Settings → Environment Variables**, set (Production + Preview) and **redeploy**:
 
 | Variable | Value |
 |----------|--------|
-| `API_URL` | `https://credora-api.onrender.com` (your real Render URL) |
-| `NEXT_PUBLIC_API_URL` | same as `API_URL` |
+| `API_URL` | `https://credora-api-8fig.onrender.com` |
+| `NEXT_PUBLIC_API_URL` | `https://credora-api-8fig.onrender.com` |
 | `NEXTAUTH_URL` | `https://credora-fawn.vercel.app` |
 | `NEXTAUTH_SECRET` | `openssl rand -base64 32` |
 | `GOOGLE_CLIENT_ID` | from Google Cloud (same as `.env.local`) |
