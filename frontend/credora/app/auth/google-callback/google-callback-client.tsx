@@ -30,7 +30,7 @@ export function GoogleCallbackClient({
     }
 
     const controller = new AbortController();
-    const timer = window.setTimeout(() => controller.abort(), 15000);
+    const timer = window.setTimeout(() => controller.abort(), 45000);
 
     fetch("/api/auth/google-exchange", { method: "POST", signal: controller.signal })
       .then(async (response) => {

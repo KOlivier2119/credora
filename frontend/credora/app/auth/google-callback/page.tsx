@@ -26,7 +26,7 @@ async function exchangeGoogleSession() {
         fullName: session.user?.name || email,
         googleId: session.user?.id || "",
       }),
-      signal: AbortSignal.timeout(12000),
+      signal: AbortSignal.timeout(45000),
     });
     const data = await response.json().catch(() => ({}));
     if (!response.ok) {

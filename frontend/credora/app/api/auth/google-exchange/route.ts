@@ -29,7 +29,7 @@ export async function POST() {
         fullName: session.user?.name || email,
         googleId: session.user?.id || "",
       }),
-      signal: AbortSignal.timeout(12000),
+      signal: AbortSignal.timeout(45000),
     });
 
     const data = await response.json().catch(() => ({}));

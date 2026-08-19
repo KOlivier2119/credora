@@ -18,31 +18,34 @@ function googleProvider(): NextAuthOptions["providers"] {
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
   if (!clientId || !clientSecret) return [];
 
-  // Explicit endpoints skip accounts.google.com/.well-known discovery,
-  // which NextAuth times out after 3.5s and often fails on IPv6.
   return [
     GoogleProvider({
       clientId,
       clientSecret,
-      wellKnown: undefined,
       authorization: {
-        url: "https://accounts.google.com/o/oauth2/v2/auth",
         params: {
           prompt: "select_account",
+          access_type: "online",
           response_type: "code",
-          scope: "openid email profile",
         },
       },
-      token: "https://oauth2.googleapis.com/token",
-      userinfo: "https://openidconnect.googleapis.com/v1/userinfo",
-      httpOptions: { timeout: 20000 },
     }),
   ];
 }
 
+const isProduction = process.env.NODE_ENV === "production" || process.env.VERCEL === "1";
+
 export const authOptions: NextAuthOptions = {
   providers: googleProvider(),
   callbacks: {
+    async jwt({ token, account, profile }) {
+      if (account?.providerAccountId) {
+        token.sub = account.providerAccountId;
+      } else if (profile?.sub) {
+        token.sub = profile.sub;
+      }
+      return token;
+    },
     async session({ session, token }: { session: Session; token: JWT }) {
       if (session.user) {
         session.user.id = token.sub;
@@ -52,9 +55,9 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/login",
-    error: "/login",
+    error: "/auth/oauth-error",
   },
   secret: process.env.NEXTAUTH_SECRET,
-  // Vercel preview/prod URLs differ; trust the incoming host when NEXTAUTH_URL is set.
-  useSecureCookies: process.env.NEXTAUTH_URL?.startsWith("https://") ?? process.env.VERCEL === "1",
+  useSecureCookies: isProduction,
+  debug: process.env.NEXTAUTH_DEBUG === "true",
 };

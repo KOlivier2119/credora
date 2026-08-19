@@ -43,9 +43,9 @@ export function GoogleSignInButton({
       onClick={onClick}
       disabled={disabled || loading}
       className={cn(
-        "flex h-11 w-full items-center justify-center gap-2.5 rounded-lg border border-input bg-background text-sm font-medium text-foreground transition-colors",
-        "hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20",
-        "disabled:pointer-events-none disabled:opacity-60 sm:h-12 sm:text-base"
+        "flex h-11 w-full items-center justify-center gap-2.5 rounded-xl border border-border bg-white text-sm font-medium text-foreground shadow-sm transition-colors",
+        "hover:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/15",
+        "disabled:pointer-events-none disabled:opacity-60"
       )}
     >
       {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <GoogleIcon />}

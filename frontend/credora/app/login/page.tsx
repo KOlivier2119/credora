@@ -2,7 +2,7 @@
 
 import type React from "react";
 import { Suspense, useState, useEffect } from "react";
-import { Lock, Mail, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { getProviders, signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -13,7 +13,7 @@ import {
   AuthUserTypeToggle,
   AuthError,
   AuthDivider,
-  authFieldClass,
+  AuthField,
   authInputClass,
 } from "@/components/auth-page-shell";
 import { Button } from "@/components/ui/button";
@@ -30,6 +30,23 @@ export default function LoginPage() {
       <LoginForm />
     </Suspense>
   );
+}
+
+function mapAuthError(code: string | null): string {
+  if (!code) return "";
+  switch (code) {
+    case "OAuthSignin":
+      return "Could not start Google sign-in. Check GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET on Vercel, then redeploy.";
+    case "OAuthCallback":
+    case "OAuthCreateAccount":
+      return "Google returned successfully, but Credora could not finish sign-in. Set API_URL and NEXT_PUBLIC_API_URL to your Render API, then redeploy Vercel.";
+    case "AccessDenied":
+      return "Google sign-in was cancelled. Try again or use email and password.";
+    case "Configuration":
+      return "Google sign-in is not configured. Add GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, and NEXTAUTH_SECRET on Vercel.";
+    default:
+      return "Google sign-in failed. Try again or use email and password.";
+  }
 }
 
 function LoginForm() {
@@ -51,19 +68,13 @@ function LoginForm() {
   }, []);
 
   useEffect(() => {
-    if (!authError) return;
-    if (authError === "OAuthSignin" || authError === "OAuthCallback" || authError === "OAuthCreateAccount") {
-      setError("Could not reach Google. Check your connection and try again.");
-      return;
-    }
-    if (authError === "Configuration") {
-      setError(
-        "Google sign-in is not configured. Add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET, then restart."
-      );
-      return;
-    }
-    setError("Google sign-in failed. Please try again or use email and password.");
-  }, [authError]);
+    const message = mapAuthError(authError);
+    if (!message) return;
+    setError(message);
+    const next = new URL(window.location.href);
+    next.searchParams.delete("error");
+    router.replace(`${next.pathname}${next.search}`, { scroll: false });
+  }, [authError, router]);
 
   const destination = () => {
     if (redirectTo && redirectTo.startsWith("/")) return redirectTo;
@@ -124,7 +135,7 @@ function LoginForm() {
   return (
     <AuthPageShell
       title="Welcome back"
-      subtitle="Sign in to your Credora portal"
+      subtitle="Sign in to your Credora account to continue"
       footer={
         <>
           Don&apos;t have an account?{" "}
@@ -144,32 +155,39 @@ function LoginForm() {
 
       <AuthError message={error} />
 
+      {userType === "applicant" && (
+        <>
+          <GoogleSignInButton loading={loading} onClick={handleGoogleSignIn} label="Continue with Google" />
+          <AuthDivider />
+        </>
+      )}
+
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className={authFieldClass}>
-          <Mail className="shrink-0 text-primary" size={18} />
+        <AuthField label={userType === "applicant" ? "Email address" : "Institution email"} id="email">
           <input
+            id="email"
             type="email"
-            placeholder={userType === "applicant" ? "Email address" : "Institution email"}
+            placeholder="you@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className={authInputClass}
             disabled={loading}
             autoComplete="email"
           />
-        </div>
+        </AuthField>
 
-        <div className={authFieldClass}>
-          <Lock className="shrink-0 text-primary" size={18} />
+        <AuthField label="Password" id="password">
           <input
+            id="password"
             type="password"
-            placeholder="Password"
+            placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className={authInputClass}
             disabled={loading}
             autoComplete="current-password"
           />
-        </div>
+        </AuthField>
 
         <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 text-sm">
           <label className="flex items-center gap-2 text-muted-foreground">
@@ -181,31 +199,22 @@ function LoginForm() {
             />
             Remember me
           </label>
-          <Link href="/forgot-password" className="text-primary hover:underline">
+          <Link href="/forgot-password" className="font-medium text-primary hover:underline">
             Forgot password?
           </Link>
         </div>
 
-        <Button type="submit" disabled={loading} className="h-11 w-full text-sm sm:h-12 sm:text-base">
+        <Button type="submit" disabled={loading} className="h-11 w-full rounded-xl text-sm font-semibold">
           {loading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Signing in...
             </>
-          ) : userType === "applicant" ? (
-            "Sign in as applicant"
           ) : (
-            "Sign in as institution"
+            "Sign in"
           )}
         </Button>
       </form>
-
-      {userType === "applicant" && (
-        <>
-          <AuthDivider />
-          <GoogleSignInButton loading={loading} onClick={handleGoogleSignIn} label="Continue with Google" />
-        </>
-      )}
 
       {userType === "bank" && (
         <p className="mt-4 text-center text-xs text-muted-foreground sm:text-sm">

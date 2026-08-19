@@ -2,19 +2,7 @@
 
 import type React from "react";
 import { useState, useEffect } from "react";
-import {
-  User,
-  Mail,
-  Lock,
-  Phone,
-  Home,
-  Briefcase,
-  DollarSign,
-  Building,
-  Globe,
-  FileText,
-  Loader2,
-} from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { api, getErrorMessage, setAuth } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { getProviders, signIn } from "next-auth/react";
@@ -25,7 +13,7 @@ import {
   AuthUserTypeToggle,
   AuthError,
   AuthDivider,
-  authFieldClass,
+  AuthField,
   authInputClass,
 } from "@/components/auth-page-shell";
 import { Button } from "@/components/ui/button";
@@ -35,6 +23,7 @@ export default function SignUpPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [googleReady, setGoogleReady] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const router = useRouter();
 
   const [applicantForm, setApplicantForm] = useState({
@@ -94,6 +83,10 @@ export default function SignUpPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!agreedToTerms) {
+      setError("Please agree to the Terms of Service and Privacy Policy.");
+      return;
+    }
     setLoading(true);
     setError("");
 
@@ -133,7 +126,7 @@ export default function SignUpPage() {
   return (
     <AuthPageShell
       wide
-      title="Create an account"
+      title="Create your account"
       subtitle="Apply for credit scored on alternative data"
       footer={
         <>
@@ -163,24 +156,123 @@ export default function SignUpPage() {
 
       {userType === "applicant" && (
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-            <AuthField icon={User} name="fullName" placeholder="Full name" value={applicantForm.fullName} onChange={handleApplicantChange} />
-            <AuthField icon={Mail} name="email" type="email" placeholder="Email" value={applicantForm.email} onChange={handleApplicantChange} />
-            <AuthField icon={Lock} name="password" type="password" placeholder="Password" value={applicantForm.password} onChange={handleApplicantChange} />
-            <AuthField icon={Phone} name="phoneNumber" placeholder="Phone" value={applicantForm.phoneNumber} onChange={handleApplicantChange} />
-            <AuthField icon={Home} name="address" placeholder="Address" value={applicantForm.address} onChange={handleApplicantChange} />
-            <AuthField icon={Briefcase} name="employmentStatus" placeholder="Employment" value={applicantForm.employmentStatus} onChange={handleApplicantChange} />
-            <AuthField icon={DollarSign} name="monthlyIncome" placeholder="Monthly income" value={applicantForm.monthlyIncome} onChange={handleApplicantChange} />
-            <AuthField icon={FileText} name="idPassportNumber" placeholder="ID / passport" value={applicantForm.idPassportNumber} onChange={handleApplicantChange} />
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <AuthField label="Full name" id="fullName" className="sm:col-span-2">
+              <input
+                id="fullName"
+                name="fullName"
+                placeholder="Jane Doe"
+                value={applicantForm.fullName}
+                onChange={handleApplicantChange}
+                className={authInputClass}
+                required
+              />
+            </AuthField>
+            <AuthField label="Email address" id="email">
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="you@example.com"
+                value={applicantForm.email}
+                onChange={handleApplicantChange}
+                className={authInputClass}
+                required
+              />
+            </AuthField>
+            <AuthField label="Password" id="password">
+              <input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Create a password"
+                value={applicantForm.password}
+                onChange={handleApplicantChange}
+                className={authInputClass}
+                required
+              />
+            </AuthField>
+            <AuthField label="Phone" id="phoneNumber">
+              <input
+                id="phoneNumber"
+                name="phoneNumber"
+                placeholder="+250 700 000 000"
+                value={applicantForm.phoneNumber}
+                onChange={handleApplicantChange}
+                className={authInputClass}
+                required
+              />
+            </AuthField>
+            <AuthField label="Monthly income" id="monthlyIncome">
+              <input
+                id="monthlyIncome"
+                name="monthlyIncome"
+                placeholder="500000"
+                value={applicantForm.monthlyIncome}
+                onChange={handleApplicantChange}
+                className={authInputClass}
+                required
+              />
+            </AuthField>
+            <AuthField label="Address" id="address" className="sm:col-span-2">
+              <input
+                id="address"
+                name="address"
+                placeholder="City, district"
+                value={applicantForm.address}
+                onChange={handleApplicantChange}
+                className={authInputClass}
+                required
+              />
+            </AuthField>
+            <AuthField label="Employment status" id="employmentStatus">
+              <input
+                id="employmentStatus"
+                name="employmentStatus"
+                placeholder="Employed, self-employed…"
+                value={applicantForm.employmentStatus}
+                onChange={handleApplicantChange}
+                className={authInputClass}
+                required
+              />
+            </AuthField>
+            <AuthField label="ID / passport" id="idPassportNumber">
+              <input
+                id="idPassportNumber"
+                name="idPassportNumber"
+                placeholder="National ID or passport"
+                value={applicantForm.idPassportNumber}
+                onChange={handleApplicantChange}
+                className={authInputClass}
+                required
+              />
+            </AuthField>
           </div>
-          <Button type="submit" disabled={loading} className="h-11 w-full text-sm sm:h-12 sm:text-base">
+
+          <label className="flex items-start gap-2.5 text-sm text-muted-foreground">
+            <input
+              type="checkbox"
+              checked={agreedToTerms}
+              onChange={(e) => setAgreedToTerms(e.target.checked)}
+              className="mt-0.5 h-4 w-4 rounded border-input"
+            />
+            <span>
+              I agree to the{" "}
+              <Link href="/#faq" className="font-medium text-primary hover:underline">
+                Terms of Service
+              </Link>{" "}
+              and Privacy Policy
+            </span>
+          </label>
+
+          <Button type="submit" disabled={loading} className="h-11 w-full rounded-xl text-sm font-semibold">
             {loading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Creating account...
               </>
             ) : (
-              "Create applicant account"
+              "Create account"
             )}
           </Button>
         </form>
@@ -188,17 +280,116 @@ export default function SignUpPage() {
 
       {userType === "bank" && (
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-            <AuthField icon={Building} name="institutionName" placeholder="Institution name" value={bankForm.institutionName} onChange={handleBankChange} />
-            <AuthField icon={Building} name="registrationLicenseNumber" placeholder="Registration #" value={bankForm.registrationLicenseNumber} onChange={handleBankChange} />
-            <AuthField icon={User} name="contactPersonName" placeholder="Contact name" value={bankForm.contactPersonName} onChange={handleBankChange} />
-            <AuthField icon={Mail} name="institutionEmail" type="email" placeholder="Email" value={bankForm.institutionEmail} onChange={handleBankChange} />
-            <AuthField icon={Lock} name="password" type="password" placeholder="Password" value={bankForm.password} onChange={handleBankChange} />
-            <AuthField icon={Phone} name="phoneNumber" placeholder="Phone" value={bankForm.phoneNumber} onChange={handleBankChange} />
-            <AuthField icon={Home} name="businessAddress" placeholder="Address" value={bankForm.businessAddress} onChange={handleBankChange} />
-            <AuthField icon={Globe} name="institutionWebsite" placeholder="Website" value={bankForm.institutionWebsite} onChange={handleBankChange} />
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <AuthField label="Institution name" id="institutionName" className="sm:col-span-2">
+              <input
+                id="institutionName"
+                name="institutionName"
+                placeholder="Your bank or lender"
+                value={bankForm.institutionName}
+                onChange={handleBankChange}
+                className={authInputClass}
+                required
+              />
+            </AuthField>
+            <AuthField label="Registration number" id="registrationLicenseNumber">
+              <input
+                id="registrationLicenseNumber"
+                name="registrationLicenseNumber"
+                placeholder="License #"
+                value={bankForm.registrationLicenseNumber}
+                onChange={handleBankChange}
+                className={authInputClass}
+                required
+              />
+            </AuthField>
+            <AuthField label="Contact name" id="contactPersonName">
+              <input
+                id="contactPersonName"
+                name="contactPersonName"
+                placeholder="Primary contact"
+                value={bankForm.contactPersonName}
+                onChange={handleBankChange}
+                className={authInputClass}
+                required
+              />
+            </AuthField>
+            <AuthField label="Institution email" id="institutionEmail">
+              <input
+                id="institutionEmail"
+                name="institutionEmail"
+                type="email"
+                placeholder="admin@bank.com"
+                value={bankForm.institutionEmail}
+                onChange={handleBankChange}
+                className={authInputClass}
+                required
+              />
+            </AuthField>
+            <AuthField label="Password" id="institutionPassword">
+              <input
+                id="institutionPassword"
+                name="password"
+                type="password"
+                placeholder="Create a password"
+                value={bankForm.password}
+                onChange={handleBankChange}
+                className={authInputClass}
+                required
+              />
+            </AuthField>
+            <AuthField label="Phone" id="institutionPhone">
+              <input
+                id="institutionPhone"
+                name="phoneNumber"
+                placeholder="+250 700 000 000"
+                value={bankForm.phoneNumber}
+                onChange={handleBankChange}
+                className={authInputClass}
+                required
+              />
+            </AuthField>
+            <AuthField label="Business address" id="businessAddress" className="sm:col-span-2">
+              <input
+                id="businessAddress"
+                name="businessAddress"
+                placeholder="Head office address"
+                value={bankForm.businessAddress}
+                onChange={handleBankChange}
+                className={authInputClass}
+                required
+              />
+            </AuthField>
+            <AuthField label="Website" id="institutionWebsite" className="sm:col-span-2">
+              <input
+                id="institutionWebsite"
+                name="institutionWebsite"
+                placeholder="https://"
+                value={bankForm.institutionWebsite}
+                onChange={handleBankChange}
+                className={authInputClass}
+                required
+              />
+            </AuthField>
           </div>
-          <Button type="submit" disabled={loading} className="h-11 w-full text-sm sm:h-12 sm:text-base">
+
+          <label className="flex items-start gap-2.5 text-sm text-muted-foreground">
+            <input
+              type="checkbox"
+              checked={agreedToTerms}
+              onChange={(e) => setAgreedToTerms(e.target.checked)}
+              className="mt-0.5 h-4 w-4 rounded border-input"
+            />
+            <span>
+              I agree to the{" "}
+              <Link href="/#faq" className="font-medium text-primary hover:underline">
+                Terms of Service
+              </Link>{" "}
+              and Privacy Policy
+            </span>
+          </label>
+
+          <Button type="submit" disabled={loading} className="h-11 w-full rounded-xl text-sm font-semibold">
             {loading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -211,36 +402,5 @@ export default function SignUpPage() {
         </form>
       )}
     </AuthPageShell>
-  );
-}
-
-function AuthField({
-  icon: Icon,
-  name,
-  value,
-  onChange,
-  placeholder,
-  type = "text",
-}: {
-  icon: React.ComponentType<{ className?: string; size?: number }>;
-  name: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder: string;
-  type?: string;
-}) {
-  return (
-    <div className={authFieldClass}>
-      <Icon className="shrink-0 text-primary" size={18} />
-      <input
-        type={type}
-        name={name}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        className={authInputClass}
-        required
-      />
-    </div>
   );
 }
